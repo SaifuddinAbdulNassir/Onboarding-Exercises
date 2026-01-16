@@ -3,9 +3,11 @@
 // Standard includes
 #include <functional>
 
+using namespace std;
+
 size_t ConnectionKeyHash::operator()(const ConnectionKey& k) const 
 {
-    return std::hash<uint64_t>()(
+    return hash<uint64_t>()(
         ((uint64_t)k.srcIp << 32) | k.dstIp
     ) ^ (k.srcPort << 16 | k.dstPort);
 }
