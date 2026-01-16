@@ -12,7 +12,7 @@
 #include <pcapplusplus/TcpLayer.h>
 #include <pcapplusplus/UdpLayer.h>
 
-// ndpi-dpi includes
+// Project includes
 #include "ConnectionsMap.h"
 
 using namespace pcpp;
