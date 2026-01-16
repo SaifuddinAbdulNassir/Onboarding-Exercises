@@ -1,8 +1,9 @@
+// Standard includes
 #include <csignal>
 #include <cstring>
 #include <iostream>
-#include <unordered_map>
 
+// Library includes
 #include <pcapplusplus/EthLayer.h>
 #include <pcapplusplus/IPv4Layer.h>
 #include <pcapplusplus/Packet.h>
@@ -11,120 +12,114 @@
 #include <pcapplusplus/TcpLayer.h>
 #include <pcapplusplus/UdpLayer.h>
 
-#include "structs/ConnectionInfo.h" 
-#include "structs/ConnKeyStruct.h"
+// ndpi-dpi includes
+#include "ConnectionsMap.h"
 
 using namespace pcpp;
+using namespace std;
 
-static bool g_running = true;
-static uint64_t g_uid = 1;
-static uint32_t g_max_packets = 100;
-
-static std::unordered_map<ConnKey, ConnectionInfo, ConnKeyHash> g_connections;
+static bool gRunning = true;
+static uint32_t gMaxPackets = 100;
+static uint64_t gUid = 1;
 
 // Signal Handler
+
 void sigint_handler(int)
 {
-    g_running = false;
+    gRunning = false;
 }
 
+// Make bidirectional flows use the same key
+
 static void canonicalize(
-    uint32_t& src_ip, uint32_t& dst_ip,
-    uint16_t& src_port, uint16_t& dst_port)
+    uint32_t& srcIp, uint32_t& dstIp,
+    uint16_t& srcPort, uint16_t& dstPort)
 {
-    if(src_ip > dst_ip ||
-       (src_ip == dst_ip && src_port > dst_port))
+    if(srcIp > dstIp ||
+       (srcIp == dstIp && srcPort > dstPort))
     {
-        std::swap(src_ip, dst_ip);
-        std::swap(src_port, dst_port);
+        swap(srcIp, dstIp);
+        swap(srcPort, dstPort);
     }
 }
 
 // Packet Handler
+
 void onPacketArrives(pcpp::RawPacket* rawPacket,
                      pcpp::PcapLiveDevice* dev,
                      void* userData)
 {
-    auto* ndpi_mod = (ndpi_detection_module_struct*)userData;
+    auto* ndpiMod = (ndpi_detection_module_struct*)userData;
 
     pcpp::Packet packet(rawPacket);
     auto* ip = packet.getLayerOfType<pcpp::IPv4Layer>();
     if(!ip)
-    {
         return;
-    }
 
-    uint8_t l4_proto = ip->getIPv4Header()->protocol;
-    uint16_t src_port = 0, dst_port = 0;
+    auto l4Proto = ip->getIPv4Header()->protocol;
+    uint16_t srcPort = 0, dstPort = 0;
 
-    if(l4_proto == IPPROTO_TCP)
+    if(l4Proto == IPPROTO_TCP)
     {
         auto* tcp = packet.getLayerOfType<pcpp::TcpLayer>();
         if(!tcp)
-        {
             return;
-        }
-        src_port = ntohs(tcp->getTcpHeader()->portSrc);
-        dst_port = ntohs(tcp->getTcpHeader()->portDst);
+
+        srcPort = ntohs(tcp->getTcpHeader()->portSrc);
+        dstPort = ntohs(tcp->getTcpHeader()->portDst);
     }
-    else if(l4_proto == IPPROTO_UDP)
+    else if(l4Proto == IPPROTO_UDP)
     {
         auto* udp = packet.getLayerOfType<pcpp::UdpLayer>();
         if(!udp)
-        {
             return;
-        }
-        src_port = ntohs(udp->getUdpHeader()->portSrc);
-        dst_port = ntohs(udp->getUdpHeader()->portDst);
+        
+        srcPort = ntohs(udp->getUdpHeader()->portSrc);
+        dstPort = ntohs(udp->getUdpHeader()->portDst);
     }
     else
     {
         return;
     }
 
-    uint32_t src_ip = ip->getSrcIPv4Address().toInt();
-    uint32_t dst_ip = ip->getDstIPv4Address().toInt();
-
-    uint16_t sport = src_port;
-    uint16_t dport = dst_port;
+    auto srcIp = ip->getSrcIPv4Address().toInt();
+    auto dstIp = ip->getDstIPv4Address().toInt();
 
     // Canonicalize flow
-    canonicalize(src_ip, dst_ip, sport, dport);
+    canonicalize(srcIp, dstIp, srcPort, dstPort);
 
-    ConnKey key {
-        ip->getSrcIPv4Address().toInt(),
-        ip->getDstIPv4Address().toInt(),
-        src_port,
-        dst_port,
-        l4_proto
+    ConnectionKey key {
+        srcIp,
+        dstIp,
+        srcPort,
+        dstPort,
+        l4Proto
     };
 
-    auto it = g_connections.find(key);
-    if(it == g_connections.end())
+    auto it = gConnectionMap.find(key);
+    if(it == gConnectionMap.end())
     {
         ConnectionInfo ci {};
-        ci.uid = g_uid++;
+        ci.uid = gUid++;
         ci.flow = (ndpi_flow_struct*)calloc(
         1,
         ndpi_detection_get_sizeof_ndpi_flow_struct()
         );
-        ci.packet_count = 0;
+        ci.packetCount = 0;
         ci.done = false;
         ci.protocol = "UNKNOWN";
         ci.category = "UNKNOWN";
         ci.domain = "";
-        g_connections.emplace(key, ci);
-        it = g_connections.find(key);
+        gConnectionMap.emplace(key, ci);
+        it = gConnectionMap.find(key);
     }
 
     ConnectionInfo& conn = it->second;
     if(conn.done)
-    {
         return;
-    }
 
-    conn.packet_count++;
-    if(conn.packet_count > g_max_packets)
+    conn.packetCount++;
+    if(conn.packetCount > gMaxPackets)
     {
         conn.protocol = "UNKNOWN";
         conn.category = "UNKNOWN";
@@ -133,36 +128,36 @@ void onPacketArrives(pcpp::RawPacket* rawPacket,
         return;
     }
 
-    ndpi_flow_input_info input_info;
-    memset(&input_info, 0, sizeof(input_info));
-    bool is_forward =
-    (ip->getSrcIPv4Address().toInt() == key.src_ip &&
-     src_port == key.src_port);
+    ndpi_flow_input_info inputInfo;
+    memset(&inputInfo, 0, sizeof(inputInfo));
+    bool isForward =
+    (ip->getSrcIPv4Address().toInt() == key.srcIp &&
+     srcPort == key.srcPort);
 
-    input_info.in_pkt_dir = (is_forward) ? 0 : 1; // 0 = client → server
-    input_info.seen_flow_beginning = (conn.packet_count == 1);;
+    inputInfo.in_pkt_dir = (isForward) ? 0 : 1; // 0 = client → server
+    inputInfo.seen_flow_beginning = (conn.packetCount == 1);;
 
-    uint64_t time_ms =
+    auto timeMs =
     rawPacket->getPacketTimeStamp().tv_sec * 1000ULL +
     rawPacket->getPacketTimeStamp().tv_nsec / 1000000ULL;
 
-    const uint8_t* ip_data = ip->getData();
-    uint16_t ip_len = ip->getDataLen();
+    const auto* ipData = ip->getData();
+    auto ipLen = ip->getDataLen();
 
     ndpi_protocol proto = ndpi_detection_process_packet(
-        ndpi_mod,
+        ndpiMod,
         conn.flow,
-        ip_data,
-        ip_len,
-        time_ms,
-        &input_info
+        ipData,
+        ipLen,
+        timeMs,
+        &inputInfo
     );
 
     if(proto.proto.app_protocol != NDPI_PROTOCOL_UNKNOWN)
     {
-        conn.protocol = ndpi_get_proto_name(ndpi_mod, proto.proto.app_protocol);
+        conn.protocol = ndpi_get_proto_name(ndpiMod, proto.proto.app_protocol);
         conn.category =
-            ndpi_category_get_name(ndpi_mod, proto.category);
+            ndpi_category_get_name(ndpiMod, proto.category);
         if(conn.flow->host_server_name[0] != '\0')
         {
             conn.domain = conn.flow->host_server_name;
@@ -175,12 +170,12 @@ int main(int argc, char* argv[])
 {
     if(argc < 3)
     {
-        std::cerr << "Usage: " << argv[0]
+        cerr << "Usage: " << argv[0]
                   << " -i <interface> [--N packets]\n";
         return 1;
     }
 
-    std::string iface;
+    string iface;
     for(int i = 1; i < argc; i++)
     {
         if(!strcmp(argv[i], "-i"))
@@ -189,36 +184,36 @@ int main(int argc, char* argv[])
         }
         else if(!strcmp(argv[i], "--N"))
         {
-            g_max_packets = atoi(argv[++i]);
+            gMaxPackets = atoi(argv[++i]);
         }
     }
 
     signal(SIGINT, sigint_handler);
 
-    struct ndpi_global_context *g_ctx = ndpi_global_init();
-    ndpi_detection_module_struct *ndpi_mod =
-        ndpi_init_detection_module(g_ctx);
+    struct ndpi_global_context *ctx = ndpi_global_init();
+    ndpi_detection_module_struct *ndpiMod =
+        ndpi_init_detection_module(ctx);
 
-    if(!ndpi_mod)
+    if(!ndpiMod)
     {
-        std::cerr << "nDPI init failed\n";
+        cerr << "nDPI init failed\n";
         exit(1);
     }
         
-    ndpi_finalize_initialization(ndpi_mod);
+    ndpi_finalize_initialization(ndpiMod);
 
     auto* dev =
         pcpp::PcapLiveDeviceList::getInstance().getDeviceByName(iface);
 
     if(!dev || !dev->open())
     {
-        std::cerr << "Cannot open device\n";
+        cerr << "Cannot open device\n";
         return 1;
     }
 
-    dev->startCapture(onPacketArrives, ndpi_mod);
+    dev->startCapture(onPacketArrives, ndpiMod);
 
-    while(g_running)
+    while(gRunning)
     {
         sleep(1);
     }
@@ -226,16 +221,16 @@ int main(int argc, char* argv[])
     dev->stopCapture();
     dev->close();
 
-    std::cout << "\nConnectionId, Protocol, Category, Domain\n";
-    for(const auto& kv : g_connections)
+    cout << "\nConnectionId, Protocol, Category, Domain\n";
+    for(const auto& kv : gConnectionMap)
     {
         const auto& c = kv.second;
-        std::cout << c.uid << ", "
+        cout << c.uid << ", "
                   << c.protocol << ", "
                   << c.category << ", "
                   << c.domain << "\n";
     }
 
-    ndpi_exit_detection_module(ndpi_mod);
+    ndpi_exit_detection_module(ndpiMod);
     return 0;
 }

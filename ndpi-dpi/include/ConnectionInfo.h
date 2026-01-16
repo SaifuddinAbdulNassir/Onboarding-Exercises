@@ -1,19 +1,22 @@
 #pragma once 
 
+// Standard includes
 #include <cstdint>
 #include <string>
 
+// Library includes
 extern "C" {
 #include "/usr/include/ndpi/ndpi_api.h"
 }
 
-struct ConnectionInfo {
-    uint64_t uid;
-    ndpi_flow_struct* flow;
-    uint32_t packet_count;
+class ConnectionInfo 
+{
+  public:
     bool done;
-
-    std::string protocol;
+    ndpi_flow_struct* flow;
     std::string category;
     std::string domain;
+    std::string protocol;
+    uint32_t packetCount;
+    uint64_t uid;
 };

@@ -16,7 +16,13 @@ include_directories(
 
 link_directories(/usr/local/lib)
 
-add_executable(ndpi_dpi src/main.cpp)
+set(SOURCES
+    src/ConnectionKey.cpp
+    src/ConnectionKeyHash.cpp
+    src/main.cpp
+)
+
+add_executable(ndpi_dpi ${SOURCES})
 
 target_link_libraries(ndpi_dpi
     ndpi
