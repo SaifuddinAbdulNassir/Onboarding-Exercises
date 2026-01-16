@@ -1,6 +1,8 @@
-#include <arpa/inet.h>
+// Standard includes
 #include <iostream>
 
+// Library includes
+#include <arpa/inet.h>
 #include <pcapplusplus/DnsLayer.h>
 #include <pcapplusplus/EthLayer.h>
 #include <pcapplusplus/IPv4Layer.h>
@@ -10,44 +12,34 @@
 #include <pcapplusplus/UdpLayer.h>
 #include <pcapplusplus/VlanLayer.h>
 
-#include "structs/ConfigStruct.h"
+// Project includes
+#include "Config.h"
 
 using namespace pcpp;
+using namespace std;
+
+// Command line argument parser
 
 bool parseArgs(int argc, char* argv[], Config& cfg)
 {
     for(int i = 1; i < argc; ++i)
     {
-        std::string arg = argv[i];
+        string arg = argv[i];
 
         if(arg == "--vlan" && i + 1 < argc)
-        {
-            cfg.vlan = std::stoi(argv[++i]);
-        }
+            cfg.vlan = stoi(argv[++i]);
         else if(arg == "-ip-version" && i + 1 < argc)
-        {
-            cfg.ipVersion = std::stoi(argv[++i]);
-        }
+            cfg.ipVersion = stoi(argv[++i]);
         else if(arg == "--ttl" && i + 1 < argc)
-        {
-            cfg.ttlDec = std::stoi(argv[++i]);
-        }
+            cfg.ttlDec = stoi(argv[++i]);
         else if(arg == "--dns-addr" && i + 1 < argc)
-        {
             cfg.dnsAddr = argv[++i];
-        }
         else if(arg == "--dns-port" && i + 1 < argc)
-        {
-            cfg.dnsPort = std::stoi(argv[++i]);
-        }
+            cfg.dnsPort = stoi(argv[++i]);
         else if(arg == "-i" && i + 1 < argc)
-        {
             cfg.inputFile = argv[++i];
-        }
         else if(arg == "-o" && i + 1 < argc)
-        {
             cfg.outputFile = argv[++i];
-        }
     }
 
     return !cfg.inputFile.empty() &&
@@ -60,27 +52,27 @@ int main(int argc, char* argv[])
 
     if(!parseArgs(argc, argv, cfg))
     {
-        std::cerr << "Invalid arguments\n";
+        cerr << "Invalid arguments\n";
         return 1;
     }
 
     PcapFileReaderDevice reader(cfg.inputFile);
     if(!reader.open())
     {
-        std::cerr << "Cannot open input file\n";
+        cerr << "Cannot open input file\n";
         return 1;
     }
 
     PcapFileWriterDevice writer(cfg.outputFile, reader.getLinkLayerType());
     if(!writer.open())
     {
-        std::cerr << "Cannot open output file\n";
+        cerr << "Cannot open output file\n";
         return 1;
     }
 
-    uint64_t totalPkts = 0, dropped = 0, written = 0;
-    uint64_t bytesIn = 0, bytesOut = 0, bytesDropped = 0;
-    uint64_t dnsModified = 0;
+    auto totalPkts = 0, dropped = 0, written = 0;
+    auto bytesIn = 0, bytesOut = 0, bytesDropped = 0;
+    auto dnsModified = 0;
 
     RawPacket raw;
 
@@ -164,9 +156,7 @@ int main(int argc, char* argv[])
                 }
 
                 if(cfg.dnsPort > 0)
-                {
                     udp->getUdpHeader()->portDst = htons(cfg.dnsPort);
-                }
 
                 dnsModified++;
             }
@@ -179,10 +169,10 @@ int main(int argc, char* argv[])
         bytesOut += raw.getRawDataLen();
     }
 
-    std::cout << "Total bytes & packets processed: " << bytesIn << "&" << totalPkts << "\n";
-    std::cout << "Total bytes & packets dropped: " << bytesDropped << "&" << dropped << "\n";
-    std::cout << "Total bytes & packets written: " << bytesOut << "&" << written << "\n";
-    std::cout << "DNS modified: " << dnsModified << "\n";
+    cout << "Total bytes & packets processed: " << bytesIn << "&" << totalPkts << "\n";
+    cout << "Total bytes & packets dropped: " << bytesDropped << "&" << dropped << "\n";
+    cout << "Total bytes & packets written: " << bytesOut << "&" << written << "\n";
+    cout << "DNS modified: " << dnsModified << "\n";
 
     return 0;
 }
