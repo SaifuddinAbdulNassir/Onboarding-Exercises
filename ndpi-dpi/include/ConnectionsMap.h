@@ -8,4 +8,6 @@
 #include "ConnectionKey.h"
 #include "ConnectionKeyHash.h"
 
-static std::unordered_map<ConnectionKey, ConnectionInfo, ConnectionKeyHash> gConnectionMap;
+using namespace std;
+
+typedef unordered_map<ConnectionKey, ConnectionInfo, ConnectionKeyHash> ConnectionsMap;

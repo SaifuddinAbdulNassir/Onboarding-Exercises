@@ -15,18 +15,21 @@
 // Project includes
 #include "ConnectionsMap.h"
 
+// Declare the global connection map
+ConnectionsMap connectionMap;
+
 using namespace pcpp;
 using namespace std;
 
-static bool gRunning = true;
-static uint32_t gMaxPackets = 100;
-static uint64_t gUid = 1;
+static bool running = true;
+static uint32_t maxPackets = 100;
+static uint64_t uid = 1;
 
 // Signal Handler
 
 void sigint_handler(int)
 {
-    gRunning = false;
+    running = false;
 }
 
 // Make bidirectional flows use the same key
@@ -96,11 +99,11 @@ void onPacketArrives(pcpp::RawPacket* rawPacket,
         l4Proto
     };
 
-    auto it = gConnectionMap.find(key);
-    if(it == gConnectionMap.end())
+    auto it = connectionMap.find(key);
+    if(it == connectionMap.end())
     {
         ConnectionInfo ci {};
-        ci.uid = gUid++;
+        ci.uid = uid++;
         ci.flow = (ndpi_flow_struct*)calloc(
         1,
         ndpi_detection_get_sizeof_ndpi_flow_struct()
@@ -110,8 +113,8 @@ void onPacketArrives(pcpp::RawPacket* rawPacket,
         ci.protocol = "UNKNOWN";
         ci.category = "UNKNOWN";
         ci.domain = "";
-        gConnectionMap.emplace(key, ci);
-        it = gConnectionMap.find(key);
+        connectionMap.emplace(key, ci);
+        it = connectionMap.find(key);
     }
 
     ConnectionInfo& conn = it->second;
@@ -119,7 +122,7 @@ void onPacketArrives(pcpp::RawPacket* rawPacket,
         return;
 
     conn.packetCount++;
-    if(conn.packetCount > gMaxPackets)
+    if(conn.packetCount > maxPackets)
     {
         conn.protocol = "UNKNOWN";
         conn.category = "UNKNOWN";
@@ -184,7 +187,7 @@ int main(int argc, char* argv[])
         }
         else if(!strcmp(argv[i], "--N"))
         {
-            gMaxPackets = atoi(argv[++i]);
+            maxPackets = atoi(argv[++i]);
         }
     }
 
@@ -213,7 +216,7 @@ int main(int argc, char* argv[])
 
     dev->startCapture(onPacketArrives, ndpiMod);
 
-    while(gRunning)
+    while(running)
     {
         sleep(1);
     }
@@ -222,7 +225,7 @@ int main(int argc, char* argv[])
     dev->close();
 
     cout << "\nConnectionId, Protocol, Category, Domain\n";
-    for(const auto& kv : gConnectionMap)
+    for(const auto& kv : connectionMap)
     {
         const auto& c = kv.second;
         cout << c.uid << ", "
