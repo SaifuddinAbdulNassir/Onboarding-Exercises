@@ -14,6 +14,7 @@
 
 // Project includes
 #include "ConnectionsMap.h"
+#include "AppState.h"
 
 // Declare the global connection map
 ConnectionsMap connectionMap;
@@ -21,15 +22,15 @@ ConnectionsMap connectionMap;
 using namespace pcpp;
 using namespace std;
 
-static bool running = true;
-static uint32_t maxPackets = 100;
-static uint64_t uid = 1;
+uint32_t AppState::maxPackets = 100;
+bool AppState::running = true;
+uint64_t AppState::uid = 1;
 
 // Signal Handler
 
 void sigint_handler(int)
 {
-    running = false;
+    AppState::running = false;
 }
 
 // Make bidirectional flows use the same key
@@ -103,7 +104,7 @@ void onPacketArrives(pcpp::RawPacket* rawPacket,
     if(it == connectionMap.end())
     {
         ConnectionInfo ci {};
-        ci.uid = uid++;
+        ci.uid = AppState::uid++;
         ci.flow = (ndpi_flow_struct*)calloc(
         1,
         ndpi_detection_get_sizeof_ndpi_flow_struct()
@@ -122,7 +123,7 @@ void onPacketArrives(pcpp::RawPacket* rawPacket,
         return;
 
     conn.packetCount++;
-    if(conn.packetCount > maxPackets)
+    if(conn.packetCount > AppState::maxPackets)
     {
         conn.protocol = "UNKNOWN";
         conn.category = "UNKNOWN";
@@ -187,7 +188,7 @@ int main(int argc, char* argv[])
         }
         else if(!strcmp(argv[i], "--N"))
         {
-            maxPackets = atoi(argv[++i]);
+            AppState::maxPackets = atoi(argv[++i]);
         }
     }
 
@@ -216,7 +217,7 @@ int main(int argc, char* argv[])
 
     dev->startCapture(onPacketArrives, ndpiMod);
 
-    while(running)
+    while(AppState::running)
     {
         sleep(1);
     }

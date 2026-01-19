@@ -3,7 +3,7 @@
 // Satndard includes
 #include <unordered_map>
 
-// ndpi-dpi includes
+// Project includes
 #include "ConnectionInfo.h" 
 #include "ConnectionKey.h"
 #include "ConnectionKeyHash.h"

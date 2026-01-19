@@ -3,7 +3,7 @@
 // Standard includes
 #include <cstddef>
 
-//ndpi-dpi includes
+// Project includes
 #include "ConnectionKey.h"
 
 class ConnectionKeyHash 
