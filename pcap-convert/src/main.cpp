@@ -20,7 +20,7 @@ using namespace std;
 
 // Command line argument parser
 
-bool parseArgs(int argc, char* argv[], Config& cfg)
+bool parseArgs(int argc, char *argv[], Config& cfg)
 {
     for(int i = 1; i < argc; ++i)
     {
@@ -45,7 +45,7 @@ bool parseArgs(int argc, char* argv[], Config& cfg)
     return !cfg.inputFile.empty() && !cfg.outputFile.empty();
 }
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     Config cfg;
 
@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
         // VLAN filter
         if(cfg.vlan >= 0)
         {
-            auto* vlan = pkt.getLayerOfType<VlanLayer>();
+            auto *vlan = pkt.getLayerOfType<VlanLayer>();
             if(!vlan || vlan->getVlanID() != cfg.vlan)
             {
                 dropped++;
@@ -112,7 +112,7 @@ int main(int argc, char* argv[])
         }
 
         // TTL handling
-        if(cfg.ttlDec >= 0 && auto* ip4 = pkt.getLayerOfType<IPv4Layer>())
+        if(cfg.ttlDec >= 0 && auto *ip4 = pkt.getLayerOfType<IPv4Layer>())
         {
             if(ip4->getIPv4Header()->timeToLive <= cfg.ttlDec || ip4->getIPv4Header()->protocol == pcpp::PACKETPP_IPPROTO_ICMP)
             {
@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
             }
             ip4->getIPv4Header()->timeToLive -= cfg.ttlDec;
         }
-        else if(cfg.ttlDec >= 0 && auto* ip6 = pkt.getLayerOfType<IPv6Layer>())
+        else if(cfg.ttlDec >= 0 && auto *ip6 = pkt.getLayerOfType<IPv6Layer>())
         {
             if(ip6->getIPv6Header()->hopLimit <= cfg.ttlDec || ip6->getIPv6Header()->nextHeader == pcpp::PACKETPP_IPPROTO_ICMPV6)
             {
@@ -136,18 +136,18 @@ int main(int argc, char* argv[])
         // DNS modification
         if(pkt.isPacketOfType(UDP))
         {
-            auto* dns = pkt.getLayerOfType<DnsLayer>();
-            auto* udp = pkt.getLayerOfType<UdpLayer>();
+            auto *dns = pkt.getLayerOfType<DnsLayer>();
+            auto *udp = pkt.getLayerOfType<UdpLayer>();
 
             if(dns && udp)
             {
                 if(!cfg.dnsAddr.empty())
                 {
-                    if(auto* ip4 = pkt.getLayerOfType<IPv4Layer>())
+                    if(auto *ip4 = pkt.getLayerOfType<IPv4Layer>())
                     {
                         ip4->getIPv4Header()->ipDst = IPv4Address(cfg.dnsAddr).toInt();
                     }
-                    else if(auto* ip6 = pkt.getLayerOfType<IPv6Layer>())
+                    else if(auto *ip6 = pkt.getLayerOfType<IPv6Layer>())
                     {
                         memcpy(ip6->getIPv6Header()->ipDst,
                             IPv6Address(cfg.dnsAddr).toBytes(), 16);
