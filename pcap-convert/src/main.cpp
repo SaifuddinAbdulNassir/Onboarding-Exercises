@@ -42,8 +42,7 @@ bool parseArgs(int argc, char* argv[], Config& cfg)
             cfg.outputFile = argv[++i];
     }
 
-    return !cfg.inputFile.empty() &&
-        (cfg.ipVersion == 4 || cfg.ipVersion == 6);
+    return !cfg.inputFile.empty() && !cfg.outputFile.empty();
 }
 
 int main(int argc, char* argv[])
@@ -104,7 +103,7 @@ int main(int argc, char* argv[])
         }
 
         // IP version filter
-        if((cfg.ipVersion == 4 && !pkt.isPacketOfType(IPv4)) ||
+        if(cfg.ipVersion >= 0 && ((cfg.ipVersion == 4 && !pkt.isPacketOfType(IPv4)) ||
             (cfg.ipVersion == 6 && !pkt.isPacketOfType(IPv6)))
         {
             dropped++;
@@ -113,7 +112,7 @@ int main(int argc, char* argv[])
         }
 
         // TTL handling
-        if(auto* ip4 = pkt.getLayerOfType<IPv4Layer>())
+        if(cfg.ttlDec >= 0 && auto* ip4 = pkt.getLayerOfType<IPv4Layer>())
         {
             if(ip4->getIPv4Header()->timeToLive <= cfg.ttlDec || ip4->getIPv4Header()->protocol == pcpp::PACKETPP_IPPROTO_ICMP)
             {
@@ -123,7 +122,7 @@ int main(int argc, char* argv[])
             }
             ip4->getIPv4Header()->timeToLive -= cfg.ttlDec;
         }
-        else if(auto* ip6 = pkt.getLayerOfType<IPv6Layer>())
+        else if(cfg.ttlDec >= 0 && auto* ip6 = pkt.getLayerOfType<IPv6Layer>())
         {
             if(ip6->getIPv6Header()->hopLimit <= cfg.ttlDec || ip6->getIPv6Header()->nextHeader == pcpp::PACKETPP_IPPROTO_ICMPV6)
             {

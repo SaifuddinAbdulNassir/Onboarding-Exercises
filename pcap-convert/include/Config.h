@@ -10,7 +10,7 @@ class Config
     int dnsPort = -1;
     std::string inputFile;
     int ipVersion = -1;
-    std::string outputFile = "output.pcap";
+    std::string outputFile;
     int ttlDec = -1;
     int vlan = -1;
 };
