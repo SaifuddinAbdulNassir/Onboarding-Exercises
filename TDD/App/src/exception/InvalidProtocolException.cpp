@@ -1,6 +1,8 @@
 #include "exception/InvalidProtocolException.h"
 
+using namespace std;
+
 InvalidProtocolException::InvalidProtocolException()
-    : std::runtime_error("Invalid Protocol")
+    : runtime_error("Invalid Protocol")
 {
 }

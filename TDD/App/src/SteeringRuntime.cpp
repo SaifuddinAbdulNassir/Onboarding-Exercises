@@ -1,12 +1,16 @@
 #include "SteeringRuntime.h"
 
+using namespace std;
+
+// Validator
+
 static void validateProtocol(Protocol protocol)
 {
-    if (protocol._value != Protocol::TCP4 && protocol._value != Protocol::UDP4)
-    {
+    if(protocol._value != Protocol::TCP4 && protocol._value != Protocol::UDP4)
         throw InvalidProtocolException();
-    }
 }
+
+// Rule Modifiers
 
 bool SteeringRuntime::addRule(Protocol protocol, SteeringTarget target)
 {
@@ -26,19 +30,15 @@ bool SteeringRuntime::addRule(Protocol protocol, uint16_t port,
 
     for (const auto& [_, rule] : rules)
     {
-        if (rule->getProtocol() == protocol && rule->getTarget() == target)
-        {
+        if(rule->getProtocol() == protocol && rule->getTarget() == target)
             throw DuplicatedTargetException();
-        }
     }
         
-    auto rule = std::make_shared<SteeringRule>(protocol, port, address, target);
+    auto rule = make_shared<SteeringRule>(protocol, port, address, target);
     auto id = rule->getId();
 
-    if (rules.count(id))
-    {
+    if(rules.count(id))
         return false;
-    }
 
     rules[id] = rule;
     return true;
@@ -66,17 +66,23 @@ bool SteeringRuntime::removeRule(Protocol protocol, uint16_t port,
     return rules.unsafe_erase(id) > 0;
 }
 
+// Reseter
+
 void SteeringRuntime::reset()
 {
     rules.clear();
 }
+
+// Counters
 
 size_t SteeringRuntime::ruleCount() const
 {
     return rules.size();
 }
 
-std::shared_ptr<const SteeringRule>
+// Searcher
+
+shared_ptr<const SteeringRule>
 SteeringRuntime::ruleSearch(pcpp::Packet& packet)
 {
     auto proto = ProtocolUtil::detect(packet);
@@ -84,10 +90,8 @@ SteeringRuntime::ruleSearch(pcpp::Packet& packet)
 
     for (const auto& [_, rule] : rules)
     {
-        if (rule->matches(packet))
-        {
+        if(rule->matches(packet))
             return rule;
-        }
     }
 
     return nullptr;

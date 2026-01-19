@@ -1,7 +1,9 @@
 #pragma once
 
+// Library includes
 #include <pcapplusplus/Packet.h>
 
+// Project includes
 #include "enums/ProtocolEnum.h"
 
 class ProtocolUtil 

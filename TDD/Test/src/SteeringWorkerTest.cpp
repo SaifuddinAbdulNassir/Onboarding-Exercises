@@ -1,6 +1,8 @@
+// Library includes
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+// Project includes
 #include "exception/DropPacketException.h"
 #include "SteeringRuntimeMock.h"
 #include "SteeringWorker.h"

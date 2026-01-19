@@ -1,19 +1,23 @@
 #pragma once
 
+// Standard includes
 #include <string>
 
+// Library includes
 #include <pcapplusplus/Packet.h>
 
+// Project includes
 #include "enums/ProtocolEnum.h"
 #include "ProtocolUtil.h"
 #include "SteeringTarget.h"
 
+using namespace std;
 
 class SteeringRule 
 {
-    Protocol protocol;
     pcpp::IPv4Address address;
     uint16_t port;
+    Protocol protocol;
     SteeringTarget target;
 
   public:
@@ -28,6 +32,6 @@ class SteeringRule
     uint16_t getPort() const;
     SteeringTarget getTarget() const;
     
-    std::string getId() const;
+    string getId() const;
     bool matches(pcpp::Packet& packet) const;
 };

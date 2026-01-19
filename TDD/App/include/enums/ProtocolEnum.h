@@ -1,6 +1,7 @@
 #pragma once
 
-#include <third-party/better-enums/enum.h>   // better-enums
+// Library includes
+#include <third-party/better-enums/enum.h>
 
 BETTER_ENUM(Protocol, int,
     TCP4,

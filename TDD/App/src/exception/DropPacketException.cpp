@@ -1,6 +1,8 @@
 #include "exception/DropPacketException.h"
 
+using namespace std;
+
 DropPacketException::DropPacketException()
-    : std::runtime_error("Drop packet")
+    : runtime_error("Drop packet")
 {
 }
