@@ -5,36 +5,66 @@
 #include "exception/InvalidArgumentException.h"
 #include "SteeringTarget.h"
 
-TEST(SteeringTargetTest, ConstructorValidation)
+TEST(SteeringTargetTest, validConstructor)
+{
+    EXPECT_NO_THROW(
+        SteeringTarget(pcpp::IPv4Address("8.8.8.8"), 80));
+}
+
+TEST(SteeringTargetTest, constructorWithZeroIpAddress)
 {
     EXPECT_THROW(
         SteeringTarget(pcpp::IPv4Address::Zero, 80),
         InvalidArgumentException
     );
+}
 
+TEST(SteeringTargetTest, constructorWithZeroPortAddress)
+{
     EXPECT_THROW(
-        SteeringTarget(pcpp::IPv4Address("1.1.1.1"), 0),
+        SteeringTarget(pcpp::IPv4Address("8.8.8.8"), 0),
         InvalidArgumentException
     );
 }
 
-TEST(SteeringTargetTest, GettersAndSetters)
+TEST(SteeringTargetTest, getAddress)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
  
     EXPECT_EQ("8.8.8.8", target.getAddress().toString());
+}
+
+TEST(SteeringTargetTest, getPort)
+{
+    pcpp::IPv4Address address("8.8.8.8");
+    SteeringTarget target(address, 8080);
+ 
     EXPECT_EQ(8080, target.getPort());
+}
 
-    target.setPort(443);
-    EXPECT_EQ(443, target.getPort());
-
+TEST(SteeringTargetTest, setAddress)
+{
+    pcpp::IPv4Address address("8.8.8.8");
+    SteeringTarget target(address, 8080);
+ 
     address = pcpp::IPv4Address("10.0.0.1");
     target.setAddress(address);
+    
     EXPECT_EQ("10.0.0.1", target.getAddress().toString());
 }
 
-TEST(SteeringTargetTest, EqualsOperator)
+TEST(SteeringTargetTest, setPort)
+{
+    pcpp::IPv4Address address("8.8.8.8");
+    SteeringTarget target(address, 8080);
+ 
+    target.setPort(443);
+
+    EXPECT_EQ(443, target.getPort());
+}
+
+TEST(SteeringTargetTest, equalsOperator)
 {
     pcpp::IPv4Address address("1.1.1.1");
     SteeringTarget a(address, 80);

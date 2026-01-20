@@ -11,32 +11,102 @@ class SteeringRuntimeTest : public ::testing::Test
     SteeringRuntime runtime;
 };
 
-TEST_F(SteeringRuntimeTest, AddRemoveReset)
+TEST_F(SteeringRuntimeTest, addRuleTargetOnly)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
 
-    EXPECT_EQ(0u, runtime.ruleCount());
     EXPECT_TRUE(runtime.addRule(Protocol::UDP4, target));
     EXPECT_EQ(1u, runtime.ruleCount());
+}
 
-    EXPECT_THROW(runtime.addRule(Protocol::UDP4, target), DuplicatedTargetException);
+TEST_F(SteeringRuntimeTest, addRulePortAndTarget)
+{
+    pcpp::IPv4Address address("8.8.8.8");
+    SteeringTarget target(address, 53);
 
     EXPECT_TRUE(runtime.addRule(Protocol::TCP4, 10, target));
-    EXPECT_EQ(2u, runtime.ruleCount());
+    EXPECT_EQ(1u, runtime.ruleCount());
+}
 
+TEST_F(SteeringRuntimeTest, addRulePortAddressTarget)
+{
+    pcpp::IPv4Address targetAddress("8.8.8.8");
+    SteeringTarget target(targetAddress, 53);
+    pcpp::IPv4Address address("10.0.0.1");
+
+    EXPECT_TRUE(runtime.addRule(Protocol::TCP4, 10, address, target));
+    EXPECT_EQ(1u, runtime.ruleCount());
+}
+
+TEST_F(SteeringRuntimeTest, addRuleException)
+{
+    pcpp::IPv4Address address("8.8.8.8");
+    SteeringTarget target(address, 53);
+
+    runtime.addRule(Protocol::UDP4, target);
+
+    EXPECT_THROW(runtime.addRule(Protocol::UDP4, target), DuplicatedTargetException);
+}
+
+TEST_F(SteeringRuntimeTest, removeRuleWithProtocolOnly)
+{
+    pcpp::IPv4Address address("8.8.8.8");
+    SteeringTarget target(address, 53);
+
+    EXPECT_TRUE(runtime.addRule(Protocol::UDP4, target));
+    EXPECT_EQ(1u, runtime.ruleCount());
     EXPECT_TRUE(runtime.removeRule(Protocol::UDP4));
-    EXPECT_EQ(1u, runtime.ruleCount());
-    EXPECT_TRUE(runtime.removeRule(Protocol::TCP4, 10));
-    EXPECT_EQ(0u, runtime.ruleCount());
-
-    EXPECT_TRUE(runtime.addRule(Protocol::UDP4, 50, target));
-    EXPECT_EQ(1u, runtime.ruleCount());
-    runtime.reset();
     EXPECT_EQ(0u, runtime.ruleCount());
 }
 
-TEST_F(SteeringRuntimeTest, RuleSearch)
+TEST_F(SteeringRuntimeTest, removeRuleWithProtocolAndPort)
+{
+    pcpp::IPv4Address address("8.8.8.8");
+    SteeringTarget target(address, 53);
+
+    EXPECT_TRUE(runtime.addRule(Protocol::UDP4, 50, target));
+    EXPECT_EQ(1u, runtime.ruleCount());
+    EXPECT_TRUE(runtime.removeRule(Protocol::UDP4, 50));
+    EXPECT_EQ(0u, runtime.ruleCount());
+}
+
+TEST_F(SteeringRuntimeTest, removeRuleWithProtocolAndPortAndAddress)
+{
+    pcpp::IPv4Address targetAddress("8.8.8.8");
+    SteeringTarget target(targetAddress, 53);
+    pcpp::IPv4Address address("10.0.0.1");
+
+    EXPECT_TRUE(runtime.addRule(Protocol::UDP4, 50, address, target));
+    EXPECT_EQ(1u, runtime.ruleCount());
+    EXPECT_TRUE(runtime.removeRule(Protocol::UDP4, 50, address));
+    EXPECT_EQ(0u, runtime.ruleCount());
+}
+
+TEST_F(SteeringRuntimeTest, removeRuleException)
+{
+    pcpp::IPv4Address targetAddress("8.8.8.8");
+    SteeringTarget target(targetAddress, 53);
+
+    EXPECT_TRUE(runtime.addRule(Protocol::UDP4, target));
+    EXPECT_EQ(1u, runtime.ruleCount());
+    EXPECT_THROW(runtime.removeRule(Protocol::UDP6), InvalidProtocolException);
+}
+
+TEST_F(SteeringRuntimeTest, reset)
+{
+    pcpp::IPv4Address address("8.8.8.8");
+    SteeringTarget target(address, 53);
+
+    runtime.addRule(Protocol::UDP4, 50, target);
+    auto ruleCount = runtime.ruleCount();
+    runtime.reset();
+
+    EXPECT_EQ(ruleCount, 1u);
+    EXPECT_EQ(0u, runtime.ruleCount());
+}
+
+TEST_F(SteeringRuntimeTest, ruleSearch)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
