@@ -27,7 +27,7 @@ After executing these commands and before running the project take one pcap file
 ## Command to run the project
 
 ```
-./pcap-convert --vlan 5 -ip-version 4 --ttl 2 --dns-addr 10.0.0.1 --dns-port 5353 -i input.pcap -o output.pcap
+./build/pcap-convert --vlan 5 -ip-version 4 --ttl 2 --dns-addr 10.0.0.1 --dns-port 5353 -i Pcapfiles/input.pcap -o Pcapfiles/output.pcap
 ```
 
 The output.pcap will be generated in build folder.

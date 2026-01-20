@@ -43,8 +43,8 @@ bool parseArgs(int argc, char *argv[], Config& cfg)
             cfg.setOutputFile(argv[++i]);
         else if(arg == "-h" || arg == "--help")
         {
-            cout << "Command to run the App: ./pcap-convert [--vlan <vlan id>] [-ip-version <4|6>] [--ttl <decrement>] " <<
-            "[--dns-addr <address>] [--dns-port <port>]  -i <input pcap file> -o <output pcap file>  \n";
+            cout << "Command to run the App: ./build/pcap-convert [--vlan <vlan id>] [-ip-version <4|6>] [--ttl <decrement>] " <<
+            "[--dns-addr <address>] [--dns-port <port>]  -i Pcapfiles/<input pcap file> -o Pcapfiles/<output pcap file>  \n";
         }
 }
 
