@@ -3,10 +3,8 @@
 // Standard includes
 #include <stdexcept>
 
-using namespace std;
-
-class DuplicatedTargetException : public runtime_error 
+class DuplicatedTargetException : public std::runtime_error 
 {
   public:
-    DuplicatedTargetException(const string& message = "Duplicated target");
+    DuplicatedTargetException(const std::string& message = "Duplicated target");
 };

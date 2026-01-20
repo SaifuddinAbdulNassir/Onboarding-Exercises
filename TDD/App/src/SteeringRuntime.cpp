@@ -1,5 +1,8 @@
 #include "SteeringRuntime.h"
 
+using namespace std;
+using namespace pcpp;
+
 // Validator
 
 static void validateProtocol(Protocol protocol)

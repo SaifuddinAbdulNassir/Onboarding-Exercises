@@ -1,5 +1,7 @@
 #include "SteeringTarget.h"
 
+using namespace pcpp;
+
 // Constructor
 
 SteeringTarget::SteeringTarget(IPv4Address address, uint16_t port)

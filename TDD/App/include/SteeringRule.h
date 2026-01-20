@@ -11,12 +11,9 @@
 #include "ProtocolUtil.h"
 #include "SteeringTarget.h"
 
-using namespace std;
-using namespace pcpp;
-
 class SteeringRule 
 {
-    IPv4Address address;
+    pcpp::IPv4Address address;
     uint16_t port;
     Protocol protocol;
     SteeringTarget target;
@@ -26,16 +23,16 @@ class SteeringRule
     SteeringRule(Protocol protocol, SteeringTarget target);
     SteeringRule(Protocol protocol, uint16_t port, SteeringTarget target);
     SteeringRule(Protocol protocol, uint16_t port,
-                 IPv4Address address,
+                 pcpp::IPv4Address address,
                  SteeringTarget target);
 
     // Getters
-    IPv4Address getAddress() const;
-    string getId() const;
+    pcpp::IPv4Address getAddress() const;
+    std::string getId() const;
     uint16_t getPort() const;
     Protocol getProtocol() const;
     SteeringTarget getTarget() const;
 
     // Packet matcher
-    bool matches(Packet& packet) const;
+    bool matches(pcpp::Packet& packet) const;
 };

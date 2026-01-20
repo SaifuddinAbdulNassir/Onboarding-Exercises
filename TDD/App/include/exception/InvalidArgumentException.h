@@ -3,10 +3,8 @@
 // Standard includes
 #include <stdexcept>
 
-using namespace std;
-
-class InvalidArgumentException : public runtime_error 
+class InvalidArgumentException : public std::runtime_error 
 {
   public:
-    InvalidArgumentException(const string& message = "Invalid argument");
+    InvalidArgumentException(const std::string& message = "Invalid argument");
 };

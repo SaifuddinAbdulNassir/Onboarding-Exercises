@@ -5,6 +5,9 @@
 #include <pcapplusplus/TcpLayer.h>
 #include <pcapplusplus/UdpLayer.h>
 
+using namespace std;
+using namespace pcpp;
+
 // Constructors
 
 SteeringRule::SteeringRule(Protocol protocol, SteeringTarget target)

@@ -9,6 +9,8 @@
 // Project includes
 #include "exception/DropPacketException.h"
 
+using namespace pcpp;
+
 // Constructor
 
 SteeringWorker::SteeringWorker(SteeringRuntime& runtime)

@@ -3,10 +3,8 @@
 // Standard includes
 #include <stdexcept>
 
-using namespace std;
-
-class DropPacketException : public runtime_error 
+class DropPacketException : public std::runtime_error 
 {
   public:
-    DropPacketException(const string& message = "Drop packet");
+    DropPacketException(const std::string& message = "Drop packet");
 };

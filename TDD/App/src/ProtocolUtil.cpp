@@ -6,6 +6,8 @@
 #include <pcapplusplus/TcpLayer.h>
 #include <pcapplusplus/UdpLayer.h>
 
+using namespace pcpp;
+
 // Protocol detector
 
 Protocol ProtocolUtil::detect(Packet& packet)
