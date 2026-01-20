@@ -3,13 +3,19 @@
 // Project includes
 #include "SteeringRuntime.h"
 
+using namespace pcpp;
+
 class SteeringWorker 
 {
     SteeringRuntime& runtime;
 
   public:
+  // Constructor
     SteeringWorker(SteeringRuntime& runtime);
 
-    bool process(pcpp::Packet& packet);
-    void steer(pcpp::Packet& packet, SteeringTarget& target);
+    // Packet Processor
+    bool process(Packet& packet);
+
+    // Packet diverter
+    void steer(Packet& packet, SteeringTarget& target);
 };

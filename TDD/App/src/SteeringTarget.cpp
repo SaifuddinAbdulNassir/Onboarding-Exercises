@@ -2,9 +2,9 @@
 
 // Constructor
 
-SteeringTarget::SteeringTarget(pcpp::IPv4Address address, uint16_t port)
+SteeringTarget::SteeringTarget(IPv4Address address, uint16_t port)
 {
-    if(address == pcpp::IPv4Address::Zero || port == 0)
+    if(address == IPv4Address::Zero || port == 0)
         throw InvalidArgumentException();
 
     this->address = address;
@@ -13,22 +13,22 @@ SteeringTarget::SteeringTarget(pcpp::IPv4Address address, uint16_t port)
 
 // Getters and Setters
 
-pcpp::IPv4Address SteeringTarget::getAddress() const
+IPv4Address SteeringTarget::getAddress() const
 {
     return address;
-}
-
-void SteeringTarget::setAddress(pcpp::IPv4Address address)
-{
-    if(address == pcpp::IPv4Address::Zero)
-        throw InvalidArgumentException();
-
-    this->address = address;
 }
 
 uint16_t SteeringTarget::getPort() const
 {
     return port;
+}
+
+void SteeringTarget::setAddress(IPv4Address address)
+{
+    if(address == IPv4Address::Zero)
+        throw InvalidArgumentException();
+
+    this->address = address;
 }
 
 void SteeringTarget::setPort(uint16_t port)

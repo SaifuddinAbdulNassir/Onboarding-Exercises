@@ -1,7 +1,5 @@
 #include "SteeringRuntime.h"
 
-using namespace std;
-
 // Validator
 
 static void validateProtocol(Protocol protocol)
@@ -14,16 +12,16 @@ static void validateProtocol(Protocol protocol)
 
 bool SteeringRuntime::addRule(Protocol protocol, SteeringTarget target)
 {
-    return addRule(protocol, 0, pcpp::IPv4Address::Zero, target);
+    return addRule(protocol, 0, IPv4Address::Zero, target);
 }
 
 bool SteeringRuntime::addRule(Protocol protocol, uint16_t port, SteeringTarget target)
 {
-    return addRule(protocol, port, pcpp::IPv4Address::Zero, target);
+    return addRule(protocol, port, IPv4Address::Zero, target);
 }
 
 bool SteeringRuntime::addRule(Protocol protocol, uint16_t port,
-                              pcpp::IPv4Address address,
+                              IPv4Address address,
                               SteeringTarget target)
 {
     validateProtocol(protocol);
@@ -46,21 +44,21 @@ bool SteeringRuntime::addRule(Protocol protocol, uint16_t port,
 
 bool SteeringRuntime::removeRule(Protocol protocol)
 {
-    return removeRule(protocol, 0, pcpp::IPv4Address::Zero);
+    return removeRule(protocol, 0, IPv4Address::Zero);
 }
 
 bool SteeringRuntime::removeRule(Protocol protocol, uint16_t port)
 {
-    return removeRule(protocol, port, pcpp::IPv4Address::Zero);
+    return removeRule(protocol, port, IPv4Address::Zero);
 }
 
 bool SteeringRuntime::removeRule(Protocol protocol, uint16_t port,
-                                 pcpp::IPv4Address address)
+                                 IPv4Address address)
 {
     validateProtocol(protocol);
 
     SteeringRule tmp(protocol, port, address,
-                     SteeringTarget(pcpp::IPv4Address("1.1.1.1"), 1));
+                     SteeringTarget(IPv4Address("1.1.1.1"), 1));
     auto id = tmp.getId();
 
     return rules.unsafe_erase(id) > 0;
@@ -73,17 +71,17 @@ void SteeringRuntime::reset()
     rules.clear();
 }
 
-// Counters
+// Rule counter
 
 size_t SteeringRuntime::ruleCount() const
 {
     return rules.size();
 }
 
-// Searcher
+// Rule searcher
 
 shared_ptr<const SteeringRule>
-SteeringRuntime::ruleSearch(pcpp::Packet& packet)
+SteeringRuntime::ruleSearch(Packet& packet)
 {
     auto proto = ProtocolUtil::detect(packet);
     validateProtocol(proto);

@@ -6,19 +6,23 @@
 // Project includes
 #include "exception/InvalidArgumentException.h"
 
+using namespace pcpp;
+
 class SteeringTarget 
 {
-    pcpp::IPv4Address address;
+    IPv4Address address;
     uint16_t port;
 
   public:
-    SteeringTarget(pcpp::IPv4Address address, uint16_t port);
+    // Constructor
+    SteeringTarget(IPv4Address address, uint16_t port);
 
-    pcpp::IPv4Address getAddress() const;
-    void setAddress(pcpp::IPv4Address address);
-
+    // Getters and Setters
+    IPv4Address getAddress() const;
     uint16_t getPort() const;
+    void setAddress(IPv4Address address);
     void setPort(uint16_t port);
 
+    // Equals operator
     bool operator==(const SteeringTarget& other) const;
 };

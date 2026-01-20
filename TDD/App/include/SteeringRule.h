@@ -7,31 +7,35 @@
 #include <pcapplusplus/Packet.h>
 
 // Project includes
-#include "enums/ProtocolEnum.h"
+#include "enums/ProtocolTypes.h"
 #include "ProtocolUtil.h"
 #include "SteeringTarget.h"
 
 using namespace std;
+using namespace pcpp;
 
 class SteeringRule 
 {
-    pcpp::IPv4Address address;
+    IPv4Address address;
     uint16_t port;
     Protocol protocol;
     SteeringTarget target;
 
   public:
+    // Constructors
     SteeringRule(Protocol protocol, SteeringTarget target);
     SteeringRule(Protocol protocol, uint16_t port, SteeringTarget target);
     SteeringRule(Protocol protocol, uint16_t port,
-                 pcpp::IPv4Address address,
+                 IPv4Address address,
                  SteeringTarget target);
 
-    Protocol getProtocol() const;
-    pcpp::IPv4Address getAddress() const;
-    uint16_t getPort() const;
-    SteeringTarget getTarget() const;
-    
+    // Getters
+    IPv4Address getAddress() const;
     string getId() const;
-    bool matches(pcpp::Packet& packet) const;
+    uint16_t getPort() const;
+    Protocol getProtocol() const;
+    SteeringTarget getTarget() const;
+
+    // Packet matcher
+    bool matches(Packet& packet) const;
 };

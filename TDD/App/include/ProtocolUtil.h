@@ -4,10 +4,13 @@
 #include <pcapplusplus/Packet.h>
 
 // Project includes
-#include "enums/ProtocolEnum.h"
+#include "enums/ProtocolTypes.h"
+
+using namespace pcpp;
 
 class ProtocolUtil 
 {
   public:
-    static Protocol detect(pcpp::Packet& packet);
+    // Protocol detector
+    static Protocol detect(Packet& packet);
 };

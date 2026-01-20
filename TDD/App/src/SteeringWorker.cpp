@@ -18,7 +18,7 @@ SteeringWorker::SteeringWorker(SteeringRuntime& runtime)
 
 // Packet Processor
 
-bool SteeringWorker::process(pcpp::Packet& packet)
+bool SteeringWorker::process(Packet& packet)
 {
     try 
     {
@@ -38,21 +38,21 @@ bool SteeringWorker::process(pcpp::Packet& packet)
 
 // Packet diverter
 
-void SteeringWorker::steer(pcpp::Packet& packet, SteeringTarget& target)
+void SteeringWorker::steer(Packet& packet, SteeringTarget& target)
 {
-    auto ip = packet.getLayerOfType<pcpp::IPv4Layer>();
+    auto ip = packet.getLayerOfType<IPv4Layer>();
     if (!ip)
         throw InvalidArgumentException();
 
-    if (auto* tcp = packet.getLayerOfType<pcpp::TcpLayer>())
+    if (auto* tcp = packet.getLayerOfType<TcpLayer>())
         tcp->getTcpHeader()->portDst = htons(target.getPort());
-    else if (auto* udp = packet.getLayerOfType<pcpp::UdpLayer>())
+    else if (auto* udp = packet.getLayerOfType<UdpLayer>())
         udp->getUdpHeader()->portDst = htons(target.getPort());
     else
         throw InvalidProtocolException();
 
     packet.computeCalculateFields();
 
-    if (target.getAddress() != pcpp::IPv4Address::Zero)
+    if (target.getAddress() != IPv4Address::Zero)
         ip->setDstIPv4Address(target.getAddress());
 }
