@@ -1,6 +1,6 @@
 #include "exception/InvalidArgumentException.h"
 
-InvalidArgumentException::InvalidArgumentException()
-    : std::runtime_error("Invalid Argument")
+InvalidArgumentException::InvalidArgumentException(const string& message)
+    : runtime_error(message)
 {
 }

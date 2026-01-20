@@ -3,8 +3,10 @@
 // Standard includes
 #include <stdexcept>
 
-class InvalidProtocolException : public std::runtime_error 
+using namespace std;
+
+class InvalidProtocolException : public runtime_error 
 {
   public:
-    InvalidProtocolException();
+    InvalidProtocolException(const string& message = "Invalid protocol");
 };

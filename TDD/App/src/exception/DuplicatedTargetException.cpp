@@ -1,8 +1,6 @@
 #include "exception/DuplicatedTargetException.h"
 
-using namespace std;
-
-DuplicatedTargetException::DuplicatedTargetException()
-    : runtime_error("Duplicated packet")
+DuplicatedTargetException::DuplicatedTargetException(const string& message)
+    : runtime_error(message)
 {
 }
