@@ -11,6 +11,7 @@ link_directories(/usr/local/lib)
 
  set(SOURCES
     src/Config.cpp
+    src/NetworkStats.cpp
     src/main.cpp
 )
 

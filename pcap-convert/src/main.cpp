@@ -14,6 +14,7 @@
 
 // Project includes
 #include "Config.h"
+#include "NetworkStats.h"
 
 using namespace pcpp;
 using namespace std;
@@ -69,16 +70,13 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    auto totalPkts = 0, dropped = 0, written = 0;
-    auto bytesIn = 0, bytesOut = 0, bytesDropped = 0;
-    auto dnsModified = 0;
-
     RawPacket raw;
+    NetworkStats stats;
 
     while(reader.getNextPacket(raw))
     {
-        totalPkts++;
-        bytesIn += raw.getRawDataLen();
+        stats.incrementTotalPackets();
+        stats.addBytesIn(raw.getRawDataLen());
 
         Packet pkt(&raw);
 
@@ -88,8 +86,8 @@ int main(int argc, char *argv[])
             auto *vlan = pkt.getLayerOfType<VlanLayer>();
             if(!vlan || vlan->getVlanID() != cfg.getVlan())
             {
-                dropped++;
-                bytesDropped += raw.getRawDataLen();
+                stats.incrementDroppedPackets();
+                stats.addBytesDropped(raw.getRawDataLen());
                 continue;
             }
         }
@@ -97,8 +95,8 @@ int main(int argc, char *argv[])
         // Ethernet
         if(!pkt.isPacketOfType(Ethernet))
         {
-            dropped++;
-            bytesDropped += raw.getRawDataLen();
+            stats.incrementDroppedPackets();
+            stats.addBytesDropped(raw.getRawDataLen());
             continue;
         }
 
@@ -106,8 +104,8 @@ int main(int argc, char *argv[])
         if(cfg.getIpVersion() >= 0 && ((cfg.getIpVersion() == 4 && !pkt.isPacketOfType(IPv4)) ||
             (cfg.getIpVersion() == 6 && !pkt.isPacketOfType(IPv6))))
         {
-            dropped++;
-            bytesDropped += raw.getRawDataLen();
+            stats.incrementDroppedPackets();
+            stats.addBytesDropped(raw.getRawDataLen());
             continue;
         }
 
@@ -118,8 +116,8 @@ int main(int argc, char *argv[])
         {
             if(ip4->getIPv4Header()->timeToLive <= cfg.getTtlDec() || ip4->getIPv4Header()->protocol == pcpp::PACKETPP_IPPROTO_ICMP)
             {
-                dropped++;
-                bytesDropped += raw.getRawDataLen();
+                stats.incrementDroppedPackets();
+                stats.addBytesDropped(raw.getRawDataLen());
                 continue;
             }
             ip4->getIPv4Header()->timeToLive -= cfg.getTtlDec();
@@ -128,8 +126,8 @@ int main(int argc, char *argv[])
         {
             if(ip6->getIPv6Header()->hopLimit <= cfg.getTtlDec() || ip6->getIPv6Header()->nextHeader == pcpp::PACKETPP_IPPROTO_ICMPV6)
             {
-                dropped++;
-                bytesDropped += raw.getRawDataLen();
+                stats.incrementDroppedPackets();
+                stats.addBytesDropped(raw.getRawDataLen());
                 continue;
             }
             ip6->getIPv6Header()->hopLimit -= cfg.getTtlDec();
@@ -159,21 +157,21 @@ int main(int argc, char *argv[])
                 if(cfg.getDnsPort() > 0)
                     udp->getUdpHeader()->portDst = htons(cfg.getDnsPort());
 
-                dnsModified++;
+                stats.incrementDnsModifiedPackets();
             }
         }
 
         pkt.computeCalculateFields();
         writer.writePacket(raw);
 
-        written++;
-        bytesOut += raw.getRawDataLen();
+        stats.incrementWrittenPackets();
+        stats.addBytesOut(raw.getRawDataLen());
     }
 
-    cout << "Total bytes & packets processed: " << bytesIn << "&" << totalPkts << "\n";
-    cout << "Total bytes & packets dropped: " << bytesDropped << "&" << dropped << "\n";
-    cout << "Total bytes & packets written: " << bytesOut << "&" << written << "\n";
-    cout << "DNS modified: " << dnsModified << "\n";
+    cout << "Total bytes & packets processed: " << stats.getBytesIn() << "&" << stats.getTotalPackets() << "\n";
+    cout << "Total bytes & packets dropped: " << stats.getBytesDropped() << "&" << stats.getDroppedPackets() << "\n";
+    cout << "Total bytes & packets written: " << stats.getBytesOut() << "&" << stats.getWrittenPackets() << "\n";
+    cout << "DNS modified: " << stats.getDnsModifiedPackets() << "\n";
 
     return 0;
 }
