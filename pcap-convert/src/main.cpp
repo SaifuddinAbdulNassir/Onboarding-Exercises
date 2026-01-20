@@ -27,22 +27,22 @@ bool parseArgs(int argc, char *argv[], Config& cfg)
         string arg = argv[i];
 
         if(arg == "--vlan" && i + 1 < argc)
-            cfg.vlan = stoi(argv[++i]);
+            cfg.setVlan(stoi(argv[++i]));
         else if(arg == "-ip-version" && i + 1 < argc)
-            cfg.ipVersion = stoi(argv[++i]);
+            cfg.setIpVersion(stoi(argv[++i]));
         else if(arg == "--ttl" && i + 1 < argc)
-            cfg.ttlDec = stoi(argv[++i]);
+            cfg.setTtlDec(stoi(argv[++i]));
         else if(arg == "--dns-addr" && i + 1 < argc)
-            cfg.dnsAddr = argv[++i];
+            cfg.setDnsAddr(argv[++i]);
         else if(arg == "--dns-port" && i + 1 < argc)
-            cfg.dnsPort = stoi(argv[++i]);
+            cfg.setDnsPort(stoi(argv[++i]));
         else if(arg == "-i" && i + 1 < argc)
-            cfg.inputFile = argv[++i];
+            cfg.setInputFile(argv[++i]);
         else if(arg == "-o" && i + 1 < argc)
-            cfg.outputFile = argv[++i];
+            cfg.setOutputFile(argv[++i]);
     }
 
-    return !cfg.inputFile.empty() && !cfg.outputFile.empty();
+    return !cfg.getInputFile().empty() && !cfg.getOutputFile().empty();
 }
 
 int main(int argc, char *argv[])
@@ -55,14 +55,14 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    PcapFileReaderDevice reader(cfg.inputFile);
+    PcapFileReaderDevice reader(cfg.getInputFile());
     if(!reader.open())
     {
         cerr << "Cannot open input file\n";
         return 1;
     }
 
-    PcapFileWriterDevice writer(cfg.outputFile, reader.getLinkLayerType());
+    PcapFileWriterDevice writer(cfg.getOutputFile(), reader.getLinkLayerType());
     if(!writer.open())
     {
         cerr << "Cannot open output file\n";
@@ -83,10 +83,10 @@ int main(int argc, char *argv[])
         Packet pkt(&raw);
 
         // VLAN filter
-        if(cfg.vlan >= 0)
+        if(cfg.getVlan() >= 0)
         {
             auto *vlan = pkt.getLayerOfType<VlanLayer>();
-            if(!vlan || vlan->getVlanID() != cfg.vlan)
+            if(!vlan || vlan->getVlanID() != cfg.getVlan())
             {
                 dropped++;
                 bytesDropped += raw.getRawDataLen();
@@ -103,8 +103,8 @@ int main(int argc, char *argv[])
         }
 
         // IP version filter
-        if(cfg.ipVersion >= 0 && ((cfg.ipVersion == 4 && !pkt.isPacketOfType(IPv4)) ||
-            (cfg.ipVersion == 6 && !pkt.isPacketOfType(IPv6)))
+        if(cfg.getIpVersion() >= 0 && ((cfg.getIpVersion() == 4 && !pkt.isPacketOfType(IPv4)) ||
+            (cfg.getIpVersion() == 6 && !pkt.isPacketOfType(IPv6))))
         {
             dropped++;
             bytesDropped += raw.getRawDataLen();
@@ -112,25 +112,27 @@ int main(int argc, char *argv[])
         }
 
         // TTL handling
-        if(cfg.ttlDec >= 0 && auto *ip4 = pkt.getLayerOfType<IPv4Layer>())
+        auto *ip4 = pkt.getLayerOfType<IPv4Layer>();
+        auto *ip6 = pkt.getLayerOfType<IPv6Layer>();
+        if(ip4 && cfg.getTtlDec() >= 0)
         {
-            if(ip4->getIPv4Header()->timeToLive <= cfg.ttlDec || ip4->getIPv4Header()->protocol == pcpp::PACKETPP_IPPROTO_ICMP)
+            if(ip4->getIPv4Header()->timeToLive <= cfg.getTtlDec() || ip4->getIPv4Header()->protocol == pcpp::PACKETPP_IPPROTO_ICMP)
             {
                 dropped++;
                 bytesDropped += raw.getRawDataLen();
                 continue;
             }
-            ip4->getIPv4Header()->timeToLive -= cfg.ttlDec;
+            ip4->getIPv4Header()->timeToLive -= cfg.getTtlDec();
         }
-        else if(cfg.ttlDec >= 0 && auto *ip6 = pkt.getLayerOfType<IPv6Layer>())
+        else if(ip6 && cfg.getTtlDec() >= 0)
         {
-            if(ip6->getIPv6Header()->hopLimit <= cfg.ttlDec || ip6->getIPv6Header()->nextHeader == pcpp::PACKETPP_IPPROTO_ICMPV6)
+            if(ip6->getIPv6Header()->hopLimit <= cfg.getTtlDec() || ip6->getIPv6Header()->nextHeader == pcpp::PACKETPP_IPPROTO_ICMPV6)
             {
                 dropped++;
                 bytesDropped += raw.getRawDataLen();
                 continue;
             }
-            ip6->getIPv6Header()->hopLimit -= cfg.ttlDec;
+            ip6->getIPv6Header()->hopLimit -= cfg.getTtlDec();
         }
 
         // DNS modification
@@ -141,21 +143,21 @@ int main(int argc, char *argv[])
 
             if(dns && udp)
             {
-                if(!cfg.dnsAddr.empty())
+                if(!cfg.getDnsAddr().empty())
                 {
                     if(auto *ip4 = pkt.getLayerOfType<IPv4Layer>())
                     {
-                        ip4->getIPv4Header()->ipDst = IPv4Address(cfg.dnsAddr).toInt();
+                        ip4->getIPv4Header()->ipDst = IPv4Address(cfg.getDnsAddr()).toInt();
                     }
                     else if(auto *ip6 = pkt.getLayerOfType<IPv6Layer>())
                     {
                         memcpy(ip6->getIPv6Header()->ipDst,
-                            IPv6Address(cfg.dnsAddr).toBytes(), 16);
+                            IPv6Address(cfg.getDnsAddr()).toBytes(), 16);
                     }
                 }
 
-                if(cfg.dnsPort > 0)
-                    udp->getUdpHeader()->portDst = htons(cfg.dnsPort);
+                if(cfg.getDnsPort() > 0)
+                    udp->getUdpHeader()->portDst = htons(cfg.getDnsPort());
 
                 dnsModified++;
             }

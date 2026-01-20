@@ -9,7 +9,12 @@ ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 link_directories(/usr/local/lib)
 
-add_executable(pcap-convert src/main.cpp)
+ set(SOURCES
+    src/Config.cpp
+    src/main.cpp
+)
+
+add_executable(pcap-convert ${SOURCES})
 
 target_link_libraries(pcap-convert
     Pcap++
