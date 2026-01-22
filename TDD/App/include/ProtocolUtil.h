@@ -4,7 +4,7 @@
 #include <pcapplusplus/Packet.h>
 
 // Project includes
-#include "enums/ProtocolTypes.h"
+#include "enums/Protocol.h"
 
 class ProtocolUtil 
 {
