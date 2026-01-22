@@ -76,6 +76,13 @@ bool SteeringRule::matches(Packet& packet) const
     if (ProtocolUtil::detect(packet) != protocol)
         return false;
 
+    if (address != IPv4Address::Zero)
+    {
+        auto ip = packet.getLayerOfType<IPv4Layer>();
+        if (!ip || ip->getDstIPv4Address() != address)
+            return false;
+    }
+
     if (port != 0) 
     {
         if (auto tcp = packet.getLayerOfType<TcpLayer>())
@@ -89,13 +96,6 @@ bool SteeringRule::matches(Packet& packet) const
             if (udp->getDstPort() != port)
                 return false;
         }
-    }
-
-    if (address != IPv4Address::Zero)
-    {
-        auto ip = packet.getLayerOfType<IPv4Layer>();
-        if (!ip || ip->getDstIPv4Address() != address)
-            return false;
     }
 
     return true;
