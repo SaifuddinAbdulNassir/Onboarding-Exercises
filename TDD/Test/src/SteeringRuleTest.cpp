@@ -5,7 +5,7 @@
 #include "SteeringRule.h"
 #include "TestUtils.h"
 
-TEST(SteeringRuleTest, constructorTargetOnly)
+TEST(SteeringRuleTest, isCreatedWithTargetOnly)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
@@ -18,7 +18,7 @@ TEST(SteeringRuleTest, constructorTargetOnly)
     EXPECT_EQ(pcpp::IPv4Address::Zero, rule->getAddress());
 }
 
-TEST(SteeringRuleTest, constructorPortAndTarget)
+TEST(SteeringRuleTest, isCreatedWithPortAndTarget)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
@@ -31,7 +31,7 @@ TEST(SteeringRuleTest, constructorPortAndTarget)
     EXPECT_EQ(pcpp::IPv4Address::Zero, rule->getAddress());
 }
 
-TEST(SteeringRuleTest, constructorPortAddressTarget)
+TEST(SteeringRuleTest, isCreatedWithPortAddressTarget)
 {
     pcpp::IPv4Address targetAddress("8.8.8.8");
     SteeringTarget target(targetAddress, 53);
@@ -45,7 +45,7 @@ TEST(SteeringRuleTest, constructorPortAddressTarget)
     EXPECT_EQ(address, rule->getAddress());
 }
 
-TEST(SteeringRuleTest, getAddress)
+TEST(SteeringRuleTest, getsAddress)
 {
     pcpp::IPv4Address targetAddress("8.8.8.8");
     SteeringTarget target(targetAddress, 53);
@@ -56,7 +56,7 @@ TEST(SteeringRuleTest, getAddress)
     EXPECT_EQ(address, rule->getAddress());
 }
 
-TEST(SteeringRuleTest, getIdVariants)
+TEST(SteeringRuleTest, getsIdVariants)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
@@ -74,7 +74,7 @@ TEST(SteeringRuleTest, getIdVariants)
         ).getId());
 }
 
-TEST(SteeringRuleTest, getPort)
+TEST(SteeringRuleTest, getsPort)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
@@ -84,7 +84,7 @@ TEST(SteeringRuleTest, getPort)
     EXPECT_EQ(88, rule->getPort());
 }
 
-TEST(SteeringRuleTest, getProtocol)
+TEST(SteeringRuleTest, getsProtocol)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
@@ -94,7 +94,7 @@ TEST(SteeringRuleTest, getProtocol)
     EXPECT_EQ(Protocol::TCP4, rule->getProtocol()._value);
 }
 
-TEST(SteeringRuleTest, getTarget)
+TEST(SteeringRuleTest, getsTarget)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
@@ -116,7 +116,7 @@ TEST(SteeringRuleTest, matchesPacket)
     EXPECT_TRUE(rule->matches(packetTcp));
 }
 
-TEST(SteeringRuleTest, doesnotMatchPacketByProtocol)
+TEST(SteeringRuleTest, doesnotMatchesPacketByProtocol)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
@@ -128,7 +128,7 @@ TEST(SteeringRuleTest, doesnotMatchPacketByProtocol)
     EXPECT_FALSE(rule->matches(wrongUdp));
 }
 
-TEST(SteeringRuleTest, doesnotMatchPacketByTcpPort)
+TEST(SteeringRuleTest, doesnotMatchesPacketByTcpPort)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
@@ -140,7 +140,7 @@ TEST(SteeringRuleTest, doesnotMatchPacketByTcpPort)
     EXPECT_FALSE(rule->matches(packetTcp));
 }
 
-TEST(SteeringRuleTest, doesnotMatchPacketByUdpPort)
+TEST(SteeringRuleTest, doesnotMatchesPacketByUdpPort)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
@@ -152,7 +152,7 @@ TEST(SteeringRuleTest, doesnotMatchPacketByUdpPort)
     EXPECT_FALSE(rule->matches(wrongUdp));
 }
 
-TEST(SteeringRuleTest, doesnotMatchPacketByAddress)
+TEST(SteeringRuleTest, doesnotMatchesPacketByAddress)
 {
     pcpp::IPv4Address targetAddress("10.10.10.10");
     SteeringTarget target(targetAddress, 8080);

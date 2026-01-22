@@ -12,7 +12,7 @@
 using ::testing::Return;
 using ::testing::Throw;
 
-TEST(SteeringWorkerTest, processValidRule)
+TEST(SteeringWorkerTest, processesValidRule)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
@@ -25,7 +25,7 @@ TEST(SteeringWorkerTest, processValidRule)
     EXPECT_TRUE(worker.process(packet));
 }
 
-TEST(SteeringWorkerTest, processInvalidRule)
+TEST(SteeringWorkerTest, rejectsInvalidRule)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
@@ -38,7 +38,7 @@ TEST(SteeringWorkerTest, processInvalidRule)
     EXPECT_FALSE(worker.process(packet));
 }
 
-TEST(SteeringWorkerTest, processExceptionHandling)
+TEST(SteeringWorkerTest, handlesRuleProcessingExceptions)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
@@ -51,7 +51,7 @@ TEST(SteeringWorkerTest, processExceptionHandling)
     EXPECT_THROW(worker.process(packet), DropPacketException);
 }
 
-TEST(SteeringWorkerTest, steerValidTcpPacket)
+TEST(SteeringWorkerTest, steersValidTcpPacket)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
@@ -66,7 +66,7 @@ TEST(SteeringWorkerTest, steerValidTcpPacket)
     EXPECT_EQ(htons(target.getPort()), tcp->getTcpHeader()->portDst);
 }
 
-TEST(SteeringWorkerTest, steerValidUdpPacket)
+TEST(SteeringWorkerTest, steersValidUdpPacket)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
@@ -81,7 +81,7 @@ TEST(SteeringWorkerTest, steerValidUdpPacket)
     EXPECT_EQ(htons(target.getPort()), udp->getUdpHeader()->portDst);
 }
 
-TEST(SteeringWorkerTest, steerInvalidArgException)
+TEST(SteeringWorkerTest, throwsInvalidArgumentExceptionForInvalidPacket)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
@@ -93,7 +93,7 @@ TEST(SteeringWorkerTest, steerInvalidArgException)
     EXPECT_THROW(worker.steer(packet, target), InvalidArgumentException);
 }
 
-TEST(SteeringWorkerTest, steerInvalidProtocolException)
+TEST(SteeringWorkerTest, throwsInvalidProtocolException)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
@@ -105,7 +105,7 @@ TEST(SteeringWorkerTest, steerInvalidProtocolException)
     EXPECT_THROW(worker.steer(packet, target), InvalidProtocolException);
 }
 
-TEST(SteeringWorkerTest, processWithMockedRuntimeWithValidRule)
+TEST(SteeringWorkerTest, processesWithMockedRuntimeWithValidRule)
 {
     SteeringRuntimeMock runtimeMock;
     SteeringWorker worker(runtimeMock);
@@ -122,7 +122,7 @@ TEST(SteeringWorkerTest, processWithMockedRuntimeWithValidRule)
     EXPECT_TRUE(worker.process(packet));
 }
 
-TEST(SteeringWorkerTest, processWithMockedRuntimeWithNullRule)
+TEST(SteeringWorkerTest, processesWithMockedRuntimeWithNullRule)
 {
     SteeringRuntimeMock runtimeMock;
     SteeringWorker worker(runtimeMock);
@@ -134,7 +134,7 @@ TEST(SteeringWorkerTest, processWithMockedRuntimeWithNullRule)
     EXPECT_FALSE(worker.process(packet));
 }
 
-TEST(SteeringWorkerTest, processWithMockedRuntimeThrowsDropPacketException)
+TEST(SteeringWorkerTest, throwsDropPacketExceptionFromMockedRuntime)
 {
     SteeringRuntimeMock runtimeMock;
     SteeringWorker worker(runtimeMock);
@@ -146,7 +146,7 @@ TEST(SteeringWorkerTest, processWithMockedRuntimeThrowsDropPacketException)
     EXPECT_THROW(worker.process(packet), DropPacketException);
 }
 
-TEST(SteeringWorkerTest, processWithMockedRuntimeThrowsInvalidArgumentException)
+TEST(SteeringWorkerTest, throwsInvalidArgumentExceptionFromMockedRuntime)
 {
     SteeringRuntimeMock runtimeMock;
     SteeringWorker worker(runtimeMock);

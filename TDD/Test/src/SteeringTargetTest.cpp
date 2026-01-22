@@ -5,13 +5,13 @@
 #include "exception/InvalidArgumentException.h"
 #include "SteeringTarget.h"
 
-TEST(SteeringTargetTest, validConstructor)
+TEST(SteeringTargetTest, constructsSuccessfullyWithValidArguments)
 {
     EXPECT_NO_THROW(
         SteeringTarget(pcpp::IPv4Address("8.8.8.8"), 80));
 }
 
-TEST(SteeringTargetTest, constructorWithZeroIpAddress)
+TEST(SteeringTargetTest, constructsWithZeroIpAddress)
 {
     EXPECT_THROW(
         SteeringTarget(pcpp::IPv4Address::Zero, 80),
@@ -19,7 +19,7 @@ TEST(SteeringTargetTest, constructorWithZeroIpAddress)
     );
 }
 
-TEST(SteeringTargetTest, constructorWithZeroPortAddress)
+TEST(SteeringTargetTest, constructsWithZeroPortAddress)
 {
     EXPECT_THROW(
         SteeringTarget(pcpp::IPv4Address("8.8.8.8"), 0),
@@ -27,7 +27,7 @@ TEST(SteeringTargetTest, constructorWithZeroPortAddress)
     );
 }
 
-TEST(SteeringTargetTest, getAddress)
+TEST(SteeringTargetTest, getsAddress)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
@@ -35,7 +35,7 @@ TEST(SteeringTargetTest, getAddress)
     EXPECT_EQ("8.8.8.8", target.getAddress().toString());
 }
 
-TEST(SteeringTargetTest, getPort)
+TEST(SteeringTargetTest, getsPort)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
@@ -43,7 +43,7 @@ TEST(SteeringTargetTest, getPort)
     EXPECT_EQ(8080, target.getPort());
 }
 
-TEST(SteeringTargetTest, setAddress)
+TEST(SteeringTargetTest, setsAddress)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
@@ -54,7 +54,7 @@ TEST(SteeringTargetTest, setAddress)
     EXPECT_EQ("10.0.0.1", target.getAddress().toString());
 }
 
-TEST(SteeringTargetTest, setPort)
+TEST(SteeringTargetTest, setsPort)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
@@ -64,7 +64,7 @@ TEST(SteeringTargetTest, setPort)
     EXPECT_EQ(443, target.getPort());
 }
 
-TEST(SteeringTargetTest, equalsOperator)
+TEST(SteeringTargetTest, comparesEqualRulesCorrectly)
 {
     pcpp::IPv4Address address("1.1.1.1");
     SteeringTarget a(address, 80);
