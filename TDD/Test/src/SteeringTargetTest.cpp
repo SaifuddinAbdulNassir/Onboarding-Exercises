@@ -7,24 +7,17 @@
 
 TEST(SteeringTargetTest, constructsSuccessfullyWithValidArguments)
 {
-    EXPECT_NO_THROW(
-        SteeringTarget(pcpp::IPv4Address("8.8.8.8"), 80));
+    EXPECT_NO_THROW(SteeringTarget(pcpp::IPv4Address("8.8.8.8"), 80));
 }
 
 TEST(SteeringTargetTest, constructsWithZeroIpAddress)
 {
-    EXPECT_THROW(
-        SteeringTarget(pcpp::IPv4Address::Zero, 80),
-        InvalidArgumentException
-    );
+    EXPECT_THROW(SteeringTarget(pcpp::IPv4Address::Zero, 80), InvalidArgumentException);
 }
 
 TEST(SteeringTargetTest, constructsWithZeroPortAddress)
 {
-    EXPECT_THROW(
-        SteeringTarget(pcpp::IPv4Address("8.8.8.8"), 0),
-        InvalidArgumentException
-    );
+    EXPECT_THROW(SteeringTarget(pcpp::IPv4Address("8.8.8.8"), 0), InvalidArgumentException);
 }
 
 TEST(SteeringTargetTest, getsAddress)

@@ -11,11 +11,11 @@ TEST(SteeringRuleTest, isCreatedWithTargetOnly)
     SteeringTarget target(address, 53);
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::UDP4, target);
 
-    ASSERT_NE(nullptr,rule);
-    EXPECT_EQ(Protocol::UDP4, rule->getProtocol()._value);
-    EXPECT_EQ(0, rule->getPort());
-    EXPECT_EQ(target, rule->getTarget());
-    EXPECT_EQ(pcpp::IPv4Address::Zero, rule->getAddress());
+    ASSERT_NE(rule, nullptr);
+    EXPECT_EQ(rule->getProtocol()._value, Protocol::UDP4);
+    EXPECT_EQ(rule->getPort(), 0);
+    EXPECT_EQ(rule->getTarget(), target);
+    EXPECT_EQ(rule->getAddress(), pcpp::IPv4Address::Zero);
 }
 
 TEST(SteeringRuleTest, isCreatedWithPortAndTarget)
@@ -24,11 +24,11 @@ TEST(SteeringRuleTest, isCreatedWithPortAndTarget)
     SteeringTarget target(address, 53);
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::TCP4, 53, target);
 
-    ASSERT_NE(nullptr,rule);
-    EXPECT_EQ(Protocol::TCP4, rule->getProtocol()._value);
-    EXPECT_EQ(53, rule->getPort());
-    EXPECT_EQ(target, rule->getTarget());
-    EXPECT_EQ(pcpp::IPv4Address::Zero, rule->getAddress());
+    ASSERT_NE(rule, nullptr);
+    EXPECT_EQ(rule->getProtocol()._value, Protocol::TCP4);
+    EXPECT_EQ(rule->getPort(), 53);
+    EXPECT_EQ(rule->getTarget(), target);
+    EXPECT_EQ(rule->getAddress(), pcpp::IPv4Address::Zero);
 }
 
 TEST(SteeringRuleTest, isCreatedWithPortAddressTarget)
@@ -38,11 +38,11 @@ TEST(SteeringRuleTest, isCreatedWithPortAddressTarget)
     pcpp::IPv4Address address("10.0.0.1");
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::TCP4, 88, address, target);
     
-    ASSERT_NE(nullptr,rule);
-    EXPECT_EQ(Protocol::TCP4, rule->getProtocol()._value);
-    EXPECT_EQ(88, rule->getPort());
-    EXPECT_EQ(target, rule->getTarget());
-    EXPECT_EQ(address, rule->getAddress());
+    ASSERT_NE(rule, nullptr);
+    EXPECT_EQ(rule->getProtocol()._value, Protocol::TCP4);
+    EXPECT_EQ(rule->getPort(), 88);
+    EXPECT_EQ(rule->getTarget(), target);
+    EXPECT_EQ(rule->getAddress(), address);
 }
 
 TEST(SteeringRuleTest, getsAddress)
@@ -52,8 +52,8 @@ TEST(SteeringRuleTest, getsAddress)
     pcpp::IPv4Address address("10.0.0.1");
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::TCP4, 88, address, target);
     
-    ASSERT_NE(nullptr,rule);
-    EXPECT_EQ(address, rule->getAddress());
+    ASSERT_NE(rule, nullptr);
+    EXPECT_EQ(rule->getAddress(), address);
 }
 
 TEST(SteeringRuleTest, getsIdVariants)
@@ -61,17 +61,17 @@ TEST(SteeringRuleTest, getsIdVariants)
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
 
-    EXPECT_EQ("TCP4",
-        SteeringRule(Protocol::TCP4, target).getId());
-    EXPECT_EQ("TCP4-80",
-        SteeringRule(Protocol::TCP4, 80, target).getId());
-    EXPECT_EQ("TCP4-80-1.2.3.4",
+    EXPECT_EQ(SteeringRule(Protocol::TCP4, target).getId(), "TCP4");
+    EXPECT_EQ(SteeringRule(Protocol::TCP4, 80, target).getId(), "TCP4-80");
+    EXPECT_EQ(
         SteeringRule(
             Protocol::TCP4,
             80,
             pcpp::IPv4Address("1.2.3.4"),
             target
-        ).getId());
+        ).getId(),
+        "TCP4-80-1.2.3.4"
+    );
 }
 
 TEST(SteeringRuleTest, getsPort)
@@ -80,8 +80,8 @@ TEST(SteeringRuleTest, getsPort)
     SteeringTarget target(address, 53);
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::TCP4, 88, target);
     
-    ASSERT_NE(nullptr,rule);
-    EXPECT_EQ(88, rule->getPort());
+    ASSERT_NE(rule, nullptr);
+    EXPECT_EQ(rule->getPort(), 88);
 }
 
 TEST(SteeringRuleTest, getsProtocol)
@@ -90,8 +90,8 @@ TEST(SteeringRuleTest, getsProtocol)
     SteeringTarget target(address, 53);
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::TCP4, target);
     
-    ASSERT_NE(nullptr,rule);
-    EXPECT_EQ(Protocol::TCP4, rule->getProtocol()._value);
+    ASSERT_NE(rule, nullptr);
+    EXPECT_EQ(rule->getProtocol()._value, Protocol::TCP4);
 }
 
 TEST(SteeringRuleTest, getsTarget)
@@ -100,8 +100,8 @@ TEST(SteeringRuleTest, getsTarget)
     SteeringTarget target(address, 53);
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::TCP4, target);
     
-    ASSERT_NE(nullptr,rule);
-    EXPECT_EQ(target, rule->getTarget());
+    ASSERT_NE(rule, nullptr);
+    EXPECT_EQ(rule->getTarget(), target);
 }
 
 TEST(SteeringRuleTest, matchesPacket)
@@ -112,7 +112,7 @@ TEST(SteeringRuleTest, matchesPacket)
     
     auto packetTcp = createTcpPacket(80);
 
-    ASSERT_NE(nullptr, rule);
+    ASSERT_NE(rule, nullptr);
     EXPECT_TRUE(rule->matches(packetTcp));
 }
 
@@ -124,7 +124,7 @@ TEST(SteeringRuleTest, doesnotMatchesPacketByProtocol)
     
     auto wrongUdp = createUdpPacket(22);
 
-    ASSERT_NE(nullptr, rule);
+    ASSERT_NE(rule, nullptr);
     EXPECT_FALSE(rule->matches(wrongUdp));
 }
 
@@ -136,7 +136,7 @@ TEST(SteeringRuleTest, doesnotMatchesPacketByTcpPort)
     
     auto packetTcp = createTcpPacket(90);
 
-    ASSERT_NE(nullptr, rule);
+    ASSERT_NE(rule, nullptr);
     EXPECT_FALSE(rule->matches(packetTcp));
 }
 
@@ -148,7 +148,7 @@ TEST(SteeringRuleTest, doesnotMatchesPacketByUdpPort)
     
     auto wrongUdp = createUdpPacket(22);
 
-    ASSERT_NE(nullptr, rule);
+    ASSERT_NE(rule, nullptr);
     EXPECT_FALSE(rule->matches(wrongUdp));
 }
 
@@ -161,6 +161,6 @@ TEST(SteeringRuleTest, doesnotMatchesPacketByAddress)
     
     auto wrong = createTcpPacket(80);
 
-    ASSERT_NE(nullptr, rule);
+    ASSERT_NE(rule, nullptr);
     EXPECT_FALSE(rule->matches(wrong));
 }

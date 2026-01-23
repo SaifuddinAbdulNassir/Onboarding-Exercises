@@ -62,8 +62,8 @@ TEST(SteeringWorkerTest, steersValidTcpPacket)
     worker.steer(packet, target);
     auto tcp = packet.getLayerOfType<pcpp::TcpLayer>();
 
-    ASSERT_NE(nullptr, tcp);
-    EXPECT_EQ(htons(target.getPort()), tcp->getTcpHeader()->portDst);
+    ASSERT_NE(tcp, nullptr);
+    EXPECT_EQ(tcp->getTcpHeader()->portDst, htons(target.getPort()));
 }
 
 TEST(SteeringWorkerTest, steersValidUdpPacket)
@@ -77,8 +77,8 @@ TEST(SteeringWorkerTest, steersValidUdpPacket)
     worker.steer(packet, target);
     auto udp = packet.getLayerOfType<pcpp::UdpLayer>();
 
-    ASSERT_NE(nullptr, udp);
-    EXPECT_EQ(htons(target.getPort()), udp->getUdpHeader()->portDst);
+    ASSERT_NE(udp, nullptr);
+    EXPECT_EQ(udp->getUdpHeader()->portDst, htons(target.getPort()));
 }
 
 TEST(SteeringWorkerTest, throwsInvalidArgumentExceptionForInvalidPacket)
