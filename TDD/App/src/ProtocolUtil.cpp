@@ -19,8 +19,7 @@ Protocol ProtocolUtil::detect(Packet& packet)
         else if(packet.isPacketOfType(IPv6))
             return Protocol::TCP6;
     }
-
-    if (packet.isPacketOfType(UDP)) 
+    else if (packet.isPacketOfType(UDP)) 
     {
         if(packet.isPacketOfType(IPv4))
             return Protocol::UDP4;
