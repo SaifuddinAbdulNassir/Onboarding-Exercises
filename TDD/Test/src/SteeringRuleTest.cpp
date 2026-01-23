@@ -92,22 +92,49 @@ TEST(SteeringRuleTest, getsTarget)
 
 // Fake Getters tests
 
-TEST(SteeringRuleTest, getsIdVariants)
+TEST(SteeringRuleTest, getsIdVariantsforTcp4)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
 
-    EXPECT_EQ(SteeringRule(Protocol::TCP4, target).getId(), "TCP4");
-    EXPECT_EQ(SteeringRule(Protocol::TCP4, 80, target).getId(), "TCP4-80");
-    EXPECT_EQ(
-        SteeringRule(
-            Protocol::TCP4,
-            80,
-            pcpp::IPv4Address("1.2.3.4"),
-            target
-        ).getId(),
-        "TCP4-80-1.2.3.4"
-    );
+    SteeringRule rule1(Protocol::TCP4, target);
+    EXPECT_EQ(rule1.getId(), "TCP4");
+
+    SteeringRule rule2(Protocol::TCP4, 80, target);
+    EXPECT_EQ(rule2.getId(), "TCP4-80");
+
+    SteeringRule rule3(Protocol::TCP4, 80, pcpp::IPv4Address("1.2.3.4"), target);
+    EXPECT_EQ(rule3.getId(), "TCP4-80-1.2.3.4");
+}
+
+TEST(SteeringRuleTest, getsIdVariantsforUdp4)
+{
+    pcpp::IPv4Address address("8.8.8.8");
+    SteeringTarget target(address, 53);
+
+    SteeringRule rule1(Protocol::UDP4, target);
+    EXPECT_EQ(rule1.getId(), "UDP4");
+
+    SteeringRule rule2(Protocol::UDP4, 80, target);
+    EXPECT_EQ(rule2.getId(), "UDP4-80");
+
+    SteeringRule rule3(Protocol::UDP4, 80, pcpp::IPv4Address("1.2.3.4"), target);
+    EXPECT_EQ(rule3.getId(), "UDP4-80-1.2.3.4");
+}
+
+TEST(SteeringRuleTest, getsIdVariantsforUnknown)
+{
+    pcpp::IPv4Address address("8.8.8.8");
+    SteeringTarget target(address, 53);
+
+    SteeringRule rule1(Protocol::UNKNOWN, target);
+    EXPECT_EQ(rule1.getId(), "UNKNOWN");
+
+    SteeringRule rule2(Protocol::UNKNOWN, 80, target);
+    EXPECT_EQ(rule2.getId(), "UNKNOWN-80");
+
+    SteeringRule rule3(Protocol::UNKNOWN, 80, pcpp::IPv4Address("1.2.3.4"), target);
+    EXPECT_EQ(rule3.getId(), "UNKNOWN-80-1.2.3.4");
 }
 
 // Business logic tests
