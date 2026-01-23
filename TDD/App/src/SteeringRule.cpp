@@ -53,30 +53,25 @@ string SteeringRule::getId() const
 
 bool SteeringRule::matches(Packet& packet) const
 {
-    if (ProtocolUtil::detect(packet) != protocol)
-        return false;
+    bool protocolMatch = (ProtocolUtil::detect(packet) == protocol);
 
-    if (address != IPv4Address::Zero)
-    {
-        auto ip = packet.getLayerOfType<IPv4Layer>();
-        if (!ip || ip->getDstIPv4Address() != address)
+    bool addressMatch = (address == IPv4Address::Zero) ||
+        ([&]() {
+            auto ip = packet.getLayerOfType<IPv4Layer>();
+            return ip && ip->getDstIPv4Address() == address;
+        })();
+
+    bool portMatch = (port == 0) ||
+        ([&]() {
+            if (auto tcp = packet.getLayerOfType<TcpLayer>())
+                return tcp->getDstPort() == port;
+            if (auto udp = packet.getLayerOfType<UdpLayer>())
+                return udp->getDstPort() == port;
             return false;
-    }
+        })();
 
-    if (port != 0) 
-    {
-        if (auto tcp = packet.getLayerOfType<TcpLayer>())
-        {
-            if (tcp->getDstPort() != port)
-                return false;
-        }
-            
-        if (auto udp = packet.getLayerOfType<UdpLayer>())
-        {
-            if (udp->getDstPort() != port)
-                return false;
-        }
-    }
-
-    return true;
+    if (protocolMatch && addressMatch && portMatch)
+        return true;
+    else
+        return false;
 }
