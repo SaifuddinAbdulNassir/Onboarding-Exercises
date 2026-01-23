@@ -35,8 +35,8 @@ string SteeringRule::getId() const
 
     switch (protocol) 
     {
-        case Protocol::TCP4: id = "TCP4"; break;
-        case Protocol::UDP4: id = "UDP4"; break;
+        case Protocol::TCP4: id = protocol._to_string(); break;
+        case Protocol::UDP4: id = protocol._to_string(); break;
         default: id = "UNKNOWN"; break;
     }
 
