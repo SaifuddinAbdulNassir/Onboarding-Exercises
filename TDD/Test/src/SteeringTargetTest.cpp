@@ -5,6 +5,8 @@
 #include "exception/InvalidArgumentException.h"
 #include "SteeringTarget.h"
 
+// Constructors tests
+
 TEST(SteeringTargetTest, constructsSuccessfullyWithValidArguments)
 {
     EXPECT_NO_THROW(SteeringTarget(pcpp::IPv4Address("8.8.8.8"), 80));
@@ -19,6 +21,8 @@ TEST(SteeringTargetTest, constructsWithZeroPortAddress)
 {
     EXPECT_THROW(SteeringTarget(pcpp::IPv4Address("8.8.8.8"), 0), InvalidArgumentException);
 }
+
+// Getters and Setters tests
 
 TEST(SteeringTargetTest, getsAddress)
 {
@@ -56,6 +60,8 @@ TEST(SteeringTargetTest, setsPort)
 
     EXPECT_EQ(443, target.getPort());
 }
+
+// Operators tests
 
 TEST(SteeringTargetTest, comparesEqualRulesCorrectly)
 {

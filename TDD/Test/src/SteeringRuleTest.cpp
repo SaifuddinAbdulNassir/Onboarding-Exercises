@@ -5,6 +5,8 @@
 #include "SteeringRule.h"
 #include "TestUtils.h"
 
+// Constructors tests
+
 TEST(SteeringRuleTest, isCreatedWithTargetOnly)
 {
     pcpp::IPv4Address address("8.8.8.8");
@@ -45,6 +47,8 @@ TEST(SteeringRuleTest, isCreatedWithPortAddressTarget)
     EXPECT_EQ(rule->getAddress(), address);
 }
 
+// Getters and Setters tests
+
 TEST(SteeringRuleTest, getsAddress)
 {
     pcpp::IPv4Address targetAddress("8.8.8.8");
@@ -54,24 +58,6 @@ TEST(SteeringRuleTest, getsAddress)
     
     ASSERT_NE(rule, nullptr);
     EXPECT_EQ(rule->getAddress(), address);
-}
-
-TEST(SteeringRuleTest, getsIdVariants)
-{
-    pcpp::IPv4Address address("8.8.8.8");
-    SteeringTarget target(address, 53);
-
-    EXPECT_EQ(SteeringRule(Protocol::TCP4, target).getId(), "TCP4");
-    EXPECT_EQ(SteeringRule(Protocol::TCP4, 80, target).getId(), "TCP4-80");
-    EXPECT_EQ(
-        SteeringRule(
-            Protocol::TCP4,
-            80,
-            pcpp::IPv4Address("1.2.3.4"),
-            target
-        ).getId(),
-        "TCP4-80-1.2.3.4"
-    );
 }
 
 TEST(SteeringRuleTest, getsPort)
@@ -103,6 +89,28 @@ TEST(SteeringRuleTest, getsTarget)
     ASSERT_NE(rule, nullptr);
     EXPECT_EQ(rule->getTarget(), target);
 }
+
+// Fake Getters tests
+
+TEST(SteeringRuleTest, getsIdVariants)
+{
+    pcpp::IPv4Address address("8.8.8.8");
+    SteeringTarget target(address, 53);
+
+    EXPECT_EQ(SteeringRule(Protocol::TCP4, target).getId(), "TCP4");
+    EXPECT_EQ(SteeringRule(Protocol::TCP4, 80, target).getId(), "TCP4-80");
+    EXPECT_EQ(
+        SteeringRule(
+            Protocol::TCP4,
+            80,
+            pcpp::IPv4Address("1.2.3.4"),
+            target
+        ).getId(),
+        "TCP4-80-1.2.3.4"
+    );
+}
+
+// Business logic tests
 
 TEST(SteeringRuleTest, matchesPacket)
 {

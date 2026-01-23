@@ -12,6 +12,8 @@
 using ::testing::Return;
 using ::testing::Throw;
 
+// Business logic tests
+
 TEST(SteeringWorkerTest, processesValidRule)
 {
     SteeringRuntime runtime;

@@ -5,6 +5,8 @@
 #include "ProtocolUtil.h"
 #include "TestUtils.h"
 
+// Protocol Detection Tests
+
 TEST(ProtocolUtilTest, detectsTcp4)
 {
     auto packet = createTcpPacket(80);
