@@ -3,15 +3,13 @@
 using namespace std;
 using namespace pcpp;
 
-// Validator
+// Business logic
 
 static void validateProtocol(Protocol protocol)
 {
     if(protocol._value != Protocol::TCP4 && protocol._value != Protocol::UDP4)
         throw InvalidProtocolException();
 }
-
-// Rule Modifiers
 
 bool SteeringRuntime::addRule(Protocol protocol, SteeringTarget target)
 {
@@ -67,21 +65,15 @@ bool SteeringRuntime::removeRule(Protocol protocol, uint16_t port,
     return rules.unsafe_erase(id) > 0;
 }
 
-// Reseter
-
 void SteeringRuntime::reset()
 {
     rules.clear();
 }
 
-// Rule counter
-
 size_t SteeringRuntime::ruleCount() const
 {
     return rules.size();
 }
-
-// Rule searcher
 
 shared_ptr<const SteeringRule>
 SteeringRuntime::ruleSearch(Packet& packet)

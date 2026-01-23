@@ -11,9 +11,7 @@ class SteeringWorker
   // Constructor
     SteeringWorker(SteeringRuntime& runtime);
 
-    // Packet Processor
+    // Business logic
     bool process(pcpp::Packet& packet);
-
-    // Packet diverter
     void steer(pcpp::Packet& packet, SteeringTarget& target);
 };

@@ -27,12 +27,7 @@ SteeringRule::SteeringRule(Protocol protocol, uint16_t port,
 {
 }
 
-// Getters
-
-IPv4Address SteeringRule::getAddress() const
-{
-    return address;
-}
+// Fake Getters
 
 string SteeringRule::getId() const
 {
@@ -54,22 +49,7 @@ string SteeringRule::getId() const
     return id;
 }
 
-uint16_t SteeringRule::getPort() const
-{
-    return port;
-}
-
-Protocol SteeringRule::getProtocol() const
-{ 
-    return protocol;
-}
-
-SteeringTarget SteeringRule::getTarget() const
-{
-    return target;
-}
-
-// Packet matcher
+// Business logic
 
 bool SteeringRule::matches(Packet& packet) const
 {

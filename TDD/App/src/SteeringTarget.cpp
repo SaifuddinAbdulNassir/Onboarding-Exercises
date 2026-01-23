@@ -15,16 +15,6 @@ SteeringTarget::SteeringTarget(IPv4Address address, uint16_t port)
 
 // Getters and Setters
 
-IPv4Address SteeringTarget::getAddress() const
-{
-    return address;
-}
-
-uint16_t SteeringTarget::getPort() const
-{
-    return port;
-}
-
 void SteeringTarget::setAddress(IPv4Address address)
 {
     if(address == IPv4Address::Zero)
@@ -41,7 +31,7 @@ void SteeringTarget::setPort(uint16_t port)
     this->port = port;
 }
 
-// Equals operator
+// Operators
 
 bool SteeringTarget::operator==(const SteeringTarget& other) const
 {

@@ -18,7 +18,7 @@ SteeringWorker::SteeringWorker(SteeringRuntime& runtime)
 {
 }
 
-// Packet Processor
+// Business logic
 
 bool SteeringWorker::process(Packet& packet)
 {
@@ -37,8 +37,6 @@ bool SteeringWorker::process(Packet& packet)
         throw DropPacketException();
     }
 }
-
-// Packet diverter
 
 void SteeringWorker::steer(Packet& packet, SteeringTarget& target)
 {

@@ -26,13 +26,15 @@ class SteeringRule
                  pcpp::IPv4Address address,
                  SteeringTarget target);
 
-    // Getters
-    pcpp::IPv4Address getAddress() const;
-    std::string getId() const;
-    uint16_t getPort() const;
-    Protocol getProtocol() const;
-    SteeringTarget getTarget() const;
+    // Getters & Setters
+    pcpp::IPv4Address getAddress() const {return address;};
+    uint16_t getPort() const {return port;};
+    Protocol getProtocol() const {return protocol;};
+    SteeringTarget getTarget() const {return target;};
 
-    // Packet matcher
+    // Fake Getters
+    std::string getId() const;
+
+    // Business logic
     bool matches(pcpp::Packet& packet) const;
 };
