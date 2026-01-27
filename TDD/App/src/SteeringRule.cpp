@@ -8,6 +8,25 @@
 using namespace std;
 using namespace pcpp;
 
+bool matchesAddress(Packet& packet, const IPv4Address& address)
+{
+    if (address == IPv4Address::Zero)
+        return true;
+    auto* ip = packet.getLayerOfType<IPv4Layer>();
+    return ip && ip->getDstIPv4Address() == address;
+}
+
+bool matchesPort(Packet& packet, uint16_t port)
+{
+    if (port == 0)
+        return true;
+    if (auto* tcp = packet.getLayerOfType<TcpLayer>())
+        return tcp->getDstPort() == port;
+    if (auto* udp = packet.getLayerOfType<UdpLayer>())
+        return udp->getDstPort() == port;
+    return false;
+}
+
 // Constructors
 
 SteeringRule::SteeringRule(Protocol protocol, SteeringTarget target)
@@ -46,25 +65,14 @@ string SteeringRule::getId() const
 
 bool SteeringRule::matches(Packet& packet) const
 {
-    bool protocolMatch = (ProtocolUtil::detect(packet) == protocol);
-
-    bool addressMatch = (address == IPv4Address::Zero) ||
-        ([&]() {
-            auto ip = packet.getLayerOfType<IPv4Layer>();
-            return ip && ip->getDstIPv4Address() == address;
-        })();
-
-    bool portMatch = (port == 0) ||
-        ([&]() {
-            if (auto tcp = packet.getLayerOfType<TcpLayer>())
-                return tcp->getDstPort() == port;
-            if (auto udp = packet.getLayerOfType<UdpLayer>())
-                return udp->getDstPort() == port;
-            return false;
-        })();
-
-    if (protocolMatch && addressMatch && portMatch)
-        return true;
-    else
+    if (ProtocolUtil::detect(packet) != protocol)
         return false;
+
+    if (!matchesAddress(packet, address))
+        return false;
+
+    if (!matchesPort(packet, port))
+        return false;
+
+    return true;
 }
