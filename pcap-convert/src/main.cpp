@@ -21,26 +21,26 @@ using namespace std;
 
 // Command line argument parser
 
-bool parseArgs(int argc, char *argv[], Config& cfg)
+bool parseArgs(int argc, char *argv[], Config& config)
 {
     for(int i = 1; i < argc; ++i)
     {
         string arg = argv[i];
 
         if(arg == "--vlan" && i + 1 < argc)
-            cfg.setVlan(stoi(argv[++i]));
+            config.setVlan(stoi(argv[++i]));
         else if(arg == "-ip-version" && i + 1 < argc)
-            cfg.setIpVersion(stoi(argv[++i]));
+            config.setIpVersion(stoi(argv[++i]));
         else if(arg == "--ttl" && i + 1 < argc)
-            cfg.setTtlDec(stoi(argv[++i]));
+            config.setTtlDec(stoi(argv[++i]));
         else if(arg == "--dns-addr" && i + 1 < argc)
-            cfg.setDnsAddr(argv[++i]);
+            config.setDnsAddr(argv[++i]);
         else if(arg == "--dns-port" && i + 1 < argc)
-            cfg.setDnsPort(stoi(argv[++i]));
+            config.setDnsPort(stoi(argv[++i]));
         else if(arg == "-i" && i + 1 < argc)
-            cfg.setInputFile(argv[++i]);
+            config.setInputFile(argv[++i]);
         else if(arg == "-o" && i + 1 < argc)
-            cfg.setOutputFile(argv[++i]);
+            config.setOutputFile(argv[++i]);
         else if(arg == "-h" || arg == "--help")
         {
             cout << "Command to run the App: ./build/pcap-convert [--vlan <vlan id>] [-ip-version <4|6>] [--ttl <decrement>] " <<
@@ -48,27 +48,27 @@ bool parseArgs(int argc, char *argv[], Config& cfg)
         }
 }
 
-    return !cfg.getInputFile().empty() && !cfg.getOutputFile().empty();
+    return !config.getInputFile().empty() && !config.getOutputFile().empty();
 }
 
 int main(int argc, char *argv[])
 {
-    Config cfg;
+    Config config;
 
-    if(!parseArgs(argc, argv, cfg))
+    if(!parseArgs(argc, argv, config))
     {
         cerr << "Invalid arguments\n";
         return 1;
     }
 
-    PcapFileReaderDevice reader(cfg.getInputFile());
+    PcapFileReaderDevice reader(config.getInputFile());
     if(!reader.open())
     {
         cerr << "Cannot open input file\n";
         return 1;
     }
 
-    PcapFileWriterDevice writer(cfg.getOutputFile(), reader.getLinkLayerType());
+    PcapFileWriterDevice writer(config.getOutputFile(), reader.getLinkLayerType());
     if(!writer.open())
     {
         cerr << "Cannot open output file\n";
@@ -86,10 +86,10 @@ int main(int argc, char *argv[])
         Packet pkt(&raw);
 
         // VLAN filter
-        if(cfg.getVlan() >= 0)
+        if(config.getVlan() >= 0)
         {
             auto *vlan = pkt.getLayerOfType<VlanLayer>();
-            if(!vlan || vlan->getVlanID() != cfg.getVlan())
+            if(!vlan || vlan->getVlanID() != config.getVlan())
             {
                 stats.incrementDroppedPackets();
                 stats.addBytesDropped(raw.getRawDataLen());
@@ -106,8 +106,8 @@ int main(int argc, char *argv[])
         }
 
         // IP version filter
-        if(cfg.getIpVersion() >= 0 && ((cfg.getIpVersion() == 4 && !pkt.isPacketOfType(IPv4)) ||
-            (cfg.getIpVersion() == 6 && !pkt.isPacketOfType(IPv6))))
+        if(config.getIpVersion() >= 0 && ((config.getIpVersion() == 4 && !pkt.isPacketOfType(IPv4)) ||
+            (config.getIpVersion() == 6 && !pkt.isPacketOfType(IPv6))))
         {
             stats.incrementDroppedPackets();
             stats.addBytesDropped(raw.getRawDataLen());
@@ -117,25 +117,25 @@ int main(int argc, char *argv[])
         // TTL handling
         auto *ip4 = pkt.getLayerOfType<IPv4Layer>();
         auto *ip6 = pkt.getLayerOfType<IPv6Layer>();
-        if(ip4 && cfg.getTtlDec() >= 0)
+        if(ip4 && config.getTtlDec() >= 0)
         {
-            if(ip4->getIPv4Header()->timeToLive <= cfg.getTtlDec() || ip4->getIPv4Header()->protocol == pcpp::PACKETPP_IPPROTO_ICMP)
+            if(ip4->getIPv4Header()->timeToLive <= config.getTtlDec() || ip4->getIPv4Header()->protocol == PACKETPP_IPPROTO_ICMP)
             {
                 stats.incrementDroppedPackets();
                 stats.addBytesDropped(raw.getRawDataLen());
                 continue;
             }
-            ip4->getIPv4Header()->timeToLive -= cfg.getTtlDec();
+            ip4->getIPv4Header()->timeToLive -= config.getTtlDec();
         }
-        else if(ip6 && cfg.getTtlDec() >= 0)
+        else if(ip6 && config.getTtlDec() >= 0)
         {
-            if(ip6->getIPv6Header()->hopLimit <= cfg.getTtlDec() || ip6->getIPv6Header()->nextHeader == pcpp::PACKETPP_IPPROTO_ICMPV6)
+            if(ip6->getIPv6Header()->hopLimit <= config.getTtlDec() || ip6->getIPv6Header()->nextHeader == PACKETPP_IPPROTO_ICMPV6)
             {
                 stats.incrementDroppedPackets();
                 stats.addBytesDropped(raw.getRawDataLen());
                 continue;
             }
-            ip6->getIPv6Header()->hopLimit -= cfg.getTtlDec();
+            ip6->getIPv6Header()->hopLimit -= config.getTtlDec();
         }
 
         // DNS modification
@@ -146,21 +146,21 @@ int main(int argc, char *argv[])
 
             if(dns && udp)
             {
-                if(!cfg.getDnsAddr().empty())
+                if(!config.getDnsAddr().empty())
                 {
                     if(auto *ip4 = pkt.getLayerOfType<IPv4Layer>())
                     {
-                        ip4->getIPv4Header()->ipDst = IPv4Address(cfg.getDnsAddr()).toInt();
+                        ip4->getIPv4Header()->ipDst = IPv4Address(config.getDnsAddr()).toInt();
                     }
                     else if(auto *ip6 = pkt.getLayerOfType<IPv6Layer>())
                     {
                         memcpy(ip6->getIPv6Header()->ipDst,
-                            IPv6Address(cfg.getDnsAddr()).toBytes(), 16);
+                            IPv6Address(config.getDnsAddr()).toBytes(), 16);
                     }
                 }
 
-                if(cfg.getDnsPort() > 0)
-                    udp->getUdpHeader()->portDst = htons(cfg.getDnsPort());
+                if(config.getDnsPort() > 0)
+                    udp->getUdpHeader()->portDst = htons(config.getDnsPort());
 
                 stats.incrementDnsModifiedPackets();
             }
