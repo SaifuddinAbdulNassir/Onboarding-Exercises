@@ -5,7 +5,7 @@
 #include "SteeringRule.h"
 #include "TestUtils.h"
 
-// Constructors tests
+// Constructors
 
 TEST(SteeringRuleTest, isCreatedWithTargetOnly)
 {
@@ -47,7 +47,7 @@ TEST(SteeringRuleTest, isCreatedWithPortAddressTarget)
     EXPECT_EQ(rule->getAddress(), address);
 }
 
-// Getters and Setters tests
+// Getters and Setters
 
 TEST(SteeringRuleTest, getsAddress)
 {
@@ -90,7 +90,7 @@ TEST(SteeringRuleTest, getsTarget)
     EXPECT_EQ(rule->getTarget(), target);
 }
 
-// Fake Getters tests
+// Fake Getters
 
 TEST(SteeringRuleTest, getsIdVariantsforTcp4)
 {
@@ -137,7 +137,7 @@ TEST(SteeringRuleTest, getsIdVariantsforUnknown)
     EXPECT_EQ(rule3.getId(), "UNKNOWN-80-1.2.3.4");
 }
 
-// Business logic tests
+// Business logic
 
 TEST(SteeringRuleTest, matchesPacket)
 {

@@ -31,7 +31,7 @@ void SteeringTarget::setPort(uint16_t port)
     this->port = port;
 }
 
-// Operators
+// Relational operators
 
 bool SteeringTarget::operator==(const SteeringTarget& other) const
 {

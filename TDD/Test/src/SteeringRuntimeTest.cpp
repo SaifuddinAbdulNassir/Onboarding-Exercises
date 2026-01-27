@@ -11,7 +11,7 @@ class SteeringRuntimeTest : public ::testing::Test
     SteeringRuntime runtime;
 };
 
-// Business logic tests
+// Business logic
 
 TEST_F(SteeringRuntimeTest, addsRuleWithTargetOnly)
 {

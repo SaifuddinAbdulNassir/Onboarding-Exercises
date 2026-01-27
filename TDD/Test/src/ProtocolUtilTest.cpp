@@ -5,7 +5,7 @@
 #include "ProtocolUtil.h"
 #include "TestUtils.h"
 
-// Protocol Detection Tests
+// // Protocol detector
 
 TEST(ProtocolUtilTest, detectsTcp4)
 {

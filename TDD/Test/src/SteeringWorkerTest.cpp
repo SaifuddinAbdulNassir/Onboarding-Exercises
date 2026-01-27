@@ -12,7 +12,7 @@
 using ::testing::Return;
 using ::testing::Throw;
 
-// Business logic tests
+// Business logic
 
 TEST(SteeringWorkerTest, processesValidRule)
 {

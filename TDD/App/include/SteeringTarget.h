@@ -16,11 +16,11 @@ class SteeringTarget
     SteeringTarget(pcpp::IPv4Address address, uint16_t port);
 
     // Getters and Setters
-    pcpp::IPv4Address getAddress() const {return address;};
-    uint16_t getPort() const {return port;};
+    pcpp::IPv4Address getAddress() const {return address;}
+    uint16_t getPort() const {return port;}
     void setAddress(pcpp::IPv4Address address);
     void setPort(uint16_t port);
 
-    // Operators
+    // Relational operators
     bool operator==(const SteeringTarget& other) const;
 };
