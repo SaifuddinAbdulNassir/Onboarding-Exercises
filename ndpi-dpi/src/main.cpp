@@ -1,7 +1,7 @@
 // Standard includes
 #include <csignal>
-#include <cstring>
 #include <iostream>
+#include <unistd.h>
 
 // Library includes
 #include <pcapplusplus/EthLayer.h>

@@ -6,7 +6,7 @@
 
 // Library includes
 extern "C" {
-#include "/usr/include/ndpi/ndpi_api.h"
+#include <ndpi_api.h>
 }
 
 class ConnectionInfo 
