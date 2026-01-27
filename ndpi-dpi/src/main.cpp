@@ -28,7 +28,7 @@ uint64_t AppState::uid = 1;
 
 // Signal Handler
 
-void sigint_handler(int)
+void sigintHandler(int)
 {
     AppState::running = false;
 }
@@ -192,7 +192,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    signal(SIGINT, sigint_handler);
+    signal(SIGINT, sigintHandler);
 
     struct ndpi_global_context *ctx = ndpi_global_init();
     ndpi_detection_module_struct *ndpiMod =
