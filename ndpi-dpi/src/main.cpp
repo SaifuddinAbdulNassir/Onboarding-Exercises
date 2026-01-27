@@ -28,7 +28,7 @@ using namespace ndpi;
 
 using CaptureCookie = std::tuple<ndpi_detection_module_struct*, AppState*, ConnectionsMap*>;
 
-// Make bidirectional flows use the same key
+//  Connection functions"
 
 static void canonicalize(
     uint32_t& srcIp, uint32_t& dstIp,
