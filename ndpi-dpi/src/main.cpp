@@ -138,7 +138,8 @@ void onPacketArrives(pcpp::RawPacket* rawPacket,
     (ip->getSrcIPv4Address().toInt() == key.srcIp &&
      srcPort == key.srcPort);
 
-    inputInfo.in_pkt_dir = (isForward) ? 0 : 1; // 0 = client → server
+    // 0 = client → server
+    inputInfo.in_pkt_dir = (isForward) ? 0 : 1;
     inputInfo.seen_flow_beginning = (conn.packetCount == 1);;
 
     auto timeMs =
