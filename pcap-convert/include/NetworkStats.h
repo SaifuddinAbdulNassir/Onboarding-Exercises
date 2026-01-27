@@ -6,7 +6,17 @@ namespace pcapconvert
 {
 
   class NetworkStats
-  {
+  {  
+    private:
+      // Data
+      int totalPackets = 0;
+      int droppedPackets = 0;
+      int writtenPackets = 0;
+      size_t bytesIn = 0;
+      size_t bytesOut = 0;
+      size_t bytesDropped = 0;
+      int dnsModifiedPackets = 0;
+
     public:
       // Constructor and Destructor
       NetworkStats();
@@ -29,16 +39,6 @@ namespace pcapconvert
       int getDroppedPackets() const { return droppedPackets; }
       int getTotalPackets() const { return totalPackets; }
       int getWrittenPackets() const { return writtenPackets; }
-  
-    private:
-      // Data
-      int totalPackets = 0;
-      int droppedPackets = 0;
-      int writtenPackets = 0;
-      size_t bytesIn = 0;
-      size_t bytesOut = 0;
-      size_t bytesDropped = 0;
-      int dnsModifiedPackets = 0;
   };
 
 } // namespace pcapconvert

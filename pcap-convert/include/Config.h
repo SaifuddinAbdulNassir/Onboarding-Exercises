@@ -9,7 +9,17 @@ namespace pcapconvert
 {
 
   class Config
-  {
+  {  
+    private:
+    // Data
+      string dnsAddr;
+      int dnsPort = -1;
+      string inputFile;
+      int ipVersion = -1;
+      string outputFile;
+      int ttlDec = -1;
+      int vlan = -1;
+      
     public:
       // Constructor and Destructor
       Config();
@@ -30,16 +40,6 @@ namespace pcapconvert
       void setOutputFile(const string& file) {outputFile = file;}
       void setTtlDec(int dec) {ttlDec = dec;}
       void setVlan(int id) {vlan = id;}
-  
-    private:
-    // Data
-      string dnsAddr;
-      int dnsPort = -1;
-      string inputFile;
-      int ipVersion = -1;
-      string outputFile;
-      int ttlDec = -1;
-      int vlan = -1;
   };
 
 } // namespace pcapconvert
