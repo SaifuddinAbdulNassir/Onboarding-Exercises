@@ -18,8 +18,8 @@
 #include <pcapplusplus/UdpLayer.h>
 
 // Project includes
-#include "ConnectionsMap.h"
 #include "AppState.h"
+#include "ConnectionsMap.h"
 
 using namespace pcpp;
 using namespace std;
