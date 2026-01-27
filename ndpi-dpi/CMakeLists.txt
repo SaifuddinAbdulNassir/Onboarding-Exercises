@@ -24,6 +24,7 @@ include_directories(
 link_directories(/usr/local/lib)
 
 set(SOURCES
+    src/ConnectionInfo.cpp
     src/ConnectionKey.cpp
     src/ConnectionKeyHash.cpp
     src/main.cpp
