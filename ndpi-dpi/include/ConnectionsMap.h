@@ -10,4 +10,9 @@
 
 using namespace std;
 
-typedef unordered_map<ConnectionKey, ConnectionInfo, ConnectionKeyHash> ConnectionsMap;
+namespace ndpi
+{
+
+  typedef unordered_map<ConnectionKey, ConnectionInfo, ConnectionKeyHash> ConnectionsMap;
+
+} // namespace ndpi

@@ -4,6 +4,7 @@
 #include <functional>
 
 using namespace std;
+using namespace ndpi;
 
 // Hash function
 

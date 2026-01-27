@@ -1,5 +1,7 @@
 #include "ConnectionKey.h"
 
+using namespace ndpi;
+
 // Relational operators
 
 bool ConnectionKey::operator==(const ConnectionKey& o) const 

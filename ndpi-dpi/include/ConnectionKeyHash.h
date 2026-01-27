@@ -6,9 +6,14 @@
 // Project includes
 #include "ConnectionKey.h"
 
-class ConnectionKeyHash 
+namespace ndpi
 {
-  public:
-    // Hash function
-    size_t operator()(const ConnectionKey& k) const;
-};
+
+  class ConnectionKeyHash 
+  {
+    public:
+      // Hash function
+      size_t operator()(const ConnectionKey& k) const;
+  };
+
+}
