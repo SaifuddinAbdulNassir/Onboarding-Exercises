@@ -18,6 +18,7 @@
 
 using namespace pcpp;
 using namespace std;
+using namespace pcapconvert;
 
 // Command line argument parser
 
