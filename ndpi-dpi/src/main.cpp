@@ -195,9 +195,8 @@ int main(int argc, char* argv[])
 
     signal(SIGINT, sigintHandler);
 
-    struct ndpi_global_context *ctx = ndpi_global_init();
-    ndpi_detection_module_struct *ndpiMod =
-        ndpi_init_detection_module(ctx);
+    auto *ctx = ndpi_global_init();
+    auto *ndpiMod = ndpi_init_detection_module(ctx);
 
     if(!ndpiMod)
     {
