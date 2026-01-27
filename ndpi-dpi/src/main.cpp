@@ -1,6 +1,11 @@
 // Standard includes
 #include <csignal>
+#include <cstring>
+#include <cstdlib>
 #include <iostream>
+#include <poll.h>
+#include <sys/signalfd.h>
+#include <tuple>
 #include <unistd.h>
 
 // Library includes
@@ -16,22 +21,11 @@
 #include "ConnectionsMap.h"
 #include "AppState.h"
 
-// Declare the global connection map
-ConnectionsMap connectionMap;
-
 using namespace pcpp;
 using namespace std;
 
-uint32_t AppState::maxPackets = 100;
-bool AppState::running = true;
-uint64_t AppState::uid = 1;
 
-// Signal Handler
-
-void sigintHandler(int)
-{
-    AppState::running = false;
-}
+using CaptureCookie = std::tuple<ndpi_detection_module_struct*, AppState*, ConnectionsMap*>;
 
 // Make bidirectional flows use the same key
 
@@ -53,7 +47,10 @@ void onPacketArrives(pcpp::RawPacket* rawPacket,
                      pcpp::PcapLiveDevice* dev,
                      void* userData)
 {
-    auto* ndpiMod = (ndpi_detection_module_struct*)userData;
+    auto* cookie = static_cast<CaptureCookie*>(userData);
+    auto* ndpiMod = std::get<0>(*cookie);
+    AppState& appState = *std::get<1>(*cookie);
+    ConnectionsMap& connectionMap = *std::get<2>(*cookie);
 
     pcpp::Packet packet(rawPacket);
     auto* ip = packet.getLayerOfType<pcpp::IPv4Layer>();
@@ -92,19 +89,14 @@ void onPacketArrives(pcpp::RawPacket* rawPacket,
     // Canonicalize flow
     canonicalize(srcIp, dstIp, srcPort, dstPort);
 
-    ConnectionKey key {
-        srcIp,
-        dstIp,
-        srcPort,
-        dstPort,
-        l4Proto
-    };
+    ConnectionKey key{dstIp, dstPort, l4Proto, srcIp, srcPort};
 
     auto it = connectionMap.find(key);
     if(it == connectionMap.end())
     {
         ConnectionInfo ci {};
-        ci.uid = AppState::uid++;
+        ci.uid = appState.getUid();
+        appState.incrementUid();
         ci.flow = (ndpi_flow_struct*)calloc(
         1,
         ndpi_detection_get_sizeof_ndpi_flow_struct()
@@ -123,7 +115,7 @@ void onPacketArrives(pcpp::RawPacket* rawPacket,
         return;
 
     conn.packetCount++;
-    if(conn.packetCount > AppState::maxPackets)
+    if(conn.packetCount > appState.getMaxPackets())
     {
         conn.protocol = "UNKNOWN";
         conn.category = "UNKNOWN";
@@ -181,6 +173,8 @@ int main(int argc, char* argv[])
     }
 
     string iface;
+    AppState appState;
+    ConnectionsMap connectionMap;
     for(int i = 1; i < argc; i++)
     {
         if(!strcmp(argv[i], "-i"))
@@ -189,11 +183,25 @@ int main(int argc, char* argv[])
         }
         else if(!strcmp(argv[i], "--N"))
         {
-            AppState::maxPackets = atoi(argv[++i]);
+            appState.setMaxPackets(atoi(argv[++i]));
         }
     }
 
-    signal(SIGINT, sigintHandler);
+    // Handle Ctrl+C without globals: block SIGINT and consume it via signalfd
+    sigset_t mask;
+    sigemptyset(&mask);
+    sigaddset(&mask, SIGINT);
+    if(sigprocmask(SIG_BLOCK, &mask, nullptr) == -1)
+    {
+        perror("sigprocmask");
+        return 1;
+    }
+    int sigFd = signalfd(-1, &mask, SFD_CLOEXEC);
+    if(sigFd == -1)
+    {
+        perror("signalfd");
+        return 1;
+    }
 
     auto *ctx = ndpi_global_init();
     auto *ndpiMod = ndpi_init_detection_module(ctx);
@@ -215,15 +223,29 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    dev->startCapture(onPacketArrives, ndpiMod);
+    CaptureCookie cookie{ndpiMod, &appState, &connectionMap};
+    dev->startCapture(onPacketArrives, &cookie);
 
-    while(AppState::running)
+    while(appState.isRunning())
     {
-        sleep(1);
+        pollfd pfd;
+        pfd.fd = sigFd;
+        pfd.events = POLLIN;
+        pfd.revents = 0;
+
+        int rc = poll(&pfd, 1, 1000);
+        if(rc > 0 && (pfd.revents & POLLIN))
+        {
+            signalfd_siginfo si;
+            ssize_t n = read(sigFd, &si, sizeof(si));
+            if(n == (ssize_t)sizeof(si) && si.ssi_signo == SIGINT)
+                appState.setRunning(false);
+        }
     }
 
     dev->stopCapture();
     dev->close();
+    close(sigFd);
 
     cout << "\nConnectionId, Protocol, Category, Domain\n";
     for(const auto& kv : connectionMap)
