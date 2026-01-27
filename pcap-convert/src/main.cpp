@@ -22,7 +22,7 @@ using namespace pcapconvert;
 
 // Command line argument parser
 
-bool parseArgs(int argc, char *argv[], Config& config)
+bool parseArgs(int argc, char *argv[], Config &config)
 {
     for(int i = 1; i < argc; ++i)
     {

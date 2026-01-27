@@ -19,7 +19,7 @@ namespace pcapconvert
       string outputFile;
       int ttlDec = -1;
       int vlan = -1;
-      
+
     public:
       // Constructor and Destructor
       Config();
@@ -33,11 +33,11 @@ namespace pcapconvert
       string getOutputFile() const {return outputFile;}
       int getTtlDec() const {return ttlDec;}
       int getVlan() const {return vlan;}
-      void setDnsAddr(const string& addr) {dnsAddr = addr;}
+      void setDnsAddr(const string &addr) {dnsAddr = addr;}
       void setDnsPort(int port) {dnsPort = port;}
-      void setInputFile(const string& file) {inputFile = file;}
+      void setInputFile(const string &file) {inputFile = file;}
       void setIpVersion(int version) {ipVersion = version;}
-      void setOutputFile(const string& file) {outputFile = file;}
+      void setOutputFile(const string &file) {outputFile = file;}
       void setTtlDec(int dec) {ttlDec = dec;}
       void setVlan(int id) {vlan = id;}
   };
