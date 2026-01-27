@@ -31,14 +31,7 @@ SteeringRule::SteeringRule(Protocol protocol, uint16_t port,
 
 string SteeringRule::getId() const
 {
-    string id;
-
-    switch (protocol) 
-    {
-        case Protocol::TCP4: id = protocol._to_string(); break;
-        case Protocol::UDP4: id = protocol._to_string(); break;
-        default: id = "UNKNOWN"; break;
-    }
+    string id = protocol._to_string();
 
     if (port != 0)
         id += "-" + to_string(port);
