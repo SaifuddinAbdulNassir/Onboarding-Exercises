@@ -127,8 +127,8 @@ void onPacketArrives(RawPacket* rawPacket,
     ndpi_flow_input_info inputInfo;
     memset(&inputInfo, 0, sizeof(inputInfo));
     bool isForward =
-    (ip->getSrcIPv4Address().toInt() == key.srcIp &&
-     srcPort == key.srcPort);
+    (ip->getSrcIPv4Address().toInt() == key.getSrcIp() &&
+     srcPort == key.getSrcPort());
 
     // 0 = client → server
     inputInfo.in_pkt_dir = (isForward) ? 0 : 1;
