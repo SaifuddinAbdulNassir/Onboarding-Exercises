@@ -5,9 +5,7 @@
 #include <string>
 
 // Library includes
-extern "C" {
-#include <ndpi_api.h>
-}
+#include <ndpi/ndpi_api.h>
 
 namespace ndpi
 {
