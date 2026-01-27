@@ -34,8 +34,7 @@ static void canonicalize(
     uint32_t& srcIp, uint32_t& dstIp,
     uint16_t& srcPort, uint16_t& dstPort)
 {
-    if(srcIp > dstIp ||
-       (srcIp == dstIp && srcPort > dstPort))
+    if(srcIp > dstIp || (srcIp == dstIp && srcPort > dstPort))
     {
         swap(srcIp, dstIp);
         swap(srcPort, dstPort);
