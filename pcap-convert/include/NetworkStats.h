@@ -9,7 +9,6 @@ namespace pcapconvert
   {  
     private:
       // Data
-      int totalPackets = 0;
       int droppedPackets = 0;
       int writtenPackets = 0;
       size_t bytesIn = 0;
@@ -28,7 +27,6 @@ namespace pcapconvert
       void addBytesOut(size_t bytes);
       void incrementDnsModifiedPackets();
       void incrementDroppedPackets();
-      void incrementTotalPackets();
       void incrementWrittenPackets();
       
       // Getters
@@ -37,7 +35,6 @@ namespace pcapconvert
       size_t getBytesOut() const { return bytesOut; }
       int getDnsModifiedPackets() const { return dnsModifiedPackets; }
       int getDroppedPackets() const { return droppedPackets; }
-      int getTotalPackets() const { return totalPackets; }
       int getWrittenPackets() const { return writtenPackets; }
   };
 

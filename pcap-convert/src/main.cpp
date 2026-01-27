@@ -81,7 +81,6 @@ int main(int argc, char *argv[])
 
     while(reader.getNextPacket(raw))
     {
-        stats.incrementTotalPackets();
         stats.addBytesIn(raw.getRawDataLen());
 
         Packet pkt(&raw);
@@ -174,7 +173,12 @@ int main(int argc, char *argv[])
         stats.addBytesOut(raw.getRawDataLen());
     }
 
-    cout << "Total bytes & packets processed: " << stats.getBytesIn() << "&" << stats.getTotalPackets() << "\n";
+	pcpp::IPcapDevice::PcapStats packetStats;
+
+	// get packet stats
+	reader.getStatistics(packetStats);
+
+    cout << "Total bytes & packets processed: " << stats.getBytesIn() << "&" <<packetStats.packetsRecv << "\n";
     cout << "Total bytes & packets dropped: " << stats.getBytesDropped() << "&" << stats.getDroppedPackets() << "\n";
     cout << "Total bytes & packets written: " << stats.getBytesOut() << "&" << stats.getWrittenPackets() << "\n";
     cout << "DNS modified: " << stats.getDnsModifiedPackets() << "\n";

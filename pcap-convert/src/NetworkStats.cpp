@@ -14,11 +14,6 @@ NetworkStats::~NetworkStats()
 
 // Stats updates
 
-void NetworkStats::incrementTotalPackets()
-{
-    totalPackets++;
-}
-
 void NetworkStats::incrementDroppedPackets()
 {
     droppedPackets++;
