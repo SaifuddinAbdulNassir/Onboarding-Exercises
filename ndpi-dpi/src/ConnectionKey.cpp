@@ -24,11 +24,11 @@ ConnectionKey::~ConnectionKey()
 
 // Relational operators
 
-bool ConnectionKey::operator==(const ConnectionKey& o) const 
+bool ConnectionKey::operator==(const ConnectionKey& other) const 
 {
-    return srcIp == o.srcIp &&
-           dstIp == o.dstIp &&
-           srcPort == o.srcPort &&
-           dstPort == o.dstPort &&
-           l4Proto == o.l4Proto;
+    return srcIp == other.srcIp &&
+           dstIp == other.dstIp &&
+           srcPort == other.srcPort &&
+           dstPort == other.dstPort &&
+           l4Proto == other.l4Proto;
 }

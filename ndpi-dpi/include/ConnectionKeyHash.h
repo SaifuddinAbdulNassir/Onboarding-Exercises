@@ -13,7 +13,7 @@ namespace ndpi
   {
     public:
       // Hash function
-      size_t operator()(const ConnectionKey& k) const;
+      size_t operator()(const ConnectionKey& key) const;
   };
 
 }

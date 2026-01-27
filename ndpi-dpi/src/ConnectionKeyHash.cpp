@@ -8,9 +8,9 @@ using namespace ndpi;
 
 // Hash function
 
-size_t ConnectionKeyHash::operator()(const ConnectionKey& k) const 
+size_t ConnectionKeyHash::operator()(const ConnectionKey& key) const 
 {
     return hash<uint64_t>()(
-        ((uint64_t)k.getSrcIp() << 32) | k.getDstIp()
-    ) ^ (k.getSrcPort() << 16 | k.getDstPort());
+        ((uint64_t)key.getSrcIp() << 32) | key.getDstIp()
+    ) ^ (key.getSrcPort() << 16 | key.getDstPort());
 }
