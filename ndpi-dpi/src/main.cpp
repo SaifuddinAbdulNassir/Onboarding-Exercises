@@ -43,8 +43,8 @@ static void canonicalize(
 
 // Packet Handler
 
-void onPacketArrives(pcpp::RawPacket* rawPacket,
-                     pcpp::PcapLiveDevice* dev,
+void onPacketArrives(RawPacket* rawPacket,
+                     PcapLiveDevice* dev,
                      void* userData)
 {
     auto* cookie = static_cast<CaptureCookie*>(userData);
@@ -52,8 +52,8 @@ void onPacketArrives(pcpp::RawPacket* rawPacket,
     AppState& appState = *std::get<1>(*cookie);
     ConnectionsMap& connectionMap = *std::get<2>(*cookie);
 
-    pcpp::Packet packet(rawPacket);
-    auto* ip = packet.getLayerOfType<pcpp::IPv4Layer>();
+    Packet packet(rawPacket);
+    auto* ip = packet.getLayerOfType<IPv4Layer>();
     if(!ip)
         return;
 
@@ -62,7 +62,7 @@ void onPacketArrives(pcpp::RawPacket* rawPacket,
 
     if(l4Proto == IPPROTO_TCP)
     {
-        auto* tcp = packet.getLayerOfType<pcpp::TcpLayer>();
+        auto* tcp = packet.getLayerOfType<TcpLayer>();
         if(!tcp)
             return;
 
@@ -71,7 +71,7 @@ void onPacketArrives(pcpp::RawPacket* rawPacket,
     }
     else if(l4Proto == IPPROTO_UDP)
     {
-        auto* udp = packet.getLayerOfType<pcpp::UdpLayer>();
+        auto* udp = packet.getLayerOfType<UdpLayer>();
         if(!udp)
             return;
         
@@ -214,8 +214,7 @@ int main(int argc, char* argv[])
         
     ndpi_finalize_initialization(ndpiMod);
 
-    auto* dev =
-        pcpp::PcapLiveDeviceList::getInstance().getDeviceByName(iface);
+    auto* dev = PcapLiveDeviceList::getInstance().getDeviceByName(iface);
 
     if(!dev || !dev->open())
     {
