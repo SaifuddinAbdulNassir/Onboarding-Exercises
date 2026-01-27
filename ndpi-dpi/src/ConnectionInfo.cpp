@@ -1,5 +1,7 @@
 #include "ConnectionInfo.h"
 
+// Constructors & destructors
+
 ConnectionInfo::ConnectionInfo()
 {
 }

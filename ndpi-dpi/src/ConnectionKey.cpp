@@ -1,5 +1,7 @@
 #include "ConnectionKey.h"
 
+// Relational operators
+
 bool ConnectionKey::operator==(const ConnectionKey& o) const 
 {
     return srcIp == o.srcIp &&

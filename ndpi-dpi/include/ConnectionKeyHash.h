@@ -9,5 +9,6 @@
 class ConnectionKeyHash 
 {
   public:
+    // Hash function
     size_t operator()(const ConnectionKey& k) const;
 };

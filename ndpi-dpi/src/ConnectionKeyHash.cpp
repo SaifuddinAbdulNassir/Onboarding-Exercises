@@ -5,6 +5,8 @@
 
 using namespace std;
 
+// Hash function
+
 size_t ConnectionKeyHash::operator()(const ConnectionKey& k) const 
 {
     return hash<uint64_t>()(

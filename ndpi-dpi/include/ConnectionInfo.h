@@ -12,9 +12,11 @@ extern "C" {
 class ConnectionInfo 
 {
   public:
+  // Constructors & destructors
     ConnectionInfo();
     ~ConnectionInfo();
 
+    // Data
     std::string category;
     std::string domain;
     bool done;
