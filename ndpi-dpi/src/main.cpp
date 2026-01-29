@@ -91,32 +91,29 @@ void onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
     if(it == connectionMap.end())
     {
         ConnectionInfo ci {};
-        ci.uid = appState.getUid();
+        ci.setUid(appState.getUid());
         appState.incrementUid();
-        ci.flow = (ndpi_flow_struct*)calloc(
-        1,
-        ndpi_detection_get_sizeof_ndpi_flow_struct()
-        );
-        ci.packetCount = 0;
-        ci.done = false;
-        ci.protocol = "UNKNOWN";
-        ci.category = "UNKNOWN";
-        ci.domain = "";
+        ci.setFlow((ndpi_flow_struct*)calloc(1, ndpi_detection_get_sizeof_ndpi_flow_struct()));
+        ci.setPacketCount(0);
+        ci.setDone(false);
+        ci.setProtocol("UNKNOWN");
+        ci.setCategory("UNKNOWN");
+        ci.setDomain("");
         connectionMap.emplace(key, ci);
         it = connectionMap.find(key);
     }
 
     ConnectionInfo &conn = it->second;
-    if(conn.done)
+    if(conn.isDone())
         return;
 
-    conn.packetCount++;
-    if(conn.packetCount > appState.getMaxPackets())
+    conn.setPacketCount(conn.getPacketCount() + 1);
+    if(conn.getPacketCount() > appState.getMaxPackets())
     {
-        conn.protocol = "UNKNOWN";
-        conn.category = "UNKNOWN";
-        conn.domain = "";
-        conn.done = true;
+        conn.setProtocol("UNKNOWN");
+        conn.setCategory("UNKNOWN");
+        conn.setDomain("");
+        conn.setDone(true);
         return;
     }
 
@@ -128,7 +125,7 @@ void onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
 
     // 0 = client → server
     inputInfo.in_pkt_dir = (isForward) ? 0 : 1;
-    inputInfo.seen_flow_beginning = (conn.packetCount == 1);;
+    inputInfo.seen_flow_beginning = (conn.getPacketCount() == 1);;
 
     auto timeMs =
     rawPacket->getPacketTimeStamp().tv_sec * 1000ULL +
@@ -137,17 +134,17 @@ void onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
     const auto *ipData = ip->getData();
     auto ipLen = ip->getDataLen();
 
-    ndpi_protocol proto = ndpi_detection_process_packet( ndpiMod, conn.flow, ipData, ipLen, timeMs, &inputInfo);
+    ndpi_protocol proto = ndpi_detection_process_packet( ndpiMod, conn.getFlow(), ipData, ipLen, timeMs, &inputInfo);
 
     if(proto.proto.app_protocol != NDPI_PROTOCOL_UNKNOWN)
     {
-        conn.protocol = ndpi_get_proto_name(ndpiMod, proto.proto.app_protocol);
-        conn.category = ndpi_category_get_name(ndpiMod, proto.category);
-        if(conn.flow->host_server_name[0] != '\0')
+        conn.setProtocol(ndpi_get_proto_name(ndpiMod, proto.proto.app_protocol));
+        conn.setCategory(ndpi_category_get_name(ndpiMod, proto.category));
+        if(conn.getFlow()->host_server_name[0] != '\0')
         {
-            conn.domain = conn.flow->host_server_name;
+            conn.setDomain(conn.getFlow()->host_server_name);
         }
-        conn.done = true;
+        conn.setDone(true);
     }
 }
 
@@ -238,10 +235,10 @@ int main(int argc, char *argv[])
     for(const auto &kv : connectionMap)
     {
         const auto &c = kv.second;
-        cout << c.uid << ", "
-                  << c.protocol << ", "
-                  << c.category << ", "
-                  << c.domain << "\n";
+        cout << c.getUid() << ", "
+                  << c.getProtocol() << ", "
+                  << c.getCategory() << ", "
+                  << c.getDomain() << "\n";
     }
 
     ndpi_exit_detection_module(ndpiMod);
