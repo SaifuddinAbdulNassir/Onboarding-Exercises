@@ -90,7 +90,9 @@ void onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
     auto it = connectionMap.find(key);
     if(it == connectionMap.end())
     {
-        ConnectionInfo ci {};
+        auto insertResult = connectionMap.try_emplace(key, ConnectionInfo{});
+        it = insertResult.first;
+        ConnectionInfo &ci = it->second;
         ci.setUid(appState.getUid());
         appState.incrementUid();
         ci.setFlow((ndpi_flow_struct*)calloc(1, ndpi_detection_get_sizeof_ndpi_flow_struct()));
@@ -99,8 +101,6 @@ void onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
         ci.setProtocol("UNKNOWN");
         ci.setCategory("UNKNOWN");
         ci.setDomain("");
-        connectionMap.emplace(key, ci);
-        it = connectionMap.find(key);
     }
 
     ConnectionInfo &conn = it->second;
@@ -196,6 +196,10 @@ int main(int argc, char *argv[])
         cerr << "nDPI init failed\n";
         exit(1);
     }
+
+    NDPI_PROTOCOL_BITMASK all;
+    NDPI_BITMASK_SET_ALL(all);
+    ndpi_set_protocol_detection_bitmask2(ndpiMod, &all);
         
     ndpi_finalize_initialization(ndpiMod);
 
