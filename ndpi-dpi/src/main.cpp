@@ -30,9 +30,7 @@ using CaptureCookie = std::tuple<ndpi_detection_module_struct*, AppState*, Conne
 
 //  Connection functions"
 
-static void canonicalize(
-    uint32_t& srcIp, uint32_t& dstIp,
-    uint16_t& srcPort, uint16_t& dstPort)
+static void canonicalize(uint32_t& srcIp, uint32_t& dstIp, uint16_t& srcPort, uint16_t& dstPort)
 {
     if(srcIp > dstIp || (srcIp == dstIp && srcPort > dstPort))
     {
@@ -43,9 +41,7 @@ static void canonicalize(
 
 // Packet Handler
 
-void onPacketArrives(RawPacket* rawPacket,
-                     PcapLiveDevice* dev,
-                     void* userData)
+void onPacketArrives(RawPacket* rawPacket, PcapLiveDevice* dev, void* userData)
 {
     auto* cookie = static_cast<CaptureCookie*>(userData);
     auto* ndpiMod = std::get<0>(*cookie);
@@ -141,20 +137,12 @@ void onPacketArrives(RawPacket* rawPacket,
     const auto* ipData = ip->getData();
     auto ipLen = ip->getDataLen();
 
-    ndpi_protocol proto = ndpi_detection_process_packet(
-        ndpiMod,
-        conn.flow,
-        ipData,
-        ipLen,
-        timeMs,
-        &inputInfo
-    );
+    ndpi_protocol proto = ndpi_detection_process_packet( ndpiMod, conn.flow, ipData, ipLen, timeMs, &inputInfo);
 
     if(proto.proto.app_protocol != NDPI_PROTOCOL_UNKNOWN)
     {
         conn.protocol = ndpi_get_proto_name(ndpiMod, proto.proto.app_protocol);
-        conn.category =
-            ndpi_category_get_name(ndpiMod, proto.category);
+        conn.category = ndpi_category_get_name(ndpiMod, proto.category);
         if(conn.flow->host_server_name[0] != '\0')
         {
             conn.domain = conn.flow->host_server_name;
