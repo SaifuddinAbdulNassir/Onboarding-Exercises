@@ -8,7 +8,7 @@ using namespace std;
 
 // Hash function
 
-size_t ConnectionKeyHash::operator()(const ConnectionKey& key) const 
+size_t ConnectionKeyHash::operator()(const ConnectionKey &key) const 
 {
     return hash<uint64_t>()(
         ((uint64_t)key.getSrcIp() << 32) | key.getDstIp()

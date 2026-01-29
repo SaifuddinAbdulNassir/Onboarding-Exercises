@@ -15,7 +15,7 @@ ConnectionKey::~ConnectionKey()
 
 // Relational operators
 
-bool ConnectionKey::operator==(const ConnectionKey& other) const 
+bool ConnectionKey::operator==(const ConnectionKey &other) const 
 {
     return srcIp == other.srcIp &&
            dstIp == other.dstIp &&

@@ -34,7 +34,7 @@ namespace ndpi
       void setSrcPort(uint16_t val) { srcPort = val; }
   
       // Relational operators
-      bool operator==(const ConnectionKey& other) const;
+      bool operator==(const ConnectionKey &other) const;
   };
 
 } // namespace ndpi

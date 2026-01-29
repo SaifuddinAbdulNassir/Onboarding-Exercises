@@ -30,7 +30,7 @@ using CaptureCookie = std::tuple<ndpi_detection_module_struct*, AppState*, Conne
 
 //  Connection functions"
 
-static void canonicalize(uint32_t& srcIp, uint32_t& dstIp, uint16_t& srcPort, uint16_t& dstPort)
+static void canonicalize(uint32_t &srcIp, uint32_t &dstIp, uint16_t &srcPort, uint16_t &dstPort)
 {
     if(srcIp > dstIp || (srcIp == dstIp && srcPort > dstPort))
     {
@@ -41,15 +41,15 @@ static void canonicalize(uint32_t& srcIp, uint32_t& dstIp, uint16_t& srcPort, ui
 
 // Packet Handler
 
-void onPacketArrives(RawPacket* rawPacket, PcapLiveDevice* dev, void* userData)
+void onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
 {
-    auto* cookie = static_cast<CaptureCookie*>(userData);
-    auto* ndpiMod = std::get<0>(*cookie);
-    AppState& appState = *std::get<1>(*cookie);
-    ConnectionsMap& connectionMap = *std::get<2>(*cookie);
+    auto *cookie = static_cast<CaptureCookie*>(userData);
+    auto *ndpiMod = std::get<0>(*cookie);
+    AppState &appState = *std::get<1>(*cookie);
+    ConnectionsMap &connectionMap = *std::get<2>(*cookie);
 
     Packet packet(rawPacket);
-    auto* ip = packet.getLayerOfType<IPv4Layer>();
+    auto *ip = packet.getLayerOfType<IPv4Layer>();
     if(!ip)
         return;
 
@@ -58,7 +58,7 @@ void onPacketArrives(RawPacket* rawPacket, PcapLiveDevice* dev, void* userData)
 
     if(l4Proto == IPPROTO_TCP)
     {
-        auto* tcp = packet.getLayerOfType<TcpLayer>();
+        auto *tcp = packet.getLayerOfType<TcpLayer>();
         if(!tcp)
             return;
 
@@ -67,7 +67,7 @@ void onPacketArrives(RawPacket* rawPacket, PcapLiveDevice* dev, void* userData)
     }
     else if(l4Proto == IPPROTO_UDP)
     {
-        auto* udp = packet.getLayerOfType<UdpLayer>();
+        auto *udp = packet.getLayerOfType<UdpLayer>();
         if(!udp)
             return;
         
@@ -106,7 +106,7 @@ void onPacketArrives(RawPacket* rawPacket, PcapLiveDevice* dev, void* userData)
         it = connectionMap.find(key);
     }
 
-    ConnectionInfo& conn = it->second;
+    ConnectionInfo &conn = it->second;
     if(conn.done)
         return;
 
@@ -134,7 +134,7 @@ void onPacketArrives(RawPacket* rawPacket, PcapLiveDevice* dev, void* userData)
     rawPacket->getPacketTimeStamp().tv_sec * 1000ULL +
     rawPacket->getPacketTimeStamp().tv_nsec / 1000000ULL;
 
-    const auto* ipData = ip->getData();
+    const auto *ipData = ip->getData();
     auto ipLen = ip->getDataLen();
 
     ndpi_protocol proto = ndpi_detection_process_packet( ndpiMod, conn.flow, ipData, ipLen, timeMs, &inputInfo);
@@ -151,7 +151,7 @@ void onPacketArrives(RawPacket* rawPacket, PcapLiveDevice* dev, void* userData)
     }
 }
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     if(argc < 3)
     {
@@ -202,7 +202,7 @@ int main(int argc, char* argv[])
         
     ndpi_finalize_initialization(ndpiMod);
 
-    auto* dev = PcapLiveDeviceList::getInstance().getDeviceByName(iface);
+    auto *dev = PcapLiveDeviceList::getInstance().getDeviceByName(iface);
 
     if(!dev || !dev->open())
     {
@@ -235,9 +235,9 @@ int main(int argc, char* argv[])
     close(sigFd);
 
     cout << "\nConnectionId, Protocol, Category, Domain\n";
-    for(const auto& kv : connectionMap)
+    for(const auto &kv : connectionMap)
     {
-        const auto& c = kv.second;
+        const auto &c = kv.second;
         cout << c.uid << ", "
                   << c.protocol << ", "
                   << c.category << ", "
