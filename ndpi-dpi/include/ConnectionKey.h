@@ -18,12 +18,7 @@ namespace ndpi
 
     public:
       // Constructors & destructors 
-      ConnectionKey(
-          uint32_t dstIp,
-          uint16_t dstPort,
-          uint8_t  l4Proto,
-          uint32_t srcIp,
-          uint16_t srcPort);
+      ConnectionKey(uint32_t dstIp, uint16_t dstPort, uint8_t  l4Proto, uint32_t srcIp, uint16_t srcPort);
       virtual ~ConnectionKey();
 
       // Getters & setters
