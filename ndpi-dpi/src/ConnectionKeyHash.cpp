@@ -3,8 +3,8 @@
 // Standard includes
 #include <functional>
 
-using namespace std;
 using namespace ndpi;
+using namespace std;
 
 // Hash function
 
