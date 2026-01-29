@@ -28,11 +28,11 @@ namespace ndpi
       virtual ~ConnectionInfo();
 
     // Getters & setters
-      const std::string& getCategory() const { return category; }
-      const std::string& getDomain() const { return domain; }
-      ndpi_flow_struct* getFlow() const { return flow; }
+      const std::string &getCategory() const { return category; }
+      const std::string &getDomain() const { return domain; }
+      ndpi_flow_struct *getFlow() const { return flow; }
       uint32_t getPacketCount() const { return packetCount; }
-      const std::string& getProtocol() const { return protocol; }
+      const std::string &getProtocol() const { return protocol; }
       uint64_t getUid() const { return uid; }
       bool isDone() const { return done; }
       void setCategory(const std::string &val) { category = val; }
