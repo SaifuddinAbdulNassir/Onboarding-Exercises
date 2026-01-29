@@ -11,3 +11,10 @@ AppState::AppState() : maxPackets(100), running(true), uid(1)
 AppState::~AppState()
 {
 }
+
+// Business logic
+
+void AppState::incrementUid()
+{
+    uid++;
+}

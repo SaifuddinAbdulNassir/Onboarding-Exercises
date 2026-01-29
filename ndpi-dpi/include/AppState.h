@@ -25,7 +25,9 @@ namespace ndpi
       bool isRunning() const { return running; }
       void setRunning(bool val) { running = val; }
       uint64_t getUid() const { return uid; }
-      void incrementUid() { uid++; }
+
+      // Business logic
+      void incrementUid();
   };
 
 } // namespace ndpi
