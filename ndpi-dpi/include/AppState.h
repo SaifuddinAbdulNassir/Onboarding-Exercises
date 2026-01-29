@@ -17,7 +17,7 @@ namespace ndpi
     public:
       // Constructors & destructors
       AppState();
-      ~AppState();
+      virtual ~AppState();
     
       // Getters & setters
       uint32_t getMaxPackets() const { return maxPackets; }

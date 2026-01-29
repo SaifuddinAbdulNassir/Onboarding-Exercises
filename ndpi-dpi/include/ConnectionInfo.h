@@ -15,7 +15,7 @@ namespace ndpi
     public:
     // Constructors & destructors
       ConnectionInfo();
-      ~ConnectionInfo();
+      virtual ~ConnectionInfo();
   
       // Data
       std::string category;

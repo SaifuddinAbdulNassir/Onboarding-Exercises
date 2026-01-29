@@ -15,7 +15,7 @@ namespace ndpi
       uint8_t  l4Proto;
       uint32_t srcIp;
       uint16_t srcPort;
-      
+
     public:
       // Constructors & destructors 
       ConnectionKey(
@@ -24,7 +24,7 @@ namespace ndpi
           uint8_t  l4Proto,
           uint32_t srcIp,
           uint16_t srcPort);
-      ~ConnectionKey();
+      virtual ~ConnectionKey();
 
       // Getters & setters
       uint32_t getDstIp() const { return dstIp; }
