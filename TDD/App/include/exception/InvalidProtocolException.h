@@ -6,10 +6,10 @@
 namespace TDD
 {
 
-  class InvalidProtocolException : public std::runtime_error 
+  class InvalidProtocolException : public std::runtime_error
   {
-    public:
-      InvalidProtocolException(const std::string &message = "Invalid protocol");
+  public:
+    InvalidProtocolException(const std::string &message = "Invalid protocol");
   };
-  
-} // namespace TDD 
+
+} // namespace TDD

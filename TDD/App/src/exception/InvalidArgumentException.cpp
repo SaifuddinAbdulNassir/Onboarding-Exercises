@@ -3,7 +3,7 @@
 using namespace std;
 using namespace TDD;
 
-InvalidArgumentException::InvalidArgumentException(const string& message)
+InvalidArgumentException::InvalidArgumentException(const string &message)
     : runtime_error(message)
 {
 }

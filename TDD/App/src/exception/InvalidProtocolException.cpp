@@ -3,7 +3,7 @@
 using namespace std;
 using namespace TDD;
 
-InvalidProtocolException::InvalidProtocolException(const string& message)
+InvalidProtocolException::InvalidProtocolException(const string &message)
     : runtime_error(message)
 {
 }

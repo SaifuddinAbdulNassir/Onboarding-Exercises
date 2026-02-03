@@ -30,7 +30,7 @@ TEST(SteeringTargetTest, getsAddress)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
- 
+
     EXPECT_EQ("8.8.8.8", target.getAddress().toString());
 }
 
@@ -38,7 +38,7 @@ TEST(SteeringTargetTest, getsPort)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
- 
+
     EXPECT_EQ(8080, target.getPort());
 }
 
@@ -46,10 +46,10 @@ TEST(SteeringTargetTest, setsAddress)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
- 
+
     address = pcpp::IPv4Address("10.0.0.1");
     target.setAddress(address);
-    
+
     EXPECT_EQ("10.0.0.1", target.getAddress().toString());
 }
 
@@ -57,7 +57,7 @@ TEST(SteeringTargetTest, setsPort)
 {
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
- 
+
     target.setPort(443);
 
     EXPECT_EQ(443, target.getPort());

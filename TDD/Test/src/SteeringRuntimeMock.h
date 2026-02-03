@@ -8,13 +8,12 @@
 
 using namespace TDD;
 
-class SteeringRuntimeMock : public SteeringRuntime 
+class SteeringRuntimeMock : public SteeringRuntime
 {
-  public:
-    MOCK_METHOD(
-        std::shared_ptr<const SteeringRule>,
-        ruleSearch,
-        (pcpp::Packet& packet),
-        (override)
-    );
+public:
+  MOCK_METHOD(
+      std::shared_ptr<const SteeringRule>,
+      ruleSearch,
+      (pcpp::Packet & packet),
+      (override));
 };

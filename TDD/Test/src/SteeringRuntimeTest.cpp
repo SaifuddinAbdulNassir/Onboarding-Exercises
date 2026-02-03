@@ -9,7 +9,7 @@ using namespace TDD;
 
 class SteeringRuntimeTest : public ::testing::Test
 {
-  protected:
+protected:
     SteeringRuntime runtime;
 };
 

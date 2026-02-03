@@ -14,16 +14,16 @@ using namespace TDD;
 
 // Constructor
 
-SteeringWorker::SteeringWorker(SteeringRuntime& runtime)
-    : runtime(runtime) 
+SteeringWorker::SteeringWorker(SteeringRuntime &runtime)
+    : runtime(runtime)
 {
 }
 
 // Business logic
 
-bool SteeringWorker::process(Packet& packet)
+bool SteeringWorker::process(Packet &packet)
 {
-    try 
+    try
     {
         auto rule = runtime.ruleSearch(packet);
         if (!rule)
@@ -33,21 +33,21 @@ bool SteeringWorker::process(Packet& packet)
         steer(packet, target);
         return true;
     }
-    catch (...) 
+    catch (...)
     {
         throw DropPacketException();
     }
 }
 
-void SteeringWorker::steer(Packet& packet, SteeringTarget& target)
+void SteeringWorker::steer(Packet &packet, SteeringTarget &target)
 {
     auto ip = packet.getLayerOfType<IPv4Layer>();
     if (!ip)
         throw InvalidArgumentException();
 
-    if (auto* tcp = packet.getLayerOfType<TcpLayer>())
+    if (auto *tcp = packet.getLayerOfType<TcpLayer>())
         tcp->getTcpHeader()->portDst = htons(target.getPort());
-    else if (auto* udp = packet.getLayerOfType<UdpLayer>())
+    else if (auto *udp = packet.getLayerOfType<UdpLayer>())
         udp->getUdpHeader()->portDst = htons(target.getPort());
     else
         throw InvalidProtocolException();

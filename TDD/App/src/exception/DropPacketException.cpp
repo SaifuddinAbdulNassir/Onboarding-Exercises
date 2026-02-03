@@ -3,7 +3,7 @@
 using namespace std;
 using namespace TDD;
 
-DropPacketException::DropPacketException(const string& message)
+DropPacketException::DropPacketException(const string &message)
     : runtime_error(message)
 {
 }

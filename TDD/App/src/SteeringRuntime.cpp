@@ -8,7 +8,7 @@ using namespace TDD;
 
 static void validateProtocol(Protocol protocol)
 {
-    if(protocol._value != Protocol::TCP4 && protocol._value != Protocol::UDP4)
+    if (protocol._value != Protocol::TCP4 && protocol._value != Protocol::UDP4)
         throw InvalidProtocolException();
 }
 
@@ -28,16 +28,16 @@ bool SteeringRuntime::addRule(Protocol protocol, uint16_t port,
 {
     validateProtocol(protocol);
 
-    for (const auto& [_, rule] : rules)
+    for (const auto &[_, rule] : rules)
     {
-        if(rule->getProtocol() == protocol && rule->getTarget() == target)
+        if (rule->getProtocol() == protocol && rule->getTarget() == target)
             throw DuplicatedTargetException();
     }
-        
+
     auto rule = make_shared<SteeringRule>(protocol, port, address, target);
     auto id = rule->getId();
 
-    if(rules.count(id))
+    if (rules.count(id))
         return false;
 
     rules[id] = rule;
@@ -77,14 +77,14 @@ size_t SteeringRuntime::ruleCount() const
 }
 
 shared_ptr<const SteeringRule>
-SteeringRuntime::ruleSearch(Packet& packet)
+SteeringRuntime::ruleSearch(Packet &packet)
 {
     auto proto = ProtocolUtil::detect(packet);
     validateProtocol(proto);
 
-    for (const auto& [_, rule] : rules)
+    for (const auto &[_, rule] : rules)
     {
-        if(rule->matches(packet))
+        if (rule->matches(packet))
             return rule;
     }
 

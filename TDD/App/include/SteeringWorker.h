@@ -6,18 +6,18 @@
 namespace TDD
 {
 
-  class SteeringWorker 
+  class SteeringWorker
   {
-    private:
-      SteeringRuntime &runtime;
+  private:
+    SteeringRuntime &runtime;
 
-    public:
+  public:
     // Constructor
-      SteeringWorker(SteeringRuntime &runtime);
+    SteeringWorker(SteeringRuntime &runtime);
 
-      // Business logic
-      bool process(pcpp::Packet &packet);
-      void steer(pcpp::Packet &packet, SteeringTarget &target);
+    // Business logic
+    bool process(pcpp::Packet &packet);
+    void steer(pcpp::Packet &packet, SteeringTarget &target);
   };
-  
+
 } // namespace TDD

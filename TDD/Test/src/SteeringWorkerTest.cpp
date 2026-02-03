@@ -101,7 +101,7 @@ TEST(SteeringWorkerTest, throwsInvalidProtocolException)
     SteeringWorker worker(runtime);
     pcpp::IPv4Address address("10.0.0.1");
     SteeringTarget target(address, 8080);
-    
+
     auto packet = createIcmp4Packet();
 
     EXPECT_THROW(worker.steer(packet, target), InvalidProtocolException);
@@ -114,8 +114,7 @@ TEST(SteeringWorkerTest, processesWithMockedRuntimeWithValidRule)
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
     auto rule = std::make_shared<SteeringRule>(
-        Protocol::TCP4, 80, target
-    );
+        Protocol::TCP4, 80, target);
 
     auto packet = createTcpPacket(80);
     EXPECT_CALL(runtimeMock, ruleSearch)

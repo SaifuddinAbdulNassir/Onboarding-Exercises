@@ -6,10 +6,10 @@
 namespace TDD
 {
 
-  class InvalidArgumentException : public std::runtime_error 
+  class InvalidArgumentException : public std::runtime_error
   {
-    public:
-      InvalidArgumentException(const std::string &message = "Invalid argument");
+  public:
+    InvalidArgumentException(const std::string &message = "Invalid argument");
   };
-  
+
 } // namespace TDD

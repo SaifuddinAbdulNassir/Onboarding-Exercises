@@ -9,11 +9,11 @@
 namespace TDD
 {
 
-  class ProtocolUtil 
+  class ProtocolUtil
   {
-    public:
-      // Protocol detector
-      static Protocol detect(pcpp::Packet &packet);
+  public:
+    // Protocol detector
+    static Protocol detect(pcpp::Packet &packet);
   };
 
 } // namespace TDD

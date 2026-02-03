@@ -14,33 +14,33 @@
 namespace TDD
 {
 
-  class SteeringRule 
+  class SteeringRule
   {
-    private:
-      pcpp::IPv4Address address;
-      uint16_t port;
-      Protocol protocol;
-      SteeringTarget target;
+  private:
+    pcpp::IPv4Address address;
+    uint16_t port;
+    Protocol protocol;
+    SteeringTarget target;
 
-    public:
-      // Constructors
-      SteeringRule(Protocol protocol, SteeringTarget target);
-      SteeringRule(Protocol protocol, uint16_t port, SteeringTarget target);
-      SteeringRule(Protocol protocol, uint16_t port,
-                   pcpp::IPv4Address address,
-                   SteeringTarget target);
+  public:
+    // Constructors
+    SteeringRule(Protocol protocol, SteeringTarget target);
+    SteeringRule(Protocol protocol, uint16_t port, SteeringTarget target);
+    SteeringRule(Protocol protocol, uint16_t port,
+                 pcpp::IPv4Address address,
+                 SteeringTarget target);
 
-      // Getters & Setters
-      pcpp::IPv4Address getAddress() const { return address; }
-      uint16_t getPort() const { return port; }
-      Protocol getProtocol() const { return protocol; }
-      SteeringTarget getTarget() const { return target; }
+    // Getters & Setters
+    pcpp::IPv4Address getAddress() const { return address; }
+    uint16_t getPort() const { return port; }
+    Protocol getProtocol() const { return protocol; }
+    SteeringTarget getTarget() const { return target; }
 
-      // Fake Getters
-      std::string getId() const;
+    // Fake Getters
+    std::string getId() const;
 
-      // Business logic
-      bool matches(pcpp::Packet &packet) const;
+    // Business logic
+    bool matches(pcpp::Packet &packet) const;
   };
 
 } // namespace TDD

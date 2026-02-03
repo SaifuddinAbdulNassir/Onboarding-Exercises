@@ -6,10 +6,10 @@
 namespace TDD
 {
 
-  class DropPacketException : public std::runtime_error 
+  class DropPacketException : public std::runtime_error
   {
-    public:
-      DropPacketException(const std::string &message = "Drop packet");
+  public:
+    DropPacketException(const std::string &message = "Drop packet");
   };
-  
+
 } // namespace TDD

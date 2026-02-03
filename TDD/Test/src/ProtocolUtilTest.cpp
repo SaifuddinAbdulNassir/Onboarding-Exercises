@@ -7,7 +7,7 @@
 
 using namespace TDD;
 
-// // Protocol detector
+// Protocol detector
 
 TEST(ProtocolUtilTest, detectsTcp4)
 {
@@ -40,6 +40,6 @@ TEST(ProtocolUtilTest, detectsUdp6)
 TEST(ProtocolUtilTest, detectsUnknown)
 {
     auto packet = createIcmp4Packet();
-    
+
     EXPECT_EQ(ProtocolUtil::detect(packet)._value, Protocol::UNKNOWN);
 }

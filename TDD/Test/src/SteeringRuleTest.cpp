@@ -41,7 +41,7 @@ TEST(SteeringRuleTest, isCreatedWithPortAddressTarget)
     SteeringTarget target(targetAddress, 53);
     pcpp::IPv4Address address("10.0.0.1");
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::TCP4, 88, address, target);
-    
+
     ASSERT_NE(rule, nullptr);
     EXPECT_EQ(rule->getProtocol()._value, Protocol::TCP4);
     EXPECT_EQ(rule->getPort(), 88);
@@ -57,7 +57,7 @@ TEST(SteeringRuleTest, getsAddress)
     SteeringTarget target(targetAddress, 53);
     pcpp::IPv4Address address("10.0.0.1");
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::TCP4, 88, address, target);
-    
+
     ASSERT_NE(rule, nullptr);
     EXPECT_EQ(rule->getAddress(), address);
 }
@@ -67,7 +67,7 @@ TEST(SteeringRuleTest, getsPort)
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::TCP4, 88, target);
-    
+
     ASSERT_NE(rule, nullptr);
     EXPECT_EQ(rule->getPort(), 88);
 }
@@ -77,7 +77,7 @@ TEST(SteeringRuleTest, getsProtocol)
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::TCP4, target);
-    
+
     ASSERT_NE(rule, nullptr);
     EXPECT_EQ(rule->getProtocol()._value, Protocol::TCP4);
 }
@@ -87,7 +87,7 @@ TEST(SteeringRuleTest, getsTarget)
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::TCP4, target);
-    
+
     ASSERT_NE(rule, nullptr);
     EXPECT_EQ(rule->getTarget(), target);
 }
@@ -146,7 +146,7 @@ TEST(SteeringRuleTest, matchesPacket)
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::TCP4, 80, target);
-    
+
     auto packetTcp = createTcpPacket(80);
 
     ASSERT_NE(rule, nullptr);
@@ -158,7 +158,7 @@ TEST(SteeringRuleTest, doesnotMatchesPacketByProtocol)
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::TCP4, 80, target);
-    
+
     auto wrongUdp = createUdpPacket(22);
 
     ASSERT_NE(rule, nullptr);
@@ -170,7 +170,7 @@ TEST(SteeringRuleTest, doesnotMatchesPacketByTcpPort)
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::TCP4, 80, target);
-    
+
     auto packetTcp = createTcpPacket(90);
 
     ASSERT_NE(rule, nullptr);
@@ -182,7 +182,7 @@ TEST(SteeringRuleTest, doesnotMatchesPacketByUdpPort)
     pcpp::IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::UDP4, 80, target);
-    
+
     auto wrongUdp = createUdpPacket(22);
 
     ASSERT_NE(rule, nullptr);
@@ -195,7 +195,7 @@ TEST(SteeringRuleTest, doesnotMatchesPacketByAddress)
     SteeringTarget target(targetAddress, 8080);
     pcpp::IPv4Address address("192.1.1.1");
     std::unique_ptr<SteeringRule> rule = std::make_unique<SteeringRule>(Protocol::TCP4, 80, address, target);
-    
+
     auto wrong = createTcpPacket(80);
 
     ASSERT_NE(rule, nullptr);

@@ -3,7 +3,7 @@
 using namespace std;
 using namespace TDD;
 
-DuplicatedTargetException::DuplicatedTargetException(const string& message)
+DuplicatedTargetException::DuplicatedTargetException(const string &message)
     : runtime_error(message)
 {
 }
