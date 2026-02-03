@@ -6,9 +6,14 @@
 // Project includes
 #include "enums/Protocol.h"
 
-class ProtocolUtil 
+namespace TDD
 {
-  public:
-    // Protocol detector
-    static Protocol detect(pcpp::Packet& packet);
-};
+
+  class ProtocolUtil 
+  {
+    public:
+      // Protocol detector
+      static Protocol detect(pcpp::Packet &packet);
+  };
+
+} // namespace TDD

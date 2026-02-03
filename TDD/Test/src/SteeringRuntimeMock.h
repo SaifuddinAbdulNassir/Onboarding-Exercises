@@ -6,6 +6,8 @@
 // Project includes
 #include "SteeringRuntime.h"
 
+using namespace TDD;
+
 class SteeringRuntimeMock : public SteeringRuntime 
 {
   public:

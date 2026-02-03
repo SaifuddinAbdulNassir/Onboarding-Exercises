@@ -5,6 +5,8 @@
 #include "ProtocolUtil.h"
 #include "TestUtils.h"
 
+using namespace TDD;
+
 // // Protocol detector
 
 TEST(ProtocolUtilTest, detectsTcp4)

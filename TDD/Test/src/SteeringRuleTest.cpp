@@ -5,6 +5,8 @@
 #include "SteeringRule.h"
 #include "TestUtils.h"
 
+using namespace TDD;
+
 // Constructors
 
 TEST(SteeringRuleTest, isCreatedWithTargetOnly)

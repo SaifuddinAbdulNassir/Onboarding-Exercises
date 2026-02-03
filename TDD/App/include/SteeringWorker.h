@@ -3,15 +3,21 @@
 // Project includes
 #include "SteeringRuntime.h"
 
-class SteeringWorker 
+namespace TDD
 {
-    SteeringRuntime& runtime;
 
-  public:
-  // Constructor
-    SteeringWorker(SteeringRuntime& runtime);
+  class SteeringWorker 
+  {
+    private:
+      SteeringRuntime &runtime;
 
-    // Business logic
-    bool process(pcpp::Packet& packet);
-    void steer(pcpp::Packet& packet, SteeringTarget& target);
-};
+    public:
+    // Constructor
+      SteeringWorker(SteeringRuntime &runtime);
+
+      // Business logic
+      bool process(pcpp::Packet &packet);
+      void steer(pcpp::Packet &packet, SteeringTarget &target);
+  };
+  
+} // namespace TDD

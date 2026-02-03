@@ -5,6 +5,8 @@
 #include "SteeringRuntime.h"
 #include "TestUtils.h"
 
+using namespace TDD;
+
 class SteeringRuntimeTest : public ::testing::Test
 {
   protected:

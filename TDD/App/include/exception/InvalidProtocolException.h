@@ -3,8 +3,13 @@
 // Standard includes
 #include <stdexcept>
 
-class InvalidProtocolException : public std::runtime_error 
+namespace TDD
 {
-  public:
-    InvalidProtocolException(const std::string& message = "Invalid protocol");
-};
+
+  class InvalidProtocolException : public std::runtime_error 
+  {
+    public:
+      InvalidProtocolException(const std::string &message = "Invalid protocol");
+  };
+  
+} // namespace TDD 

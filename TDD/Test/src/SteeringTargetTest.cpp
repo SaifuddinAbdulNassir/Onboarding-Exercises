@@ -5,6 +5,8 @@
 #include "exception/InvalidArgumentException.h"
 #include "SteeringTarget.h"
 
+using namespace TDD;
+
 // Constructors
 
 TEST(SteeringTargetTest, constructsSuccessfullyWithValidArguments)

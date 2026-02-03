@@ -2,11 +2,15 @@
 
 // Library includes
 #include <third-party/better-enums/enum.h>
+namespace TDD
+{
 
-BETTER_ENUM(Protocol, int,
-    TCP4,
-    TCP6,
-    UDP4,
-    UDP6,
-    UNKNOWN
-);
+    BETTER_ENUM(Protocol, int,
+        TCP4,
+        TCP6,
+        UDP4,
+        UDP6,
+        UNKNOWN
+    );
+    
+} // namespace TDD

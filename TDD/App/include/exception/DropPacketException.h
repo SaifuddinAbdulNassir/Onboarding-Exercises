@@ -3,8 +3,13 @@
 // Standard includes
 #include <stdexcept>
 
-class DropPacketException : public std::runtime_error 
+namespace TDD
 {
-  public:
-    DropPacketException(const std::string& message = "Drop packet");
-};
+
+  class DropPacketException : public std::runtime_error 
+  {
+    public:
+      DropPacketException(const std::string &message = "Drop packet");
+  };
+  
+} // namespace TDD

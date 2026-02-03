@@ -3,8 +3,13 @@
 // Standard includes
 #include <stdexcept>
 
-class InvalidArgumentException : public std::runtime_error 
+namespace TDD
 {
-  public:
-    InvalidArgumentException(const std::string& message = "Invalid argument");
-};
+
+  class InvalidArgumentException : public std::runtime_error 
+  {
+    public:
+      InvalidArgumentException(const std::string &message = "Invalid argument");
+  };
+  
+} // namespace TDD
