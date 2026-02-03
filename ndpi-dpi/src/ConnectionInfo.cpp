@@ -18,6 +18,6 @@ ConnectionInfo::ConnectionInfo()
 
 ConnectionInfo::~ConnectionInfo()
 {
-	if(flow)
+	if (flow)
 		delete flow;
 }

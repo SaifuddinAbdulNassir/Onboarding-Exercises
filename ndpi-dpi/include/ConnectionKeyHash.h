@@ -9,11 +9,11 @@
 namespace ndpi
 {
 
-  class ConnectionKeyHash 
+  class ConnectionKeyHash
   {
-    public:
-      // Hash function
-      size_t operator()(const ConnectionKey &key) const;
+  public:
+    // Hash function
+    size_t operator()(const ConnectionKey &key) const;
   };
 
 } // namespace ndpi

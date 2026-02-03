@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 // Standard includes
 #include <cstdint>
@@ -10,44 +10,48 @@
 namespace ndpi
 {
 
-  class ConnectionInfo 
+  class ConnectionInfo
   {
-    private:
-      // Data
-      std::string category;
-      std::string domain;
-      bool done;
-      ndpi_flow_struct *flow;
-      uint32_t packetCount;
-      std::string protocol;
-      uint64_t uid;
+  private:
+    // Data
+    std::string category;
+    std::string domain;
+    bool done;
+    ndpi_flow_struct *flow;
+    uint32_t packetCount;
+    std::string protocol;
+    uint64_t uid;
 
-      // Constants
-      static const bool DEFAULT_BOOL;
-      static const size_t DEFAULT_SIZE_T;
-      static const std::string DEFAULT_STRING;
-      static const std::nullptr_t NULLPTR;
+    // Constants
+    static const bool DEFAULT_BOOL;
+    static const size_t DEFAULT_SIZE_T;
+    static const std::string DEFAULT_STRING;
+    static const std::nullptr_t NULLPTR;
 
-    public:
+  public:
     // Constructors & destructors
-      ConnectionInfo();
-      virtual ~ConnectionInfo();
+    ConnectionInfo();
+    virtual ~ConnectionInfo();
 
     // Getters & setters
-      const std::string &getCategory() const { return category; }
-      const std::string &getDomain() const { return domain; }
-      ndpi_flow_struct *getFlow() const { return flow; }
-      uint32_t getPacketCount() const { return packetCount; }
-      const std::string &getProtocol() const { return protocol; }
-      uint64_t getUid() const { return uid; }
-      bool isDone() const { return done; }
-      void setCategory(const std::string &val) { category = val; }
-      void setDomain(const std::string &val) { domain = val; }
-      void setDone(bool val) { done = val; }
-      void setFlow(ndpi_flow_struct *val) { if(val) flow = val; }
-      void setPacketCount(uint32_t val) { packetCount = val; }
-      void setProtocol(const std::string &val) { protocol = val; }
-      void setUid(uint64_t val) { uid = val; }
+    const std::string &getCategory() const { return category; }
+    const std::string &getDomain() const { return domain; }
+    ndpi_flow_struct *getFlow() const { return flow; }
+    uint32_t getPacketCount() const { return packetCount; }
+    const std::string &getProtocol() const { return protocol; }
+    uint64_t getUid() const { return uid; }
+    bool isDone() const { return done; }
+    void setCategory(const std::string &val) { category = val; }
+    void setDomain(const std::string &val) { domain = val; }
+    void setDone(bool val) { done = val; }
+    void setFlow(ndpi_flow_struct *val)
+    {
+      if (val)
+        flow = val;
+    }
+    void setPacketCount(uint32_t val) { packetCount = val; }
+    void setProtocol(const std::string &val) { protocol = val; }
+    void setUid(uint64_t val) { uid = val; }
   };
 
 } // namespace ndpi

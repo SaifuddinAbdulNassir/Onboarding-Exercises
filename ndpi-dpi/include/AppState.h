@@ -6,28 +6,33 @@
 namespace ndpi
 {
 
-  class AppState 
+  class AppState
   {
-    private:
-      // Data
-      uint32_t maxPackets;
-      bool running;
-      uint64_t uid;
+  private:
+    // Data
+    uint32_t maxPackets;
+    bool running;
+    uint64_t uid;
 
-    public:
-      // Constructors & destructors
-      AppState();
-      virtual ~AppState();
-    
-      // Getters & setters
-      uint32_t getMaxPackets() const { return maxPackets; }
-      void setMaxPackets(uint32_t val) { maxPackets = val; }
-      bool isRunning() const { return running; }
-      void setRunning(bool val) { running = val; }
-      uint64_t getUid() const { return uid; }
+    // Constants
+    static const uint32_t DEFAULT_MAX_PACKETS;
+    static const bool DEFAULT_RUNNING;
+    static const uint64_t DEFAULT_UID;
 
-      // Business logic
-      void incrementUid();
+  public:
+    // Constructors & destructors
+    AppState();
+    virtual ~AppState();
+
+    // Getters & setters
+    uint32_t getMaxPackets() const { return maxPackets; }
+    void setMaxPackets(uint32_t val) { maxPackets = val; }
+    bool isRunning() const { return running; }
+    void setRunning(bool val) { running = val; }
+    uint64_t getUid() const { return uid; }
+
+    // Business logic
+    void incrementUid();
   };
 
 } // namespace ndpi

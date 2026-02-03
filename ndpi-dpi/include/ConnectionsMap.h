@@ -4,7 +4,7 @@
 #include <unordered_map>
 
 // Project includes
-#include "ConnectionInfo.h" 
+#include "ConnectionInfo.h"
 #include "ConnectionKey.h"
 #include "ConnectionKeyHash.h"
 
