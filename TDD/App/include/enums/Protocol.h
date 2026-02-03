@@ -2,6 +2,7 @@
 
 // Library includes
 #include <third-party/better-enums/enum.h>
+
 namespace TDD
 {
 
@@ -12,5 +13,5 @@ namespace TDD
         UDP6,
         UNKNOWN
     );
-    
+
 } // namespace TDD
