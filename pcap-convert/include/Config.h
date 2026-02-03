@@ -6,8 +6,8 @@
 namespace pcapconvert
 {
 
-class Config
-{
+  class Config
+  {
   private:
     // Data
     std::string dnsAddr;
@@ -31,13 +31,13 @@ class Config
     std::string getOutputFile() const { return outputFile; }
     int getTtlDec() const { return ttlDec; }
     int getVlan() const { return vlan; }
-    void setDnsAddr(const std::string& addr) { dnsAddr = addr; }
+    void setDnsAddr(const std::string &addr) { dnsAddr = addr; }
     void setDnsPort(int port) { dnsPort = port; }
-    void setInputFile(const std::string& file) { inputFile = file; }
+    void setInputFile(const std::string &file) { inputFile = file; }
     void setIpVersion(int version) { ipVersion = version; }
-    void setOutputFile(const std::string& file) { outputFile = file; }
+    void setOutputFile(const std::string &file) { outputFile = file; }
     void setTtlDec(int dec) { ttlDec = dec; }
     void setVlan(int id) { vlan = id; }
-};
+  };
 
 } // namespace pcapconvert
