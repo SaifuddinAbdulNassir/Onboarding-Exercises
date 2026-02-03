@@ -16,6 +16,7 @@ namespace TDD
 
   class SteeringRule 
   {
+    private:
       pcpp::IPv4Address address;
       uint16_t port;
       Protocol protocol;
@@ -41,5 +42,5 @@ namespace TDD
       // Business logic
       bool matches(pcpp::Packet &packet) const;
   };
-  
+
 } // namespace TDD

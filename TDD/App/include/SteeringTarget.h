@@ -11,6 +11,7 @@ namespace TDD
 
   class SteeringTarget 
   {
+    private:
       pcpp::IPv4Address address;
       uint16_t port;
   
