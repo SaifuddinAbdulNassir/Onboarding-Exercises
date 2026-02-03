@@ -8,11 +8,9 @@
 #include "ConnectionKey.h"
 #include "ConnectionKeyHash.h"
 
-using namespace std;
-
 namespace ndpi
 {
 
-  typedef unordered_map<ConnectionKey, ConnectionInfo, ConnectionKeyHash> ConnectionsMap;
+  typedef std::unordered_map<ConnectionKey, ConnectionInfo, ConnectionKeyHash> ConnectionsMap;
 
 } // namespace ndpi
