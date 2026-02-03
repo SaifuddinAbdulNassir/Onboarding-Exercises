@@ -16,4 +16,4 @@ namespace ndpi
       size_t operator()(const ConnectionKey &key) const;
   };
 
-}
+} // namespace ndpi
