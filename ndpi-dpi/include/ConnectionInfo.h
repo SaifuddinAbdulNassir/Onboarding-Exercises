@@ -22,6 +22,12 @@ namespace ndpi
       std::string protocol;
       uint64_t uid;
 
+      // Constants
+      static const bool DEFAULT_BOOL;
+      static const size_t DEFAULT_SIZE_T;
+      static const std::string DEFAULT_STRING;
+      static const std::nullptr_t NULLPTR;
+
     public:
     // Constructors & destructors
       ConnectionInfo();
