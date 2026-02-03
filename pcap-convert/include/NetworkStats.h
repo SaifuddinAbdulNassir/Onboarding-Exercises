@@ -5,8 +5,8 @@
 namespace pcapconvert
 {
 
-class NetworkStats
-{
+  class NetworkStats
+  {
   private:
     // Data
     int droppedPackets = 0;
@@ -36,6 +36,6 @@ class NetworkStats
     int getDnsModifiedPackets() const { return dnsModifiedPackets; }
     int getDroppedPackets() const { return droppedPackets; }
     int getWrittenPackets() const { return writtenPackets; }
-};
+  };
 
 } // namespace pcapconvert
