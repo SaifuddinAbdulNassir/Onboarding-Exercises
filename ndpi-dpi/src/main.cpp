@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
     CaptureCookie cookie{ndpiMod, &appState, &connectionMap};
     dev->startCapture(onPacketArrives, &cookie);
 
-    while (appState.isRunning())
+    while (appState.getRunning())
     {
         pollfd pfd;
         pfd.fd = sigFd;

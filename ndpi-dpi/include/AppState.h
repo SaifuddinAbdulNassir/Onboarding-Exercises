@@ -26,10 +26,10 @@ namespace ndpi
 
     // Getters & setters
     uint32_t getMaxPackets() const { return maxPackets; }
-    void setMaxPackets(uint32_t val) { maxPackets = val; }
-    bool isRunning() const { return running; }
-    void setRunning(bool val) { running = val; }
+    bool getRunning() const { return running; }
     uint64_t getUid() const { return uid; }
+    void setMaxPackets(uint32_t val) { maxPackets = val; }
+    void setRunning(bool val) { running = val; }
 
     // Business logic
     void incrementUid();
