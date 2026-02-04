@@ -116,12 +116,10 @@ TEST(SteeringWorkerTest, processesWithMockedRuntimeWithValidRule)
     SteeringWorker worker(runtimeMock);
     IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
-    auto rule = make_shared<SteeringRule>(
-        Protocol::TCP4, 80, target);
+    auto rule = make_shared<SteeringRule>(Protocol::TCP4, 80, target);
 
     auto packet = createTcpPacket(80);
-    EXPECT_CALL(runtimeMock, ruleSearch)
-        .WillOnce(Return(rule));
+    EXPECT_CALL(runtimeMock, ruleSearch).WillOnce(Return(rule));
 
     EXPECT_TRUE(worker.process(packet));
 }
@@ -132,8 +130,7 @@ TEST(SteeringWorkerTest, processesWithMockedRuntimeWithNullRule)
     SteeringWorker worker(runtimeMock);
 
     auto packet = createTcpPacket(80);
-    EXPECT_CALL(runtimeMock, ruleSearch)
-        .WillOnce(Return(shared_ptr<const SteeringRule>()));
+    EXPECT_CALL(runtimeMock, ruleSearch).WillOnce(Return(shared_ptr<const SteeringRule>()));
 
     EXPECT_FALSE(worker.process(packet));
 }
@@ -144,8 +141,7 @@ TEST(SteeringWorkerTest, throwsDropPacketExceptionFromMockedRuntime)
     SteeringWorker worker(runtimeMock);
 
     auto packet = createTcpPacket(80);
-    EXPECT_CALL(runtimeMock, ruleSearch)
-        .WillOnce(Throw(DropPacketException()));
+    EXPECT_CALL(runtimeMock, ruleSearch).WillOnce(Throw(DropPacketException()));
 
     EXPECT_THROW(worker.process(packet), DropPacketException);
 }
@@ -156,8 +152,7 @@ TEST(SteeringWorkerTest, throwsInvalidArgumentExceptionFromMockedRuntime)
     SteeringWorker worker(runtimeMock);
 
     auto packet = createTcpPacket(80);
-    EXPECT_CALL(runtimeMock, ruleSearch)
-        .WillOnce(Throw(InvalidArgumentException()));
+    EXPECT_CALL(runtimeMock, ruleSearch).WillOnce(Throw(InvalidArgumentException()));
 
     EXPECT_THROW(worker.process(packet), DropPacketException);
 }
