@@ -23,7 +23,7 @@ namespace pcapconvert
     Config();
     virtual ~Config();
 
-    // Getters and Setters
+    // Getters & setters
     const std::string &getDnsAddr() const { return dnsAddr; }
     int getDnsPort() const { return dnsPort; }
     const std::string &getInputFile() const { return inputFile; }

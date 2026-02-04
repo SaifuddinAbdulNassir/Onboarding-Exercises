@@ -29,7 +29,7 @@ namespace pcapconvert
     void incrementDroppedPackets();
     void incrementWrittenPackets();
 
-    // Getters
+    // Getters & setters
     size_t getBytesDropped() const { return bytesDropped; }
     size_t getBytesIn() const { return bytesIn; }
     size_t getBytesOut() const { return bytesOut; }
