@@ -19,7 +19,7 @@ namespace pcapconvert
     int vlan = -1;
 
   public:
-    // Constructor and Destructor
+    // Constructors & destructors
     Config();
     virtual ~Config();
 

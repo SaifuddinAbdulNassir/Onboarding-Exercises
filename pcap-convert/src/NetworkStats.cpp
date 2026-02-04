@@ -2,7 +2,7 @@
 
 using namespace pcapconvert;
 
-// Constructor and Destructor
+// Constructors & destructors
 
 NetworkStats::NetworkStats()
 {

@@ -17,7 +17,7 @@ namespace pcapconvert
     int dnsModifiedPackets = 0;
 
   public:
-    // Constructor and Destructor
+    // Constructors & destructors
     NetworkStats();
     virtual ~NetworkStats();
 
