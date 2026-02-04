@@ -25,7 +25,7 @@ using namespace ndpi;
 using namespace pcpp;
 using namespace std;
 
-using CaptureCookie = std::tuple<ndpi_detection_module_struct *, AppState *, ConnectionsMap *>;
+using CaptureCookie = tuple<ndpi_detection_module_struct *, AppState *, ConnectionsMap *>;
 
 //  Connection functions"
 
@@ -43,9 +43,9 @@ static void canonicalize(uint32_t &srcIp, uint32_t &dstIp, uint16_t &srcPort, ui
 void onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
 {
     auto *cookie = static_cast<CaptureCookie *>(userData);
-    auto *ndpiMod = std::get<0>(*cookie);
-    AppState &appState = *std::get<1>(*cookie);
-    ConnectionsMap &connectionMap = *std::get<2>(*cookie);
+    auto *ndpiMod = get<0>(*cookie);
+    AppState &appState = *get<1>(*cookie);
+    ConnectionsMap &connectionMap = *get<2>(*cookie);
 
     Packet packet(rawPacket);
     auto *ip = packet.getLayerOfType<IPv4Layer>();
