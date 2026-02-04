@@ -16,9 +16,9 @@
 #include "Config.h"
 #include "NetworkStats.h"
 
+using namespace pcapconvert;
 using namespace pcpp;
 using namespace std;
-using namespace pcapconvert;
 
 // Command line argument parser
 
