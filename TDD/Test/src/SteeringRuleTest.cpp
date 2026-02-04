@@ -108,14 +108,12 @@ TEST(SteeringRuleTest, getsIdVariantsforTcp4)
 {
     IPv4Address address = TEST_ADDRESS_1;
     SteeringTarget target(address, TEST_PORT_1);
-
     SteeringRule rule1(Protocol::TCP4, target);
-    EXPECT_EQ(rule1.getId(), "TCP4");
-
     SteeringRule rule2(Protocol::TCP4, TEST_PORT_3, target);
-    EXPECT_EQ(rule2.getId(), "TCP4-80");
-
     SteeringRule rule3(Protocol::TCP4, TEST_PORT_3, IPv4Address("1.2.3.4"), target);
+
+    EXPECT_EQ(rule1.getId(), "TCP4");
+    EXPECT_EQ(rule2.getId(), "TCP4-80");
     EXPECT_EQ(rule3.getId(), "TCP4-80-1.2.3.4");
 }
 
@@ -123,14 +121,12 @@ TEST(SteeringRuleTest, getsIdVariantsforUdp4)
 {
     IPv4Address address = TEST_ADDRESS_1;
     SteeringTarget target(address, TEST_PORT_1);
-
     SteeringRule rule1(Protocol::UDP4, target);
-    EXPECT_EQ(rule1.getId(), "UDP4");
-
     SteeringRule rule2(Protocol::UDP4, TEST_PORT_3, target);
-    EXPECT_EQ(rule2.getId(), "UDP4-80");
-
     SteeringRule rule3(Protocol::UDP4, TEST_PORT_3, IPv4Address("1.2.3.4"), target);
+
+    EXPECT_EQ(rule1.getId(), "UDP4");
+    EXPECT_EQ(rule2.getId(), "UDP4-80");
     EXPECT_EQ(rule3.getId(), "UDP4-80-1.2.3.4");
 }
 
@@ -138,14 +134,12 @@ TEST(SteeringRuleTest, getsIdVariantsforUnknown)
 {
     IPv4Address address = TEST_ADDRESS_1;
     SteeringTarget target(address, TEST_PORT_1);
-
     SteeringRule rule1(Protocol::UNKNOWN, target);
-    EXPECT_EQ(rule1.getId(), "UNKNOWN");
-
     SteeringRule rule2(Protocol::UNKNOWN, TEST_PORT_3, target);
-    EXPECT_EQ(rule2.getId(), "UNKNOWN-80");
-
     SteeringRule rule3(Protocol::UNKNOWN, TEST_PORT_3, IPv4Address("1.2.3.4"), target);
+
+    EXPECT_EQ(rule1.getId(), "UNKNOWN");
+    EXPECT_EQ(rule2.getId(), "UNKNOWN-80");
     EXPECT_EQ(rule3.getId(), "UNKNOWN-80-1.2.3.4");
 }
 
