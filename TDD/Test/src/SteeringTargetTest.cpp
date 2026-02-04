@@ -69,11 +69,11 @@ TEST(SteeringTargetTest, setsPort)
 TEST(SteeringTargetTest, comparesEqualRulesCorrectly)
 {
     IPv4Address address("1.1.1.1");
-    SteeringTarget a(address, 80);
-    SteeringTarget b(address, 80);
+    SteeringTarget target1(address, 80);
+    SteeringTarget target2(address, 80);
     address = IPv4Address("2.2.2.2");
-    SteeringTarget c(address, 80);
+    SteeringTarget target3(address, 80);
 
-    EXPECT_TRUE(a == b);
-    EXPECT_FALSE(a == c);
+    EXPECT_TRUE(target1 == target2);
+    EXPECT_FALSE(target1 == target3);
 }
