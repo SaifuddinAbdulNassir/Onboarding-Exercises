@@ -125,7 +125,6 @@ void onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
     // 0 = client → server
     inputInfo.in_pkt_dir = (isForward) ? 0 : 1;
     inputInfo.seen_flow_beginning = (conn.getPacketCount() == 1);
-    ;
 
     auto timeMs =
         rawPacket->getPacketTimeStamp().tv_sec * 1000ULL +
