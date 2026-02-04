@@ -27,7 +27,7 @@ using namespace std;
 
 using CaptureCookie = tuple<ndpi_detection_module_struct *, AppState *, ConnectionsMap *>;
 
-//  Connection functions"
+//  Connection functions
 
 static void canonicalize(uint32_t &srcIp, uint32_t &dstIp, uint16_t &srcPort, uint16_t &dstPort)
 {
