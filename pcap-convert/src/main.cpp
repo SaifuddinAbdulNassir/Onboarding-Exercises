@@ -174,7 +174,7 @@ int main(int argc, char *argv[])
 
     pcpp::IPcapDevice::PcapStats packetStats;
 
-    // get packet stats
+    // Get packet stats
     reader.getStatistics(packetStats);
 
     cout << "Total bytes & packets processed: " << stats.getBytesIn() << "&" << packetStats.packetsRecv << "\n";
