@@ -22,12 +22,12 @@ namespace pcapconvert
     virtual ~NetworkStats();
 
     // Stats updates
-    void addBytesDropped(size_t bytes);
-    void addBytesIn(size_t bytes);
-    void addBytesOut(size_t bytes);
-    void incrementDnsModifiedPackets();
-    void incrementDroppedPackets();
-    void incrementWrittenPackets();
+    void addBytesDropped(size_t bytes) { bytesDropped += bytes; };
+    void addBytesIn(size_t bytes) { bytesIn += bytes; };
+    void addBytesOut(size_t bytes) { bytesOut += bytes; };
+    void incrementDnsModifiedPackets() { dnsModifiedPackets++; };
+    void incrementDroppedPackets() { droppedPackets++; };
+    void incrementWrittenPackets() { writtenPackets++; };
 
     // Getters & setters
     size_t getBytesDropped() const { return bytesDropped; }
