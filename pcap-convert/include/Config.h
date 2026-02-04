@@ -21,7 +21,7 @@ namespace pcapconvert
   public:
     // Constructor and Destructor
     Config();
-    ~Config();
+    virtual ~Config();
 
     // Getters and Setters
     std::string getDnsAddr() const { return dnsAddr; }

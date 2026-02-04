@@ -19,7 +19,7 @@ namespace pcapconvert
   public:
     // Constructor and Destructor
     NetworkStats();
-    ~NetworkStats();
+    virtual ~NetworkStats();
 
     // Stats updates
     void addBytesDropped(size_t bytes);
