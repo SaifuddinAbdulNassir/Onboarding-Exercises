@@ -15,9 +15,9 @@ namespace ndpi
     uint64_t uid;
 
     // Constants
-    static const uint32_t DEFAULT_MAX_PACKETS;
-    static const bool DEFAULT_RUNNING;
-    static const uint64_t DEFAULT_UID;
+    static const uint32_t DEFAULT_MAX_PACKETS = 100;
+    static const bool DEFAULT_RUNNING = true;
+    static const uint64_t DEFAULT_UID = 0;
 
   public:
     // Constructors & destructors

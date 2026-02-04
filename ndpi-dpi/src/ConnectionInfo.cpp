@@ -2,13 +2,6 @@
 
 using namespace ndpi;
 
-// Constants
-
-const bool ConnectionInfo::DEFAULT_BOOL = false;
-const size_t ConnectionInfo::DEFAULT_SIZE_T = 0;
-const std::string ConnectionInfo::DEFAULT_STRING = "";
-const std::nullptr_t ConnectionInfo::NULLPTR = nullptr;
-
 // Constructors & destructors
 
 ConnectionInfo::ConnectionInfo()

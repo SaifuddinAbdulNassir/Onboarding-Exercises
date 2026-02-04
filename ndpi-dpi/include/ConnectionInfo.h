@@ -23,10 +23,10 @@ namespace ndpi
     uint64_t uid;
 
     // Constants
-    static const bool DEFAULT_BOOL;
-    static const size_t DEFAULT_SIZE_T;
-    static const std::string DEFAULT_STRING;
-    static const std::nullptr_t NULLPTR;
+    static const bool DEFAULT_BOOL = false;
+    static const size_t DEFAULT_SIZE_T = 0;
+    static inline const std::string DEFAULT_STRING = "";
+    static inline const std::nullptr_t NULLPTR = nullptr;
 
   public:
     // Constructors & destructors
