@@ -9,6 +9,7 @@ add_executable(steering_tests
 # Include App headers
 target_include_directories(steering_tests
     PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/App/include
 )
 

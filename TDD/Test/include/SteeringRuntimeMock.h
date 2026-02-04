@@ -13,9 +13,5 @@ using namespace TDD;
 class SteeringRuntimeMock : public SteeringRuntime
 {
 public:
-  MOCK_METHOD(
-      shared_ptr<const SteeringRule>,
-      ruleSearch,
-      (Packet & packet),
-      (override));
+    MOCK_METHOD(shared_ptr<const SteeringRule>, ruleSearch, (Packet & packet), (override));
 };
