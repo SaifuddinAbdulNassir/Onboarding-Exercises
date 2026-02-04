@@ -4,6 +4,16 @@ using namespace pcpp;
 using namespace std;
 using namespace TDD;
 
+// Constructors & destructors
+
+SteeringRuntime::SteeringRuntime()
+{
+}
+
+SteeringRuntime::~SteeringRuntime()
+{
+}
+
 // Business logic
 
 static void validateProtocol(Protocol protocol)

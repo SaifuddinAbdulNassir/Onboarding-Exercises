@@ -16,8 +16,9 @@ namespace TDD
     uint16_t port;
 
   public:
-    // Constructor
+    // Constructors & destructors
     SteeringTarget(pcpp::IPv4Address address, uint16_t port);
+    virtual ~SteeringTarget();
 
     // Getters and Setters
     pcpp::IPv4Address getAddress() const { return address; }

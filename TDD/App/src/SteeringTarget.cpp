@@ -3,7 +3,7 @@
 using namespace pcpp;
 using namespace TDD;
 
-// Constructor
+// Constructors & destructors
 
 SteeringTarget::SteeringTarget(IPv4Address address, uint16_t port)
 {
@@ -12,6 +12,10 @@ SteeringTarget::SteeringTarget(IPv4Address address, uint16_t port)
 
     this->address = address;
     this->port = port;
+}
+
+SteeringTarget::~SteeringTarget()
+{
 }
 
 // Getters and Setters

@@ -23,12 +23,13 @@ namespace TDD
     SteeringTarget target;
 
   public:
-    // Constructors
+    // Constructors & destructors
     SteeringRule(Protocol protocol, SteeringTarget target);
     SteeringRule(Protocol protocol, uint16_t port, SteeringTarget target);
     SteeringRule(Protocol protocol, uint16_t port,
                  pcpp::IPv4Address address,
                  SteeringTarget target);
+    virtual ~SteeringRule();
 
     // Getters & Setters
     pcpp::IPv4Address getAddress() const { return address; }

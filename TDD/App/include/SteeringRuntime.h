@@ -19,8 +19,9 @@ namespace TDD
     tbb::concurrent_unordered_map<std::string, std::shared_ptr<SteeringRule>> rules;
 
   public:
-    // Destructor
-    virtual ~SteeringRuntime() = default;
+    // Constructors & destructors
+    SteeringRuntime();
+    virtual ~SteeringRuntime();
 
     // Business logic
     bool addRule(Protocol protocol, SteeringTarget target);

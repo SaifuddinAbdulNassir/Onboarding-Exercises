@@ -28,7 +28,7 @@ bool matchesPort(Packet &packet, uint16_t port)
     return false;
 }
 
-// Constructors
+// Constructors & destructors
 
 SteeringRule::SteeringRule(Protocol protocol, SteeringTarget target)
     : protocol(protocol), address(IPv4Address::Zero), port(0), target(target)
@@ -44,6 +44,10 @@ SteeringRule::SteeringRule(Protocol protocol, uint16_t port,
                            IPv4Address address,
                            SteeringTarget target)
     : protocol(protocol), address(address), port(port), target(target)
+{
+}
+
+SteeringRule::~SteeringRule()
 {
 }
 

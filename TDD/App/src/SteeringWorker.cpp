@@ -12,10 +12,14 @@
 using namespace pcpp;
 using namespace TDD;
 
-// Constructor
+// Constructors & destructors
 
 SteeringWorker::SteeringWorker(SteeringRuntime &runtime)
     : runtime(runtime)
+{
+}
+
+SteeringWorker::~SteeringWorker()
 {
 }
 

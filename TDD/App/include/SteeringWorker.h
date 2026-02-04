@@ -12,8 +12,9 @@ namespace TDD
     SteeringRuntime &runtime;
 
   public:
-    // Constructor
+    // Constructors & destructors
     SteeringWorker(SteeringRuntime &runtime);
+    virtual ~SteeringWorker();
 
     // Business logic
     bool process(pcpp::Packet &packet);
