@@ -103,7 +103,7 @@ void onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
     }
 
     ConnectionInfo &conn = it->second;
-    if (conn.isDone())
+    if (conn.getDone())
         return;
 
     conn.setPacketCount(conn.getPacketCount() + 1);

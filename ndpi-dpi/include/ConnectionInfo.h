@@ -36,11 +36,11 @@ namespace ndpi
     // Getters & setters
     const std::string &getCategory() const { return category; }
     const std::string &getDomain() const { return domain; }
+    const bool getDone() const { return done; }
     ndpi_flow_struct *getFlow() const { return flow; }
     uint32_t getPacketCount() const { return packetCount; }
     const std::string &getProtocol() const { return protocol; }
     uint64_t getUid() const { return uid; }
-    bool isDone() const { return done; }
     void setCategory(const std::string &val) { category = val; }
     void setDomain(const std::string &val) { domain = val; }
     void setDone(bool val) { done = val; }
