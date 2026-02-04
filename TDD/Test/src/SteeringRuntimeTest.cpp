@@ -18,8 +18,8 @@ protected:
 
 TEST_F(SteeringRuntimeTest, addsRuleWithTargetOnly)
 {
-    IPv4Address address("8.8.8.8");
-    SteeringTarget target(address, 53);
+    IPv4Address address(TEST_ADDRESS_1);
+    SteeringTarget target(address, TEST_PORT_1);
 
     auto result = runtime.addRule(Protocol::UDP4, target);
     auto count = runtime.ruleCount();
@@ -30,8 +30,8 @@ TEST_F(SteeringRuntimeTest, addsRuleWithTargetOnly)
 
 TEST_F(SteeringRuntimeTest, addsRuleWithPortAndTarget)
 {
-    IPv4Address address("8.8.8.8");
-    SteeringTarget target(address, 53);
+    IPv4Address address(TEST_ADDRESS_1);
+    SteeringTarget target(address, TEST_PORT_1);
 
     auto result = runtime.addRule(Protocol::TCP4, 10, target);
     auto count = runtime.ruleCount();
@@ -42,9 +42,9 @@ TEST_F(SteeringRuntimeTest, addsRuleWithPortAndTarget)
 
 TEST_F(SteeringRuntimeTest, addsRuleWithPortAddressTarget)
 {
-    IPv4Address targetAddress("8.8.8.8");
-    SteeringTarget target(targetAddress, 53);
-    IPv4Address address("10.0.0.1");
+    IPv4Address targetAddress(TEST_ADDRESS_1);
+    SteeringTarget target(targetAddress, TEST_PORT_1);
+    IPv4Address address(TEST_ADDRESS_2);
 
     auto result = runtime.addRule(Protocol::TCP4, 10, address, target);
     auto count = runtime.ruleCount();
@@ -55,8 +55,8 @@ TEST_F(SteeringRuntimeTest, addsRuleWithPortAddressTarget)
 
 TEST_F(SteeringRuntimeTest, addsRuleException)
 {
-    IPv4Address address("8.8.8.8");
-    SteeringTarget target(address, 53);
+    IPv4Address address(TEST_ADDRESS_1);
+    SteeringTarget target(address, TEST_PORT_1);
 
     runtime.addRule(Protocol::UDP4, target);
 
@@ -65,8 +65,8 @@ TEST_F(SteeringRuntimeTest, addsRuleException)
 
 TEST_F(SteeringRuntimeTest, removesRuleWithProtocolOnly)
 {
-    IPv4Address address("8.8.8.8");
-    SteeringTarget target(address, 53);
+    IPv4Address address(TEST_ADDRESS_1);
+    SteeringTarget target(address, TEST_PORT_1);
 
     auto result = runtime.addRule(Protocol::UDP4, target);
     auto count = runtime.ruleCount();
@@ -81,12 +81,12 @@ TEST_F(SteeringRuntimeTest, removesRuleWithProtocolOnly)
 
 TEST_F(SteeringRuntimeTest, removesRuleWithProtocolAndPort)
 {
-    IPv4Address address("8.8.8.8");
-    SteeringTarget target(address, 53);
+    IPv4Address address(TEST_ADDRESS_1);
+    SteeringTarget target(address, TEST_PORT_1);
 
-    auto result = runtime.addRule(Protocol::UDP4, 50, target);
+    auto result = runtime.addRule(Protocol::UDP4, TEST_PORT_2, target);
     auto count = runtime.ruleCount();
-    auto resultRemove = runtime.removeRule(Protocol::UDP4, 50);
+    auto resultRemove = runtime.removeRule(Protocol::UDP4, TEST_PORT_2);
     auto finalCount = runtime.ruleCount();
 
     EXPECT_TRUE(result);
@@ -97,13 +97,13 @@ TEST_F(SteeringRuntimeTest, removesRuleWithProtocolAndPort)
 
 TEST_F(SteeringRuntimeTest, removesRuleWithProtocolAndPortAndAddress)
 {
-    IPv4Address targetAddress("8.8.8.8");
-    SteeringTarget target(targetAddress, 53);
-    IPv4Address address("10.0.0.1");
+    IPv4Address targetAddress(TEST_ADDRESS_1);
+    SteeringTarget target(targetAddress, TEST_PORT_1);
+    IPv4Address address(TEST_ADDRESS_2);
 
-    auto result = runtime.addRule(Protocol::UDP4, 50, address, target);
+    auto result = runtime.addRule(Protocol::UDP4, TEST_PORT_2, address, target);
     auto count = runtime.ruleCount();
-    auto resultRemove = runtime.removeRule(Protocol::UDP4, 50, address);
+    auto resultRemove = runtime.removeRule(Protocol::UDP4, TEST_PORT_2, address);
     auto finalCount = runtime.ruleCount();
 
     EXPECT_TRUE(result);
@@ -114,18 +114,18 @@ TEST_F(SteeringRuntimeTest, removesRuleWithProtocolAndPortAndAddress)
 
 TEST_F(SteeringRuntimeTest, removesRuleException)
 {
-    IPv4Address targetAddress("8.8.8.8");
-    SteeringTarget target(targetAddress, 53);
+    IPv4Address targetAddress(TEST_ADDRESS_1);
+    SteeringTarget target(targetAddress, TEST_PORT_1);
 
     EXPECT_THROW(runtime.removeRule(Protocol::UDP6), InvalidProtocolException);
 }
 
 TEST_F(SteeringRuntimeTest, resetsRules)
 {
-    IPv4Address address("8.8.8.8");
-    SteeringTarget target(address, 53);
+    IPv4Address address(TEST_ADDRESS_1);
+    SteeringTarget target(address, TEST_PORT_1);
 
-    runtime.addRule(Protocol::UDP4, 50, target);
+    runtime.addRule(Protocol::UDP4, TEST_PORT_2, target);
     auto ruleCount = runtime.ruleCount();
     runtime.reset();
 
@@ -135,13 +135,13 @@ TEST_F(SteeringRuntimeTest, resetsRules)
 
 TEST_F(SteeringRuntimeTest, findsMatchingRule)
 {
-    IPv4Address address("8.8.8.8");
-    SteeringTarget target(address, 8080);
-    runtime.addRule(Protocol::TCP4, 80, target);
+    IPv4Address address(TEST_ADDRESS_1);
+    SteeringTarget target(address, TEST_PORT_4);
+    runtime.addRule(Protocol::TCP4, TEST_PORT_3, target);
 
-    auto packet = createTcpPacket(80);
+    auto packet = createTcpPacket(TEST_PORT_3);
     auto rule = runtime.ruleSearch(packet);
 
     ASSERT_NE(rule, nullptr);
-    EXPECT_EQ(rule->getTarget().getPort(), 8080);
+    EXPECT_EQ(rule->getTarget().getPort(), TEST_PORT_4);
 }

@@ -9,14 +9,6 @@ using namespace pcpp;
 using namespace std;
 using namespace TDD;
 
-// Constants
-const IPv4Address TEST_ADDRESS_1("8.8.8.8");
-const IPv4Address TEST_ADDRESS_2("10.0.0.1");
-const uint16_t TEST_PORT_1 = 53;
-const uint16_t TEST_PORT_2 = 88;
-const uint16_t TEST_PORT_3 = 80;
-const uint16_t TEST_PORT_4 = 8080;
-
 // Constructors
 
 TEST(SteeringRuleTest, isCreatedWithTargetOnly)

@@ -21,12 +21,11 @@ TEST(SteeringWorkerTest, processesValidRule)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
-    IPv4Address address("10.0.0.1");
-    SteeringTarget target(address, 8080);
+    IPv4Address address(TEST_ADDRESS_2);
+    SteeringTarget target(address, TEST_PORT_4);
 
-    runtime.addRule(Protocol::TCP4, 80, IPv4Address("8.8.8.8"), target);
-    auto packet = createTcpPacket(80);
-
+    runtime.addRule(Protocol::TCP4, TEST_PORT_3, IPv4Address(TEST_ADDRESS_1), target);
+    auto packet = createTcpPacket(TEST_PORT_3);
     EXPECT_TRUE(worker.process(packet));
 }
 
@@ -34,10 +33,10 @@ TEST(SteeringWorkerTest, rejectsInvalidRule)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
-    IPv4Address address("10.0.0.1");
-    SteeringTarget target(address, 8080);
+    IPv4Address address(TEST_ADDRESS_2);
+    SteeringTarget target(address, TEST_PORT_4);
 
-    runtime.addRule(Protocol::TCP4, 80, IPv4Address("8.8.8.8"), target);
+    runtime.addRule(Protocol::TCP4, TEST_PORT_3, IPv4Address(TEST_ADDRESS_1), target);
     auto packet = createUdpPacket(22);
 
     EXPECT_FALSE(worker.process(packet));
@@ -47,10 +46,10 @@ TEST(SteeringWorkerTest, handlesRuleProcessingExceptions)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
-    IPv4Address address("10.0.0.1");
-    SteeringTarget target(address, 8080);
+    IPv4Address address(TEST_ADDRESS_2);
+    SteeringTarget target(address, TEST_PORT_4);
 
-    runtime.addRule(Protocol::TCP4, 80, IPv4Address("8.8.8.8"), target);
+    runtime.addRule(Protocol::TCP4, TEST_PORT_3, IPv4Address(TEST_ADDRESS_1), target);
     auto packet = createIcmp4Packet();
 
     EXPECT_THROW(worker.process(packet), DropPacketException);
@@ -60,10 +59,10 @@ TEST(SteeringWorkerTest, steersValidTcpPacket)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
-    IPv4Address address("10.0.0.1");
-    SteeringTarget target(address, 8080);
+    IPv4Address address(TEST_ADDRESS_2);
+    SteeringTarget target(address, TEST_PORT_4);
 
-    auto packet = createTcpPacket(80);
+    auto packet = createTcpPacket(TEST_PORT_3);
     worker.steer(packet, target);
     auto tcp = packet.getLayerOfType<TcpLayer>();
     auto dstPort = tcp->getTcpHeader()->portDst;
@@ -76,10 +75,10 @@ TEST(SteeringWorkerTest, steersValidUdpPacket)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
-    IPv4Address address("10.0.0.1");
-    SteeringTarget target(address, 8080);
+    IPv4Address address(TEST_ADDRESS_2);
+    SteeringTarget target(address, TEST_PORT_4);
 
-    auto packet = createUdpPacket(80);
+    auto packet = createUdpPacket(TEST_PORT_3);
     worker.steer(packet, target);
     auto udp = packet.getLayerOfType<UdpLayer>();
     auto dstPort = udp->getUdpHeader()->portDst;
@@ -92,8 +91,8 @@ TEST(SteeringWorkerTest, throwsInvalidArgumentExceptionForInvalidPacket)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
-    IPv4Address address("10.0.0.1");
-    SteeringTarget target(address, 8080);
+    IPv4Address address(TEST_ADDRESS_2);
+    SteeringTarget target(address, TEST_PORT_4);
 
     auto packet = createTcp6Packet(22);
 
@@ -104,8 +103,8 @@ TEST(SteeringWorkerTest, throwsInvalidProtocolException)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
-    IPv4Address address("10.0.0.1");
-    SteeringTarget target(address, 8080);
+    IPv4Address address(TEST_ADDRESS_2);
+    SteeringTarget target(address, TEST_PORT_4);
 
     auto packet = createIcmp4Packet();
 
@@ -116,11 +115,11 @@ TEST(SteeringWorkerTest, processesWithMockedRuntimeWithValidRule)
 {
     SteeringRuntimeMock runtimeMock;
     SteeringWorker worker(runtimeMock);
-    IPv4Address address("8.8.8.8");
-    SteeringTarget target(address, 8080);
-    auto rule = make_shared<SteeringRule>(Protocol::TCP4, 80, target);
+    IPv4Address address(TEST_ADDRESS_2);
+    SteeringTarget target(address, TEST_PORT_4);
+    auto rule = make_shared<SteeringRule>(Protocol::TCP4, TEST_PORT_3, target);
 
-    auto packet = createTcpPacket(80);
+    auto packet = createTcpPacket(TEST_PORT_3);
     EXPECT_CALL(runtimeMock, ruleSearch).WillOnce(Return(rule));
 
     EXPECT_TRUE(worker.process(packet));
@@ -131,7 +130,7 @@ TEST(SteeringWorkerTest, processesWithMockedRuntimeWithNullRule)
     SteeringRuntimeMock runtimeMock;
     SteeringWorker worker(runtimeMock);
 
-    auto packet = createTcpPacket(80);
+    auto packet = createTcpPacket(TEST_PORT_3);
     EXPECT_CALL(runtimeMock, ruleSearch).WillOnce(Return(shared_ptr<const SteeringRule>()));
 
     EXPECT_FALSE(worker.process(packet));
@@ -142,7 +141,7 @@ TEST(SteeringWorkerTest, throwsDropPacketExceptionFromMockedRuntime)
     SteeringRuntimeMock runtimeMock;
     SteeringWorker worker(runtimeMock);
 
-    auto packet = createTcpPacket(80);
+    auto packet = createTcpPacket(TEST_PORT_3);
     EXPECT_CALL(runtimeMock, ruleSearch).WillOnce(Throw(DropPacketException()));
 
     EXPECT_THROW(worker.process(packet), DropPacketException);
@@ -153,7 +152,7 @@ TEST(SteeringWorkerTest, throwsInvalidArgumentExceptionFromMockedRuntime)
     SteeringRuntimeMock runtimeMock;
     SteeringWorker worker(runtimeMock);
 
-    auto packet = createTcpPacket(80);
+    auto packet = createTcpPacket(TEST_PORT_3);
     EXPECT_CALL(runtimeMock, ruleSearch).WillOnce(Throw(InvalidArgumentException()));
 
     EXPECT_THROW(worker.process(packet), DropPacketException);

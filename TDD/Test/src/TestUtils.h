@@ -11,6 +11,15 @@
 
 using namespace pcpp;
 
+// Constants
+const IPv4Address TEST_ADDRESS_1("8.8.8.8");
+const IPv4Address TEST_ADDRESS_2("10.0.0.1");
+const uint16_t TEST_PORT_1 = 53;
+const uint16_t TEST_PORT_2 = 88;
+const uint16_t TEST_PORT_3 = 80;
+const uint16_t TEST_PORT_4 = 8080;
+const uint16_t TEST_PORT_5 = 50;
+
 inline Packet createTcpPacket(uint16_t dstPort)
 {
     Packet packet(100);
