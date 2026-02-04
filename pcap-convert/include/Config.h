@@ -24,11 +24,11 @@ namespace pcapconvert
     virtual ~Config();
 
     // Getters and Setters
-    std::string getDnsAddr() const { return dnsAddr; }
+    const std::string &getDnsAddr() const { return dnsAddr; }
     int getDnsPort() const { return dnsPort; }
-    std::string getInputFile() const { return inputFile; }
+    const std::string &getInputFile() const { return inputFile; }
     int getIpVersion() const { return ipVersion; }
-    std::string getOutputFile() const { return outputFile; }
+    const std::string &getOutputFile() const { return outputFile; }
     int getTtlDec() const { return ttlDec; }
     int getVlan() const { return vlan; }
     void setDnsAddr(const std::string &addr) { dnsAddr = addr; }
