@@ -5,6 +5,7 @@
 #include "SteeringRuntime.h"
 #include "TestUtils.h"
 
+using namespace pcpp;
 using namespace TDD;
 
 class SteeringRuntimeTest : public ::testing::Test
@@ -17,7 +18,7 @@ protected:
 
 TEST_F(SteeringRuntimeTest, addsRuleWithTargetOnly)
 {
-    pcpp::IPv4Address address("8.8.8.8");
+    IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
 
     EXPECT_TRUE(runtime.addRule(Protocol::UDP4, target));
@@ -26,7 +27,7 @@ TEST_F(SteeringRuntimeTest, addsRuleWithTargetOnly)
 
 TEST_F(SteeringRuntimeTest, addsRuleWithPortAndTarget)
 {
-    pcpp::IPv4Address address("8.8.8.8");
+    IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
 
     EXPECT_TRUE(runtime.addRule(Protocol::TCP4, 10, target));
@@ -35,9 +36,9 @@ TEST_F(SteeringRuntimeTest, addsRuleWithPortAndTarget)
 
 TEST_F(SteeringRuntimeTest, addsRuleWithPortAddressTarget)
 {
-    pcpp::IPv4Address targetAddress("8.8.8.8");
+    IPv4Address targetAddress("8.8.8.8");
     SteeringTarget target(targetAddress, 53);
-    pcpp::IPv4Address address("10.0.0.1");
+    IPv4Address address("10.0.0.1");
 
     EXPECT_TRUE(runtime.addRule(Protocol::TCP4, 10, address, target));
     EXPECT_EQ(runtime.ruleCount(), 1u);
@@ -45,7 +46,7 @@ TEST_F(SteeringRuntimeTest, addsRuleWithPortAddressTarget)
 
 TEST_F(SteeringRuntimeTest, addsRuleException)
 {
-    pcpp::IPv4Address address("8.8.8.8");
+    IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
 
     runtime.addRule(Protocol::UDP4, target);
@@ -55,7 +56,7 @@ TEST_F(SteeringRuntimeTest, addsRuleException)
 
 TEST_F(SteeringRuntimeTest, removesRuleWithProtocolOnly)
 {
-    pcpp::IPv4Address address("8.8.8.8");
+    IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
 
     EXPECT_TRUE(runtime.addRule(Protocol::UDP4, target));
@@ -66,7 +67,7 @@ TEST_F(SteeringRuntimeTest, removesRuleWithProtocolOnly)
 
 TEST_F(SteeringRuntimeTest, removesRuleWithProtocolAndPort)
 {
-    pcpp::IPv4Address address("8.8.8.8");
+    IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
 
     EXPECT_TRUE(runtime.addRule(Protocol::UDP4, 50, target));
@@ -77,9 +78,9 @@ TEST_F(SteeringRuntimeTest, removesRuleWithProtocolAndPort)
 
 TEST_F(SteeringRuntimeTest, removesRuleWithProtocolAndPortAndAddress)
 {
-    pcpp::IPv4Address targetAddress("8.8.8.8");
+    IPv4Address targetAddress("8.8.8.8");
     SteeringTarget target(targetAddress, 53);
-    pcpp::IPv4Address address("10.0.0.1");
+    IPv4Address address("10.0.0.1");
 
     EXPECT_TRUE(runtime.addRule(Protocol::UDP4, 50, address, target));
     EXPECT_EQ(runtime.ruleCount(), 1u);
@@ -89,7 +90,7 @@ TEST_F(SteeringRuntimeTest, removesRuleWithProtocolAndPortAndAddress)
 
 TEST_F(SteeringRuntimeTest, removesRuleException)
 {
-    pcpp::IPv4Address targetAddress("8.8.8.8");
+    IPv4Address targetAddress("8.8.8.8");
     SteeringTarget target(targetAddress, 53);
 
     EXPECT_TRUE(runtime.addRule(Protocol::UDP4, target));
@@ -99,7 +100,7 @@ TEST_F(SteeringRuntimeTest, removesRuleException)
 
 TEST_F(SteeringRuntimeTest, resetsRules)
 {
-    pcpp::IPv4Address address("8.8.8.8");
+    IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
 
     runtime.addRule(Protocol::UDP4, 50, target);
@@ -112,7 +113,7 @@ TEST_F(SteeringRuntimeTest, resetsRules)
 
 TEST_F(SteeringRuntimeTest, findsMatchingRule)
 {
-    pcpp::IPv4Address address("8.8.8.8");
+    IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
     runtime.addRule(Protocol::TCP4, 80, target);
 

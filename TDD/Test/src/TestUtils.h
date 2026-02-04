@@ -9,18 +9,20 @@
 #include <pcapplusplus/TcpLayer.h>
 #include <pcapplusplus/UdpLayer.h>
 
-inline pcpp::Packet createTcpPacket(uint16_t dstPort)
-{
-    pcpp::Packet packet(100);
+using namespace pcpp;
 
-    auto eth = new pcpp::EthLayer(
-        pcpp::MacAddress("aa:aa:aa:aa:aa:aa"),
-        pcpp::MacAddress("bb:bb:bb:bb:bb:bb"),
+inline Packet createTcpPacket(uint16_t dstPort)
+{
+    Packet packet(100);
+
+    auto eth = new EthLayer(
+        MacAddress("aa:aa:aa:aa:aa:aa"),
+        MacAddress("bb:bb:bb:bb:bb:bb"),
         PCPP_ETHERTYPE_IP);
-    auto ip = new pcpp::IPv4Layer(
-        pcpp::IPv4Address("10.0.0.1"),
-        pcpp::IPv4Address("8.8.8.8"));
-    auto tcp = new pcpp::TcpLayer(12345, dstPort);
+    auto ip = new IPv4Layer(
+        IPv4Address("10.0.0.1"),
+        IPv4Address("8.8.8.8"));
+    auto tcp = new TcpLayer(12345, dstPort);
 
     packet.addLayer(eth);
     packet.addLayer(ip);
@@ -30,20 +32,20 @@ inline pcpp::Packet createTcpPacket(uint16_t dstPort)
     return packet;
 }
 
-inline pcpp::Packet createTcp6Packet(uint16_t dstPort)
+inline Packet createTcp6Packet(uint16_t dstPort)
 {
-    pcpp::Packet packet(100);
+    Packet packet(100);
 
-    auto *eth = new pcpp::EthLayer(
-        pcpp::MacAddress("aa:bb:cc:dd:ee:ff"),
-        pcpp::MacAddress("11:22:33:44:55:66"),
+    auto *eth = new EthLayer(
+        MacAddress("aa:bb:cc:dd:ee:ff"),
+        MacAddress("11:22:33:44:55:66"),
         PCPP_ETHERTYPE_IPV6);
 
-    auto *ip6 = new pcpp::IPv6Layer(
-        pcpp::IPv6Address("2001:db8::1"),
-        pcpp::IPv6Address("2001:db8::2"));
+    auto *ip6 = new IPv6Layer(
+        IPv6Address("2001:db8::1"),
+        IPv6Address("2001:db8::2"));
 
-    auto *tcp = new pcpp::TcpLayer(12345, dstPort);
+    auto *tcp = new TcpLayer(12345, dstPort);
 
     packet.addLayer(eth);
     packet.addLayer(ip6);
@@ -53,20 +55,20 @@ inline pcpp::Packet createTcp6Packet(uint16_t dstPort)
     return packet;
 }
 
-inline pcpp::Packet createUdpPacket(uint16_t dstPort)
+inline Packet createUdpPacket(uint16_t dstPort)
 {
-    pcpp::Packet packet(100);
+    Packet packet(100);
 
-    auto eth = new pcpp::EthLayer(
-        pcpp::MacAddress("aa:aa:aa:aa:aa:aa"),
-        pcpp::MacAddress("bb:bb:bb:bb:bb:bb"),
+    auto eth = new EthLayer(
+        MacAddress("aa:aa:aa:aa:aa:aa"),
+        MacAddress("bb:bb:bb:bb:bb:bb"),
         PCPP_ETHERTYPE_IP);
 
-    auto ip = new pcpp::IPv4Layer(
-        pcpp::IPv4Address("10.0.0.1"),
-        pcpp::IPv4Address("8.8.8.8"));
+    auto ip = new IPv4Layer(
+        IPv4Address("10.0.0.1"),
+        IPv4Address("8.8.8.8"));
 
-    auto udp = new pcpp::UdpLayer(12345, dstPort);
+    auto udp = new UdpLayer(12345, dstPort);
 
     packet.addLayer(eth);
     packet.addLayer(ip);
@@ -76,20 +78,20 @@ inline pcpp::Packet createUdpPacket(uint16_t dstPort)
     return packet;
 }
 
-inline pcpp::Packet createUdp6Packet(uint16_t dstPort)
+inline Packet createUdp6Packet(uint16_t dstPort)
 {
-    pcpp::Packet packet(100);
+    Packet packet(100);
 
-    auto *eth = new pcpp::EthLayer(
-        pcpp::MacAddress("aa:bb:cc:dd:ee:ff"),
-        pcpp::MacAddress("11:22:33:44:55:66"),
+    auto *eth = new EthLayer(
+        MacAddress("aa:bb:cc:dd:ee:ff"),
+        MacAddress("11:22:33:44:55:66"),
         PCPP_ETHERTYPE_IPV6);
 
-    auto *ip6 = new pcpp::IPv6Layer(
-        pcpp::IPv6Address("2001:db8::10"),
-        pcpp::IPv6Address("2001:db8::20"));
+    auto *ip6 = new IPv6Layer(
+        IPv6Address("2001:db8::10"),
+        IPv6Address("2001:db8::20"));
 
-    auto udp = new pcpp::UdpLayer(12345, dstPort);
+    auto udp = new UdpLayer(12345, dstPort);
 
     packet.addLayer(eth);
     packet.addLayer(ip6);
@@ -99,20 +101,20 @@ inline pcpp::Packet createUdp6Packet(uint16_t dstPort)
     return packet;
 }
 
-inline pcpp::Packet createIcmp4Packet()
+inline Packet createIcmp4Packet()
 {
-    pcpp::Packet packet(100);
+    Packet packet(100);
 
-    auto *eth = new pcpp::EthLayer(
-        pcpp::MacAddress("aa:bb:cc:dd:ee:ff"),
-        pcpp::MacAddress("11:22:33:44:55:66"),
+    auto *eth = new EthLayer(
+        MacAddress("aa:bb:cc:dd:ee:ff"),
+        MacAddress("11:22:33:44:55:66"),
         PCPP_ETHERTYPE_IP);
 
-    auto ip = new pcpp::IPv4Layer(
-        pcpp::IPv4Address("8.8.8.8"),
-        pcpp::IPv4Address("8.8.4.4"));
+    auto ip = new IPv4Layer(
+        IPv4Address("8.8.8.8"),
+        IPv4Address("8.8.4.4"));
 
-    auto icmp = new pcpp::IcmpLayer();
+    auto icmp = new IcmpLayer();
     icmp->setEchoRequestData(1, 1, 0, nullptr, 0);
 
     packet.addLayer(eth);

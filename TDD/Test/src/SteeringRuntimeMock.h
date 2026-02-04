@@ -6,14 +6,16 @@
 // Project includes
 #include "SteeringRuntime.h"
 
+using namespace pcpp;
+using namespace std;
 using namespace TDD;
 
 class SteeringRuntimeMock : public SteeringRuntime
 {
 public:
   MOCK_METHOD(
-      std::shared_ptr<const SteeringRule>,
+      shared_ptr<const SteeringRule>,
       ruleSearch,
-      (pcpp::Packet & packet),
+      (Packet & packet),
       (override));
 };
