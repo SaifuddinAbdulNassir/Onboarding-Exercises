@@ -25,11 +25,16 @@ TEST(SteeringRuleTest, isCreatedWithTargetOnly)
     SteeringTarget target(address, TEST_PORT_1);
     unique_ptr<SteeringRule> rule = make_unique<SteeringRule>(Protocol::UDP4, target);
 
+    auto protocol = rule->getProtocol()._value;
+    auto port = rule->getPort();
+    auto targetGot = rule->getTarget();
+    auto addressGot = rule->getAddress();
+
     ASSERT_NE(rule, nullptr);
-    EXPECT_EQ(rule->getProtocol()._value, Protocol::UDP4);
-    EXPECT_EQ(rule->getPort(), 0);
-    EXPECT_EQ(rule->getTarget(), target);
-    EXPECT_EQ(rule->getAddress(), IPv4Address::Zero);
+    EXPECT_EQ(protocol, Protocol::UDP4);
+    EXPECT_EQ(port, 0);
+    EXPECT_EQ(targetGot, target);
+    EXPECT_EQ(addressGot, IPv4Address::Zero);
 }
 
 TEST(SteeringRuleTest, isCreatedWithPortAndTarget)
@@ -38,11 +43,16 @@ TEST(SteeringRuleTest, isCreatedWithPortAndTarget)
     SteeringTarget target(address, TEST_PORT_1);
     unique_ptr<SteeringRule> rule = make_unique<SteeringRule>(Protocol::TCP4, TEST_PORT_1, target);
 
+    auto protocol = rule->getProtocol()._value;
+    auto port = rule->getPort();
+    auto targetGot = rule->getTarget();
+    auto addressGot = rule->getAddress();
+
     ASSERT_NE(rule, nullptr);
-    EXPECT_EQ(rule->getProtocol()._value, Protocol::TCP4);
-    EXPECT_EQ(rule->getPort(), TEST_PORT_1);
-    EXPECT_EQ(rule->getTarget(), target);
-    EXPECT_EQ(rule->getAddress(), IPv4Address::Zero);
+    EXPECT_EQ(protocol, Protocol::TCP4);
+    EXPECT_EQ(port, TEST_PORT_1);
+    EXPECT_EQ(targetGot, target);
+    EXPECT_EQ(addressGot, IPv4Address::Zero);
 }
 
 TEST(SteeringRuleTest, isCreatedWithPortAddressTarget)
@@ -52,11 +62,16 @@ TEST(SteeringRuleTest, isCreatedWithPortAddressTarget)
     IPv4Address address = TEST_ADDRESS_2;
     unique_ptr<SteeringRule> rule = make_unique<SteeringRule>(Protocol::TCP4, TEST_PORT_2, address, target);
 
+    auto protocol = rule->getProtocol()._value;
+    auto port = rule->getPort();
+    auto targetGot = rule->getTarget();
+    auto addressGot = rule->getAddress();
+
     ASSERT_NE(rule, nullptr);
-    EXPECT_EQ(rule->getProtocol()._value, Protocol::TCP4);
-    EXPECT_EQ(rule->getPort(), TEST_PORT_2);
-    EXPECT_EQ(rule->getTarget(), target);
-    EXPECT_EQ(rule->getAddress(), address);
+    EXPECT_EQ(protocol, Protocol::TCP4);
+    EXPECT_EQ(port, TEST_PORT_2);
+    EXPECT_EQ(targetGot, target);
+    EXPECT_EQ(addressGot, address);
 }
 
 // Getters and Setters
@@ -68,8 +83,10 @@ TEST(SteeringRuleTest, getsAddress)
     IPv4Address address = TEST_ADDRESS_2;
     unique_ptr<SteeringRule> rule = make_unique<SteeringRule>(Protocol::TCP4, TEST_PORT_2, address, target);
 
+    auto addressGot = rule->getAddress();
+
     ASSERT_NE(rule, nullptr);
-    EXPECT_EQ(rule->getAddress(), address);
+    EXPECT_EQ(addressGot, address);
 }
 
 TEST(SteeringRuleTest, getsPort)
@@ -78,8 +95,10 @@ TEST(SteeringRuleTest, getsPort)
     SteeringTarget target(address, TEST_PORT_1);
     unique_ptr<SteeringRule> rule = make_unique<SteeringRule>(Protocol::TCP4, TEST_PORT_2, target);
 
+    auto port = rule->getPort();
+
     ASSERT_NE(rule, nullptr);
-    EXPECT_EQ(rule->getPort(), TEST_PORT_2);
+    EXPECT_EQ(port, TEST_PORT_2);
 }
 
 TEST(SteeringRuleTest, getsProtocol)
@@ -88,8 +107,10 @@ TEST(SteeringRuleTest, getsProtocol)
     SteeringTarget target(address, TEST_PORT_1);
     unique_ptr<SteeringRule> rule = make_unique<SteeringRule>(Protocol::TCP4, target);
 
+    auto protocol = rule->getProtocol()._value;
+
     ASSERT_NE(rule, nullptr);
-    EXPECT_EQ(rule->getProtocol()._value, Protocol::TCP4);
+    EXPECT_EQ(protocol, Protocol::TCP4);
 }
 
 TEST(SteeringRuleTest, getsTarget)
@@ -98,8 +119,10 @@ TEST(SteeringRuleTest, getsTarget)
     SteeringTarget target(address, TEST_PORT_1);
     unique_ptr<SteeringRule> rule = make_unique<SteeringRule>(Protocol::TCP4, target);
 
+    auto targetGot = rule->getTarget();
+
     ASSERT_NE(rule, nullptr);
-    EXPECT_EQ(rule->getTarget(), target);
+    EXPECT_EQ(targetGot, target);
 }
 
 // Fake Getters
@@ -112,9 +135,13 @@ TEST(SteeringRuleTest, getsIdVariantsforTcp4)
     SteeringRule rule2(Protocol::TCP4, TEST_PORT_3, target);
     SteeringRule rule3(Protocol::TCP4, TEST_PORT_3, IPv4Address("1.2.3.4"), target);
 
-    EXPECT_EQ(rule1.getId(), "TCP4");
-    EXPECT_EQ(rule2.getId(), "TCP4-80");
-    EXPECT_EQ(rule3.getId(), "TCP4-80-1.2.3.4");
+    auto id1 = rule1.getId();
+    auto id2 = rule2.getId();
+    auto id3 = rule3.getId();
+
+    EXPECT_EQ(id1, "TCP4");
+    EXPECT_EQ(id2, "TCP4-80");
+    EXPECT_EQ(id3, "TCP4-80-1.2.3.4");
 }
 
 TEST(SteeringRuleTest, getsIdVariantsforUdp4)
@@ -125,9 +152,13 @@ TEST(SteeringRuleTest, getsIdVariantsforUdp4)
     SteeringRule rule2(Protocol::UDP4, TEST_PORT_3, target);
     SteeringRule rule3(Protocol::UDP4, TEST_PORT_3, IPv4Address("1.2.3.4"), target);
 
-    EXPECT_EQ(rule1.getId(), "UDP4");
-    EXPECT_EQ(rule2.getId(), "UDP4-80");
-    EXPECT_EQ(rule3.getId(), "UDP4-80-1.2.3.4");
+    auto id1 = rule1.getId();
+    auto id2 = rule2.getId();
+    auto id3 = rule3.getId();
+
+    EXPECT_EQ(id1, "UDP4");
+    EXPECT_EQ(id2, "UDP4-80");
+    EXPECT_EQ(id3, "UDP4-80-1.2.3.4");
 }
 
 TEST(SteeringRuleTest, getsIdVariantsforUnknown)
@@ -138,9 +169,13 @@ TEST(SteeringRuleTest, getsIdVariantsforUnknown)
     SteeringRule rule2(Protocol::UNKNOWN, TEST_PORT_3, target);
     SteeringRule rule3(Protocol::UNKNOWN, TEST_PORT_3, IPv4Address("1.2.3.4"), target);
 
-    EXPECT_EQ(rule1.getId(), "UNKNOWN");
-    EXPECT_EQ(rule2.getId(), "UNKNOWN-80");
-    EXPECT_EQ(rule3.getId(), "UNKNOWN-80-1.2.3.4");
+    auto id1 = rule1.getId();
+    auto id2 = rule2.getId();
+    auto id3 = rule3.getId();
+
+    EXPECT_EQ(id1, "UNKNOWN");
+    EXPECT_EQ(id2, "UNKNOWN-80");
+    EXPECT_EQ(id3, "UNKNOWN-80-1.2.3.4");
 }
 
 // Business logic

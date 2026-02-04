@@ -21,8 +21,11 @@ TEST_F(SteeringRuntimeTest, addsRuleWithTargetOnly)
     IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
 
-    EXPECT_TRUE(runtime.addRule(Protocol::UDP4, target));
-    EXPECT_EQ(runtime.ruleCount(), 1u);
+    auto result = runtime.addRule(Protocol::UDP4, target);
+    auto count = runtime.ruleCount();
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(count, 1u);
 }
 
 TEST_F(SteeringRuntimeTest, addsRuleWithPortAndTarget)
@@ -30,8 +33,11 @@ TEST_F(SteeringRuntimeTest, addsRuleWithPortAndTarget)
     IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
 
-    EXPECT_TRUE(runtime.addRule(Protocol::TCP4, 10, target));
-    EXPECT_EQ(runtime.ruleCount(), 1u);
+    auto result = runtime.addRule(Protocol::TCP4, 10, target);
+    auto count = runtime.ruleCount();
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(count, 1u);
 }
 
 TEST_F(SteeringRuntimeTest, addsRuleWithPortAddressTarget)
@@ -40,8 +46,11 @@ TEST_F(SteeringRuntimeTest, addsRuleWithPortAddressTarget)
     SteeringTarget target(targetAddress, 53);
     IPv4Address address("10.0.0.1");
 
-    EXPECT_TRUE(runtime.addRule(Protocol::TCP4, 10, address, target));
-    EXPECT_EQ(runtime.ruleCount(), 1u);
+    auto result = runtime.addRule(Protocol::TCP4, 10, address, target);
+    auto count = runtime.ruleCount();
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(count, 1u);
 }
 
 TEST_F(SteeringRuntimeTest, addsRuleException)
@@ -59,10 +68,15 @@ TEST_F(SteeringRuntimeTest, removesRuleWithProtocolOnly)
     IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
 
-    EXPECT_TRUE(runtime.addRule(Protocol::UDP4, target));
-    EXPECT_EQ(runtime.ruleCount(), 1u);
-    EXPECT_TRUE(runtime.removeRule(Protocol::UDP4));
-    EXPECT_EQ(runtime.ruleCount(), 0u);
+    auto result = runtime.addRule(Protocol::UDP4, target);
+    auto count = runtime.ruleCount();
+    auto resultRemove = runtime.removeRule(Protocol::UDP4);
+    auto finalCount = runtime.ruleCount();
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(count, 1u);
+    EXPECT_TRUE(resultRemove);
+    EXPECT_EQ(finalCount, 0u);
 }
 
 TEST_F(SteeringRuntimeTest, removesRuleWithProtocolAndPort)
@@ -70,10 +84,15 @@ TEST_F(SteeringRuntimeTest, removesRuleWithProtocolAndPort)
     IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 53);
 
-    EXPECT_TRUE(runtime.addRule(Protocol::UDP4, 50, target));
-    EXPECT_EQ(runtime.ruleCount(), 1u);
-    EXPECT_TRUE(runtime.removeRule(Protocol::UDP4, 50));
-    EXPECT_EQ(runtime.ruleCount(), 0u);
+    auto result = runtime.addRule(Protocol::UDP4, 50, target);
+    auto count = runtime.ruleCount();
+    auto resultRemove = runtime.removeRule(Protocol::UDP4, 50);
+    auto finalCount = runtime.ruleCount();
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(count, 1u);
+    EXPECT_TRUE(resultRemove);
+    EXPECT_EQ(finalCount, 0u);
 }
 
 TEST_F(SteeringRuntimeTest, removesRuleWithProtocolAndPortAndAddress)
@@ -82,10 +101,15 @@ TEST_F(SteeringRuntimeTest, removesRuleWithProtocolAndPortAndAddress)
     SteeringTarget target(targetAddress, 53);
     IPv4Address address("10.0.0.1");
 
-    EXPECT_TRUE(runtime.addRule(Protocol::UDP4, 50, address, target));
-    EXPECT_EQ(runtime.ruleCount(), 1u);
-    EXPECT_TRUE(runtime.removeRule(Protocol::UDP4, 50, address));
-    EXPECT_EQ(runtime.ruleCount(), 0u);
+    auto result = runtime.addRule(Protocol::UDP4, 50, address, target);
+    auto count = runtime.ruleCount();
+    auto resultRemove = runtime.removeRule(Protocol::UDP4, 50, address);
+    auto finalCount = runtime.ruleCount();
+
+    EXPECT_TRUE(result);
+    EXPECT_EQ(count, 1u);
+    EXPECT_TRUE(resultRemove);
+    EXPECT_EQ(finalCount, 0u);
 }
 
 TEST_F(SteeringRuntimeTest, removesRuleException)
@@ -93,8 +117,6 @@ TEST_F(SteeringRuntimeTest, removesRuleException)
     IPv4Address targetAddress("8.8.8.8");
     SteeringTarget target(targetAddress, 53);
 
-    EXPECT_TRUE(runtime.addRule(Protocol::UDP4, target));
-    EXPECT_EQ(runtime.ruleCount(), 1u);
     EXPECT_THROW(runtime.removeRule(Protocol::UDP6), InvalidProtocolException);
 }
 

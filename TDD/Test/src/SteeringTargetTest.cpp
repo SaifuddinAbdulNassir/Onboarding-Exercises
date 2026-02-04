@@ -32,7 +32,9 @@ TEST(SteeringTargetTest, getsAddress)
     IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
 
-    EXPECT_EQ(target.getAddress().toString(), "8.8.8.8");
+    auto addr = target.getAddress();
+
+    EXPECT_EQ(addr.toString(), "8.8.8.8");
 }
 
 TEST(SteeringTargetTest, getsPort)
@@ -40,7 +42,9 @@ TEST(SteeringTargetTest, getsPort)
     IPv4Address address("8.8.8.8");
     SteeringTarget target(address, 8080);
 
-    EXPECT_EQ(target.getPort(), 8080);
+    auto port = target.getPort();
+
+    EXPECT_EQ(port, 8080);
 }
 
 TEST(SteeringTargetTest, setsAddress)
@@ -50,8 +54,9 @@ TEST(SteeringTargetTest, setsAddress)
 
     address = IPv4Address("10.0.0.1");
     target.setAddress(address);
+    auto addr = target.getAddress();
 
-    EXPECT_EQ(target.getAddress().toString(), "10.0.0.1");
+    EXPECT_EQ(addr.toString(), "10.0.0.1");
 }
 
 TEST(SteeringTargetTest, setsPort)
@@ -60,8 +65,9 @@ TEST(SteeringTargetTest, setsPort)
     SteeringTarget target(address, 8080);
 
     target.setPort(443);
+    auto port = target.getPort();
 
-    EXPECT_EQ(target.getPort(), 443);
+    EXPECT_EQ(port, 443);
 }
 
 // Relational operators

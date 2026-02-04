@@ -66,9 +66,10 @@ TEST(SteeringWorkerTest, steersValidTcpPacket)
     auto packet = createTcpPacket(80);
     worker.steer(packet, target);
     auto tcp = packet.getLayerOfType<TcpLayer>();
+    auto dstPort = tcp->getTcpHeader()->portDst;
 
     ASSERT_NE(tcp, nullptr);
-    EXPECT_EQ(tcp->getTcpHeader()->portDst, htons(target.getPort()));
+    EXPECT_EQ(dstPort, htons(target.getPort()));
 }
 
 TEST(SteeringWorkerTest, steersValidUdpPacket)
@@ -81,9 +82,10 @@ TEST(SteeringWorkerTest, steersValidUdpPacket)
     auto packet = createUdpPacket(80);
     worker.steer(packet, target);
     auto udp = packet.getLayerOfType<UdpLayer>();
+    auto dstPort = udp->getUdpHeader()->portDst;
 
     ASSERT_NE(udp, nullptr);
-    EXPECT_EQ(udp->getUdpHeader()->portDst, htons(target.getPort()));
+    EXPECT_EQ(dstPort, htons(target.getPort()));
 }
 
 TEST(SteeringWorkerTest, throwsInvalidArgumentExceptionForInvalidPacket)
