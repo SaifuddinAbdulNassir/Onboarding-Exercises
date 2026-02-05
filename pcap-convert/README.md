@@ -4,7 +4,7 @@
 
 * pcap-convert
 
-This exercise take a pcap file as input and gives the output pcap file which contains the packets satisfies the condition provided by the user. It also display the following packet stats in the standard output:
+This exercise takes a PCAP file as input and generates an output PCAP containing only the packets that satisfy user-provided conditions. It also displays the following packet statistics in the standard output:
 - Total bytes & packets processed
 - Total bytes & packets dropped
 - Total bytes & packets written
@@ -12,9 +12,7 @@ This exercise take a pcap file as input and gives the output pcap file which con
 
 ## Build instruction
 
-To build and this project.
-Go inside the project folder (ie; pcap-convert)
-Then follow the commands in the terminal from that folder location
+To build this project, navigate to the project root folder (`pcap-convert`) and run the following commands in your terminal:
 
 ```
 cmake -S . -B build
