@@ -20,8 +20,8 @@ namespace TDD
     SteeringTarget(pcpp::IPv4Address address, uint16_t port);
     virtual ~SteeringTarget();
 
-    // Getters and Setters
-    pcpp::IPv4Address getAddress() const { return address; }
+    // Getters & setters
+    const pcpp::IPv4Address &getAddress() const { return address; }
     uint16_t getPort() const { return port; }
     void setAddress(pcpp::IPv4Address address);
     void setPort(uint16_t port);

@@ -31,13 +31,13 @@ namespace TDD
                  SteeringTarget target);
     virtual ~SteeringRule();
 
-    // Getters & Setters
-    pcpp::IPv4Address getAddress() const { return address; }
+    // Getters & setters
+    const pcpp::IPv4Address &getAddress() const { return address; }
     uint16_t getPort() const { return port; }
-    Protocol getProtocol() const { return protocol; }
-    SteeringTarget getTarget() const { return target; }
+    const Protocol &getProtocol() const { return protocol; }
+    const SteeringTarget &getTarget() const { return target; }
 
-    // Fake Getters
+    // Fake getters
     std::string getId() const;
 
     // Business logic
