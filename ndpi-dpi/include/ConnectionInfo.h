@@ -38,7 +38,7 @@ namespace ndpi
     void setCategory(const std::string &val) { category = val; }
     void setDomain(const std::string &val) { domain = val; }
     void setDone(bool val) { done = val; }
-    void setFlow(ndpi_flow_struct *val) { (val) ? flow = val : flow = nullptr; }
+    void setFlow(ndpi_flow_struct *val) { val ? flow = val : flow = nullptr; }
     void setPacketCount(uint32_t val) { packetCount = val; }
     void setProtocol(const std::string &val) { protocol = val; }
     void setUid(uint64_t val) { uid = val; }
