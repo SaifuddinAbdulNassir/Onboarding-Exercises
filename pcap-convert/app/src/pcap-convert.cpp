@@ -77,15 +77,15 @@ bool PcapConvert::isExpiredOrIcmp(Packet &packet, const PcapConvertParams &param
 
 void PcapConvert::modifyDnsDestination(Packet &packet, UdpLayer *udp, const PcapConvertParams &params)
 {
-    if (!params.getDnsAddr().empty())
+    if (params.getDnsAddr() != nullptr)
     {
         if (auto ip4 = packet.getLayerOfType<IPv4Layer>())
         {
-            ip4->getIPv4Header()->ipDst = IPv4Address(params.getDnsAddr()).toInt();
+            ip4->getIPv4Header()->ipDst = std::get<pcpp::IPv4Address>(*params.getDnsAddr()).toInt();
         }
         else if (auto ip6 = packet.getLayerOfType<IPv6Layer>())
         {
-            memcpy(ip6->getIPv6Header()->ipDst, IPv6Address(params.getDnsAddr()).toBytes(), 16);
+            memcpy(ip6->getIPv6Header()->ipDst, std::get<pcpp::IPv6Address>(*params.getDnsAddr()).toBytes(), 16);
         }
     }
     if (params.getDnsPort() != nullptr)
@@ -103,7 +103,7 @@ bool PcapConvert::parseArgs(int argc, char *argv[], PcapConvertParams &params)
         if (arg == "--vlan" && i + 1 < argc)
             params.setVlan(std::make_unique<uint16_t>(stoi(argv[++i])));
         else if (arg == "-ip-version" && i + 1 < argc)
-            params.setIpVersion(stoi(argv[++i]));
+            params.setIpVersion(IPAddress::AddressType(stoi(argv[++i])));
         else if (arg == "--ttl" && i + 1 < argc)
             params.setTtlDec(std::make_unique<uint8_t>(stoi(argv[++i])));
         else if (arg == "--dns-addr" && i + 1 < argc)
