@@ -9,5 +9,7 @@
 
 namespace ndpi
 {
+
     typedef std::tuple<ndpi_detection_module_struct *, AppState *, ConnectionsMap *> CaptureCookie;
-}
+
+} // namespace ndpi
