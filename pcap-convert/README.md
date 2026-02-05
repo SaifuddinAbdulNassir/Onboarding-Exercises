@@ -19,13 +19,12 @@ Then follow the commands in the terminal from that folder location
 ```
 cmake -S . -B build
 cmake --build build
-cd build
 ```
 
 ## Command to run the project
 
 ```
-./build/pcap-convert --vlan 5 -ip-version 4 --ttl 2 --dns-addr 10.0.0.1 --dns-port 5353 -i Pcapfiles/input.pcap -o Pcapfiles/output.pcap
+./build/pcap-convert --vlan 5 -ip-version 4 --ttl 2 --dns-addr 10.0.0.1 --dns-port 5353 -i data/captures/x11-sample.pcap -o data/captures/x11-sample-filtered.pcap
 ```
 
-The output.pcap will be generated in build folder.
+The x11-sample-filtered.pcap will be generated in data/captures folder.
