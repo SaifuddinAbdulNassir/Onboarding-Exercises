@@ -87,28 +87,28 @@ void onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
     {
         auto insertResult = connectionMap.try_emplace(key, ConnectionInfo{});
         it = insertResult.first;
-        ConnectionInfo &ci = it->second;
-        ci.setUid(appState.getUid());
+        ConnectionInfo &connectionInfo = it->second;
+        connectionInfo.setUid(appState.getUid());
         appState.incrementUid();
-        ci.setFlow((ndpi_flow_struct *)calloc(1, ndpi_detection_get_sizeof_ndpi_flow_struct()));
-        ci.setPacketCount(0);
-        ci.setDone(false);
-        ci.setProtocol("UNKNOWN");
-        ci.setCategory("UNKNOWN");
-        ci.setDomain("");
+        connectionInfo.setFlow((ndpi_flow_struct *)calloc(1, ndpi_detection_get_sizeof_ndpi_flow_struct()));
+        connectionInfo.setPacketCount(0);
+        connectionInfo.setDone(false);
+        connectionInfo.setProtocol("UNKNOWN");
+        connectionInfo.setCategory("UNKNOWN");
+        connectionInfo.setDomain("");
     }
 
-    ConnectionInfo &conn = it->second;
-    if (conn.getDone())
+    ConnectionInfo &connectionInfo = it->second;
+    if (connectionInfo.getDone())
         return;
 
-    conn.setPacketCount(conn.getPacketCount() + 1);
-    if (conn.getPacketCount() > appState.getMaxPackets())
+    connectionInfo.setPacketCount(connectionInfo.getPacketCount() + 1);
+    if (connectionInfo.getPacketCount() > appState.getMaxPackets())
     {
-        conn.setProtocol("UNKNOWN");
-        conn.setCategory("UNKNOWN");
-        conn.setDomain("");
-        conn.setDone(true);
+        connectionInfo.setProtocol("UNKNOWN");
+        connectionInfo.setCategory("UNKNOWN");
+        connectionInfo.setDomain("");
+        connectionInfo.setDone(true);
         return;
     }
 
@@ -120,7 +120,7 @@ void onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
 
     // 0 = client → server
     inputInfo.in_pkt_dir = (isForward) ? 0 : 1;
-    inputInfo.seen_flow_beginning = (conn.getPacketCount() == 1);
+    inputInfo.seen_flow_beginning = (connectionInfo.getPacketCount() == 1);
 
     auto timeMs =
         rawPacket->getPacketTimeStamp().tv_sec * 1000ULL +
@@ -129,17 +129,17 @@ void onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
     const auto *ipData = ip->getData();
     auto ipLen = ip->getDataLen();
 
-    auto proto = ndpi_detection_process_packet(ndpiMod, conn.getFlow(), ipData, ipLen, timeMs, &inputInfo);
+    auto proto = ndpi_detection_process_packet(ndpiMod, connectionInfo.getFlow(), ipData, ipLen, timeMs, &inputInfo);
 
     if (proto.proto.app_protocol != NDPI_PROTOCOL_UNKNOWN)
     {
-        conn.setProtocol(ndpi_get_proto_name(ndpiMod, proto.proto.app_protocol));
-        conn.setCategory(ndpi_category_get_name(ndpiMod, proto.category));
-        if (conn.getFlow()->host_server_name[0] != '\0')
+        connectionInfo.setProtocol(ndpi_get_proto_name(ndpiMod, proto.proto.app_protocol));
+        connectionInfo.setCategory(ndpi_category_get_name(ndpiMod, proto.category));
+        if (connectionInfo.getFlow()->host_server_name[0] != '\0')
         {
-            conn.setDomain(conn.getFlow()->host_server_name);
+            connectionInfo.setDomain(connectionInfo.getFlow()->host_server_name);
         }
-        conn.setDone(true);
+        connectionInfo.setDone(true);
     }
 }
 
