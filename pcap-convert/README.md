@@ -22,8 +22,6 @@ cmake --build build
 cd build
 ```
 
-After executing these commands and before running the project take one pcap file from the folder Pcapfiles, rename it to input.pcap (if name is not input.pcap) and copy it to the build folder.
-
 ## Command to run the project
 
 ```
