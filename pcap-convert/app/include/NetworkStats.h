@@ -33,9 +33,9 @@ namespace pcapconvert
     void incrementBytesDropped(size_t value) { bytesDropped += value; };
     void incrementBytesIn(size_t value) { bytesIn += value; };
     void incrementBytesOut(size_t value) { bytesOut += value; };
-    void incrementDnsModifiedPackets() { dnsModifiedPackets++; };
-    void incrementDroppedPackets() { droppedPackets++; };
-    void incrementWrittenPackets() { writtenPackets++; };
+    void incrementDnsModifiedPackets() { ++dnsModifiedPackets; };
+    void incrementDroppedPackets() { ++droppedPackets; };
+    void incrementWrittenPackets() { ++writtenPackets; };
   };
 
 } // namespace pcapconvert
