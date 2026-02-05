@@ -14,19 +14,13 @@ namespace ndpi
   {
   private:
     // Data
-    std::string category;
-    std::string domain;
-    bool done;
-    ndpi_flow_struct *flow;
-    uint32_t packetCount;
-    std::string protocol;
-    uint64_t uid;
-
-    // Constants
-    static const bool DEFAULT_BOOL = false;
-    static const size_t DEFAULT_SIZE_T = 0;
-    static inline const std::string DEFAULT_STRING = "";
-    static inline const std::nullptr_t NULLPTR = nullptr;
+    std::string category = "";
+    std::string domain = "";
+    bool done = false;
+    ndpi_flow_struct *flow = nullptr;
+    uint32_t packetCount = 0;
+    std::string protocol = "";
+    uint64_t uid = 0;
 
   public:
     // Constructors & destructors

@@ -10,14 +10,9 @@ namespace ndpi
   {
   private:
     // Data
-    uint32_t maxPackets;
-    bool running;
-    uint64_t uid;
-
-    // Constants
-    static const uint32_t DEFAULT_MAX_PACKETS = 100;
-    static const bool DEFAULT_RUNNING = true;
-    static const uint64_t DEFAULT_UID = 0;
+    uint32_t maxPackets = 100;
+    bool running = true;
+    uint64_t uid = 0;
 
   public:
     // Constructors & destructors
