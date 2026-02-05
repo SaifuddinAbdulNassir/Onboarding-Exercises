@@ -80,7 +80,7 @@ void onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
     // Canonicalize flow
     canonicalize(srcIp, dstIp, srcPort, dstPort);
 
-    ConnectionKey key{dstIp, dstPort, l4Proto, srcIp, srcPort};
+    auto key = ConnectionKey(dstIp, dstPort, l4Proto, srcIp, srcPort);
 
     auto it = connectionMap.find(key);
     if (it == connectionMap.end())
