@@ -4,10 +4,9 @@ project(pcap-convert)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include_directories(/usr/local/include/pcapplusplus
-${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-link_directories(/usr/local/lib)
+find_package(PcapPlusPlus REQUIRED)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 file(GLOB SOURCES "src/*.cpp")
 
