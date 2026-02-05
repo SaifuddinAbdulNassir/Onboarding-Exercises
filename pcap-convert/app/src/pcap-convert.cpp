@@ -149,14 +149,14 @@ void PcapConvert::processPackets(PcapFileReaderDevice &reader, PcapFileWriterDev
 
     while (reader.getNextPacket(rawPacket))
     {
-        stats.addBytesIn(rawPacket.getRawDataLen());
+        stats.incrementBytesIn(rawPacket.getRawDataLen());
         Packet packet(&rawPacket);
 
         // Filtering
         if (shouldDropPacket(packet, params))
         {
             stats.incrementDroppedPackets();
-            stats.addBytesDropped(rawPacket.getRawDataLen());
+            stats.incrementBytesDropped(rawPacket.getRawDataLen());
             continue;
         }
 
@@ -167,7 +167,7 @@ void PcapConvert::processPackets(PcapFileReaderDevice &reader, PcapFileWriterDev
         packet.computeCalculateFields();
         writer.writePacket(rawPacket);
         stats.incrementWrittenPackets();
-        stats.addBytesOut(rawPacket.getRawDataLen());
+        stats.incrementBytesOut(rawPacket.getRawDataLen());
     }
     printStatistics(stats, reader);
 }
