@@ -9,11 +9,7 @@ ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 link_directories(/usr/local/lib)
 
- set(SOURCES
-    src/Config.cpp
-    src/main.cpp
-    src/NetworkStats.cpp
-)
+file(GLOB SOURCES "src/*.cpp")
 
 add_executable(pcap-convert ${SOURCES})
 
