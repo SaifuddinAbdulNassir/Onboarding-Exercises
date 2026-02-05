@@ -11,7 +11,7 @@ namespace pcapconvert
   private:
     // Data
     std::string dnsAddr;
-    int dnsPort = -1;
+    uint16_t dnsPort = -1;
     std::string inputFile;
     int ipVersion = -1;
     std::string outputFile;
