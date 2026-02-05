@@ -11,10 +11,3 @@ AppState::AppState()
 AppState::~AppState()
 {
 }
-
-// Business logic
-
-void AppState::incrementUid()
-{
-    uid++;
-}

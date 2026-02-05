@@ -27,7 +27,7 @@ namespace ndpi
     void setRunning(bool val) { running = val; }
 
     // Business logic
-    void incrementUid();
+    void incrementUid() { uid++; };
   };
 
 } // namespace ndpi
