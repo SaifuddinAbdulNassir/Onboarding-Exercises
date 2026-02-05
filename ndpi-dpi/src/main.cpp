@@ -5,7 +5,6 @@
 #include <iostream>
 #include <poll.h>
 #include <sys/signalfd.h>
-#include <tuple>
 #include <unistd.h>
 
 // Library includes
@@ -18,14 +17,11 @@
 #include <pcapplusplus/UdpLayer.h>
 
 // Project includes
-#include "AppState.h"
-#include "ConnectionsMap.h"
+#include "CaptureCookie.h"
 
 using namespace ndpi;
 using namespace pcpp;
 using namespace std;
-
-using CaptureCookie = tuple<ndpi_detection_module_struct *, AppState *, ConnectionsMap *>;
 
 //  Connection functions
 
