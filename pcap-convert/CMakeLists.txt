@@ -11,15 +11,15 @@ link_directories(/usr/local/lib)
 
  set(SOURCES
     src/Config.cpp
-    src/NetworkStats.cpp
     src/main.cpp
+    src/NetworkStats.cpp
 )
 
 add_executable(pcap-convert ${SOURCES})
 
 target_link_libraries(pcap-convert
-    Pcap++
-    Packet++
     Common++
+    Packet++
     pcap
+    Pcap++
 )
