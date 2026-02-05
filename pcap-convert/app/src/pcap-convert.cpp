@@ -19,9 +19,9 @@ PcapConvert::~PcapConvert()
 
 // Business logic
 
-void PcapConvert::applyPacketModifications(Packet &packet, const Config &config, NetworkStats &stats)
+void PcapConvert::applyPacketModifications(Packet &packet, const PcapConvertParams &params, NetworkStats &stats)
 {
-    decrementTtl(packet, config);
+    decrementTtl(packet, params);
 
     if (packet.isPacketOfType(UDP))
     {
@@ -30,37 +30,37 @@ void PcapConvert::applyPacketModifications(Packet &packet, const Config &config,
 
         if (dns && udp)
         {
-            modifyDnsDestination(packet, udp, config);
+            modifyDnsDestination(packet, udp, params);
             stats.incrementDnsModifiedPackets();
         }
     }
 }
 
-void PcapConvert::decrementTtl(Packet &packet, const Config &config)
+void PcapConvert::decrementTtl(Packet &packet, const PcapConvertParams &params)
 {
-    if (config.getTtlDec() <= 0)
+    if (params.getTtlDec() <= 0)
         return;
 
     if (auto ip4 = packet.getLayerOfType<IPv4Layer>())
     {
-        ip4->getIPv4Header()->timeToLive -= config.getTtlDec();
+        ip4->getIPv4Header()->timeToLive -= params.getTtlDec();
     }
     else if (auto ip6 = packet.getLayerOfType<IPv6Layer>())
     {
-        ip6->getIPv6Header()->hopLimit -= config.getTtlDec();
+        ip6->getIPv6Header()->hopLimit -= params.getTtlDec();
     }
 }
 
-bool PcapConvert::isExpiredOrIcmp(Packet &packet, const Config &config)
+bool PcapConvert::isExpiredOrIcmp(Packet &packet, const PcapConvertParams &params)
 {
-    if (config.getTtlDec() < 0)
+    if (params.getTtlDec() < 0)
         return false;
 
     auto ip4 = packet.getLayerOfType<IPv4Layer>();
     if (ip4)
     {
         // Drop if TTL is too low to decrement OR if it's ICMP
-        return (ip4->getIPv4Header()->timeToLive <= config.getTtlDec() ||
+        return (ip4->getIPv4Header()->timeToLive <= params.getTtlDec() ||
                 ip4->getIPv4Header()->protocol == PACKETPP_IPPROTO_ICMP);
     }
 
@@ -68,59 +68,59 @@ bool PcapConvert::isExpiredOrIcmp(Packet &packet, const Config &config)
     if (ip6)
     {
         // Drop if Hop Limit is too low to decrement OR if it's ICMPv6
-        return (ip6->getIPv6Header()->hopLimit <= config.getTtlDec() ||
+        return (ip6->getIPv6Header()->hopLimit <= params.getTtlDec() ||
                 ip6->getIPv6Header()->nextHeader == PACKETPP_IPPROTO_ICMPV6);
     }
 
     return false;
 }
 
-void PcapConvert::modifyDnsDestination(Packet &packet, UdpLayer *udp, const Config &config)
+void PcapConvert::modifyDnsDestination(Packet &packet, UdpLayer *udp, const PcapConvertParams &params)
 {
-    if (!config.getDnsAddr().empty())
+    if (!params.getDnsAddr().empty())
     {
         if (auto ip4 = packet.getLayerOfType<IPv4Layer>())
         {
-            ip4->getIPv4Header()->ipDst = IPv4Address(config.getDnsAddr()).toInt();
+            ip4->getIPv4Header()->ipDst = IPv4Address(params.getDnsAddr()).toInt();
         }
         else if (auto ip6 = packet.getLayerOfType<IPv6Layer>())
         {
-            memcpy(ip6->getIPv6Header()->ipDst, IPv6Address(config.getDnsAddr()).toBytes(), 16);
+            memcpy(ip6->getIPv6Header()->ipDst, IPv6Address(params.getDnsAddr()).toBytes(), 16);
         }
     }
-    if (config.getDnsPort() > 0)
+    if (params.getDnsPort() > 0)
     {
-        udp->getUdpHeader()->portDst = config.getDnsPort();
+        udp->getUdpHeader()->portDst = params.getDnsPort();
     }
 }
 
-bool PcapConvert::parseArgs(int argc, char *argv[], Config &config)
+bool PcapConvert::parseArgs(int argc, char *argv[], PcapConvertParams &params)
 {
     for (int i = 1; i < argc; ++i)
     {
         string arg = argv[i];
 
         if (arg == "--vlan" && i + 1 < argc)
-            config.setVlan(stoi(argv[++i]));
+            params.setVlan(stoi(argv[++i]));
         else if (arg == "-ip-version" && i + 1 < argc)
-            config.setIpVersion(stoi(argv[++i]));
+            params.setIpVersion(stoi(argv[++i]));
         else if (arg == "--ttl" && i + 1 < argc)
-            config.setTtlDec(stoi(argv[++i]));
+            params.setTtlDec(stoi(argv[++i]));
         else if (arg == "--dns-addr" && i + 1 < argc)
-            config.setDnsAddr(argv[++i]);
+            params.setDnsAddr(argv[++i]);
         else if (arg == "--dns-port" && i + 1 < argc)
-            config.setDnsPort(stoi(argv[++i]));
+            params.setDnsPort(stoi(argv[++i]));
         else if (arg == "-i" && i + 1 < argc)
-            config.setInputFile(argv[++i]);
+            params.setInputFile(argv[++i]);
         else if (arg == "-o" && i + 1 < argc)
-            config.setOutputFile(argv[++i]);
+            params.setOutputFile(argv[++i]);
         else if (arg == "-h" || arg == "--help")
         {
             cout << "Command to run the App: ./build/pcap-convert [--vlan <vlan id>] [-ip-version <4|6>] [--ttl <decrement>] " << "[--dns-addr <address>] [--dns-port <port>]  -i data/captures/<input pcap file> -o data/captures/<output pcap file>  \n";
         }
     }
 
-    return !config.getInputFile().empty() && !config.getOutputFile().empty();
+    return !params.getInputFile().empty() && !params.getOutputFile().empty();
 }
 
 void PcapConvert::printStatistics(const NetworkStats &stats, PcapFileReaderDevice &reader)
@@ -142,7 +142,7 @@ void PcapConvert::printStatistics(const NetworkStats &stats, PcapFileReaderDevic
     cout << "====================================\n";
 }
 
-void PcapConvert::processPackets(PcapFileReaderDevice &reader, PcapFileWriterDevice &writer, const Config &config)
+void PcapConvert::processPackets(PcapFileReaderDevice &reader, PcapFileWriterDevice &writer, const PcapConvertParams &params)
 {
     RawPacket rawPacket;
     NetworkStats stats;
@@ -153,7 +153,7 @@ void PcapConvert::processPackets(PcapFileReaderDevice &reader, PcapFileWriterDev
         Packet packet(&rawPacket);
 
         // Filtering
-        if (shouldDropPacket(packet, config))
+        if (shouldDropPacket(packet, params))
         {
             stats.incrementDroppedPackets();
             stats.addBytesDropped(rawPacket.getRawDataLen());
@@ -161,7 +161,7 @@ void PcapConvert::processPackets(PcapFileReaderDevice &reader, PcapFileWriterDev
         }
 
         // Modification
-        applyPacketModifications(packet, config, stats);
+        applyPacketModifications(packet, params, stats);
 
         // Finalize and Save
         packet.computeCalculateFields();
@@ -172,13 +172,13 @@ void PcapConvert::processPackets(PcapFileReaderDevice &reader, PcapFileWriterDev
     printStatistics(stats, reader);
 }
 
-bool PcapConvert::shouldDropPacket(Packet &packet, const Config &config)
+bool PcapConvert::shouldDropPacket(Packet &packet, const PcapConvertParams &params)
 {
     // 1. VLAN Filter
-    if (config.getVlan() >= 0)
+    if (params.getVlan() >= 0)
     {
         auto vlan = packet.getLayerOfType<VlanLayer>();
-        if (!vlan || vlan->getVlanID() != config.getVlan())
+        if (!vlan || vlan->getVlanID() != params.getVlan())
             return true;
     }
 
@@ -187,16 +187,16 @@ bool PcapConvert::shouldDropPacket(Packet &packet, const Config &config)
         return true;
 
     // 3. IP Version Filter
-    if (config.getIpVersion() >= 0)
+    if (params.getIpVersion() >= 0)
     {
         bool isV4 = packet.isPacketOfType(IPv4);
         bool isV6 = packet.isPacketOfType(IPv6);
-        if (config.getIpVersion() == 4 && !isV4)
+        if (params.getIpVersion() == 4 && !isV4)
             return true;
-        if (config.getIpVersion() == 6 && !isV6)
+        if (params.getIpVersion() == 6 && !isV6)
             return true;
     }
 
     // 4. TTL/Hop Limit Logic
-    return isExpiredOrIcmp(packet, config);
+    return isExpiredOrIcmp(packet, params);
 }

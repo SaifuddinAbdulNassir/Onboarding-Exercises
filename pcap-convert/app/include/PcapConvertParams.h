@@ -6,7 +6,7 @@
 namespace pcapconvert
 {
 
-  class Config
+  class PcapConvertParams
   {
   private:
     // Data
@@ -20,8 +20,8 @@ namespace pcapconvert
 
   public:
     // Constructors & destructors
-    Config();
-    virtual ~Config();
+    PcapConvertParams();
+    virtual ~PcapConvertParams();
 
     // Getters & setters
     const std::string &getDnsAddr() const { return dnsAddr; }
