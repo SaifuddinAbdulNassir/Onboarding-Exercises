@@ -2,6 +2,7 @@
 
 // Standard includes
 #include <string>
+#include <memory>
 
 namespace pcapconvert
 {
@@ -11,12 +12,12 @@ namespace pcapconvert
   private:
     // Data
     std::string dnsAddr;
-    uint16_t dnsPort = -1;
+    std::unique_ptr<uint16_t> dnsPort = nullptr;
     std::string inputFile;
     int ipVersion = -1;
     std::string outputFile;
-    int ttlDec = -1;
-    int vlan = -1;
+    std::unique_ptr<uint8_t> ttlDec = nullptr;
+    std::unique_ptr<uint16_t> vlan = nullptr;
 
   public:
     // Constructors & destructors
@@ -25,19 +26,19 @@ namespace pcapconvert
 
     // Getters & setters
     const std::string &getDnsAddr() const { return dnsAddr; }
-    int getDnsPort() const { return dnsPort; }
+    uint16_t *getDnsPort() const { return dnsPort.get(); }
     const std::string &getInputFile() const { return inputFile; }
     int getIpVersion() const { return ipVersion; }
     const std::string &getOutputFile() const { return outputFile; }
-    int getTtlDec() const { return ttlDec; }
-    int getVlan() const { return vlan; }
+    uint8_t *getTtlDec() const { return ttlDec.get(); }
+    uint16_t *getVlan() const { return vlan.get(); }
     void setDnsAddr(const std::string &addr) { dnsAddr = addr; }
-    void setDnsPort(int port) { dnsPort = port; }
+    void setDnsPort(std::unique_ptr<uint16_t> port) { dnsPort = std::move(port); }
     void setInputFile(const std::string &file) { inputFile = file; }
     void setIpVersion(int version) { ipVersion = version; }
     void setOutputFile(const std::string &file) { outputFile = file; }
-    void setTtlDec(int dec) { ttlDec = dec; }
-    void setVlan(int id) { vlan = id; }
+    void setTtlDec(std::unique_ptr<uint8_t> dec) { ttlDec = std::move(dec); }
+    void setVlan(std::unique_ptr<uint16_t> id) { vlan = std::move(id); }
   };
 
 } // namespace pcapconvert
