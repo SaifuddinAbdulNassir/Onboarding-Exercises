@@ -30,9 +30,9 @@ namespace pcapconvert
     int getWrittenPackets() const { return writtenPackets; }
 
     // Business logic
-    void incrementBytesDropped(size_t bytes) { bytesDropped += bytes; };
-    void incrementBytesIn(size_t bytes) { bytesIn += bytes; };
-    void incrementBytesOut(size_t bytes) { bytesOut += bytes; };
+    void incrementBytesDropped(size_t value) { bytesDropped += value; };
+    void incrementBytesIn(size_t value) { bytesIn += value; };
+    void incrementBytesOut(size_t value) { bytesOut += value; };
     void incrementDnsModifiedPackets() { dnsModifiedPackets++; };
     void incrementDroppedPackets() { droppedPackets++; };
     void incrementWrittenPackets() { writtenPackets++; };
