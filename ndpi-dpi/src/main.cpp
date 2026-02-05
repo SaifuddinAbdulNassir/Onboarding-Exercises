@@ -129,7 +129,7 @@ void onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
     const auto *ipData = ip->getData();
     auto ipLen = ip->getDataLen();
 
-    ndpi_protocol proto = ndpi_detection_process_packet(ndpiMod, conn.getFlow(), ipData, ipLen, timeMs, &inputInfo);
+    auto proto = ndpi_detection_process_packet(ndpiMod, conn.getFlow(), ipData, ipLen, timeMs, &inputInfo);
 
     if (proto.proto.app_protocol != NDPI_PROTOCOL_UNKNOWN)
     {
