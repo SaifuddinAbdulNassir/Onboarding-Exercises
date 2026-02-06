@@ -4,6 +4,7 @@
 #include <iostream>
 
 // Library includes
+#include <cxxopts/cxxopts.hpp>
 #include <libfort/fort.hpp>
 
 using namespace pcapconvert;
@@ -99,31 +100,33 @@ void PcapConvert::modifyDnsDestination(Packet &packet, UdpLayer *udp, const Pcap
 
 bool PcapConvert::parseArgs(int argc, char *argv[], PcapConvertParams &params)
 {
-    for (int i = 1; i < argc; ++i)
-    {
-        string arg = argv[i];
+    cxxopts::Options options("pcap-convert", "PCAP file converter");
 
-        if (arg == "--vlan" && i + 1 < argc)
-            params.setVlan(std::make_unique<uint16_t>(stoi(argv[++i])));
-        else if (arg == "-ip-version" && i + 1 < argc)
-            params.setIpVersion(IPAddress::AddressType(stoi(argv[++i])));
-        else if (arg == "--ttl" && i + 1 < argc)
-            params.setTtlDec(std::make_unique<uint8_t>(stoi(argv[++i])));
-        else if (arg == "--dns-addr" && i + 1 < argc)
-            params.setDnsAddr(argv[++i]);
-        else if (arg == "--dns-port" && i + 1 < argc)
-            params.setDnsPort(std::make_unique<uint16_t>(stoi(argv[++i])));
-        else if (arg == "-i" && i + 1 < argc)
-            params.setInputFile(argv[++i]);
-        else if (arg == "-o" && i + 1 < argc)
-            params.setOutputFile(argv[++i]);
-        else if (arg == "-h" || arg == "--help")
-        {
-            cout << "Command to run the App: ./build/pcap-convert [--vlan <vlan id>] [-ip-version <4|6>] [--ttl <decrement>] " << "[--dns-addr <address>] [--dns-port <port>]  -i data/captures/<input pcap file> -o data/captures/<output pcap file>  \n";
-        }
+    options.add_options()("v,vlan", "VLAN ID to filter on", cxxopts::value<uint16_t>())("ip-version", "IP version to filter on (4 or 6)", cxxopts::value<int>())("t,ttl", "TTL decrement value", cxxopts::value<uint8_t>())("dns-addr", "DNS destination address to modify to", cxxopts::value<std::string>())("dns-port", "DNS destination port to modify to", cxxopts::value<uint16_t>())("i,input", "Input pcap file path", cxxopts::value<std::string>())("o,output", "Output pcap file path", cxxopts::value<std::string>())("h,help", "Command to run the App: ./build/pcap-convert --vlan <vlan id> --ip-version <4|6> --ttl <decrement> --dns-addr <address> --dns-port <port> -i data/captures/<input pcap file> -o data/captures/<output pcap file>");
+
+    auto result = options.parse(argc, argv);
+    if (result.count("help") || !result.count("input") || !result.count("output"))
+    {
+        cout << options.help() << endl;
+        return false;
     }
 
-    return !params.getInputFile().empty() && !params.getOutputFile().empty();
+    if (result.count("vlan"))
+        params.setVlan(std::make_unique<uint16_t>(result["vlan"].as<uint16_t>()));
+    if (result.count("ip-version"))
+        params.setIpVersion(IPAddress::AddressType(result["ip-version"].as<int>()));
+    if (result.count("ttl"))
+        params.setTtlDec(std::make_unique<uint8_t>(result["ttl"].as<uint8_t>()));
+    if (result.count("dns-addr"))
+        params.setDnsAddr(result["dns-addr"].as<std::string>());
+    if (result.count("dns-port"))
+        params.setDnsPort(std::make_unique<uint16_t>(result["dns-port"].as<uint16_t>()));
+    if (result.count("input"))
+        params.setInputFile(result["input"].as<string>());
+    if (result.count("output"))
+        params.setOutputFile(result["output"].as<string>());
+
+    return true;
 }
 
 void PcapConvert::printStatistics(const NetworkStats &stats, PcapFileReaderDevice &reader)

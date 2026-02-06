@@ -22,7 +22,7 @@ cmake --build build
 ## Command to run the project
 
 ```
-./build/pcap-convert --vlan 5 -ip-version 4 --ttl 2 --dns-addr 10.0.0.1 --dns-port 5353 -i data/captures/x11-sample.pcap -o data/captures/x11-sample-filtered.pcap
+./build/pcap-convert --vlan 5 --ip-version 4 --ttl 2 --dns-addr 10.0.0.1 --dns-port 5353 -i data/captures/x11-sample.pcap -o data/captures/x11-sample-filtered.pcap
 ```
 
 The x11-sample-filtered.pcap will be generated in data/captures folder.
