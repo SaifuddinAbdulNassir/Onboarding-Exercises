@@ -1,5 +1,5 @@
 // Project includes
-#include "pcap-convert.h"
+#include "PcapConvert.h"
 #include "PcapConvertParams.h"
 #include "PcapConvertStats.h"
 

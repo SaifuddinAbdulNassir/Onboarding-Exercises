@@ -1,4 +1,4 @@
-#include "pcap-convert.h"
+#include "PcapConvert.h"
 
 // Standard includes
 #include <iostream>
