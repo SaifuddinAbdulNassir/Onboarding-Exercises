@@ -3,6 +3,9 @@
 // Standard includes
 #include <iostream>
 
+// Library includes
+#include <libfort/fort.hpp>
+
 using namespace pcapconvert;
 using namespace pcpp;
 using namespace std;
@@ -128,18 +131,14 @@ void PcapConvert::printStatistics(const NetworkStats &stats, PcapFileReaderDevic
     IPcapDevice::PcapStats readerStats;
     reader.getStatistics(readerStats);
 
-    cout << "\n=== Packet Processing Statistics ===\n";
-    cout << "Total bytes & packets processed: " << stats.getBytesIn()
-         << " & " << readerStats.packetsRecv << "\n";
+    fort::char_table table;
+    table << fort::header << "Packet Processing Statistics" << "Total bytes" << "Total packets" << fort::endr
+          << "Total bytes & packets processed: " << stats.getBytesIn() << readerStats.packetsRecv << fort::endr
+          << "Total bytes & packets dropped:   " << stats.getBytesDropped() << stats.getDroppedPackets() << fort::endr
+          << "Total bytes & packets written:   " << stats.getBytesOut() << stats.getWrittenPackets() << fort::endr
+          << "Total DNS packets modified:      " << " " << stats.getDnsModifiedPackets() << fort::endr;
 
-    cout << "Total bytes & packets dropped:   " << stats.getBytesDropped()
-         << " & " << stats.getDroppedPackets() << "\n";
-
-    cout << "Total bytes & packets written:   " << stats.getBytesOut()
-         << " & " << stats.getWrittenPackets() << "\n";
-
-    cout << "Total DNS packets modified:      " << stats.getDnsModifiedPackets() << "\n";
-    cout << "====================================\n";
+    std::cout << table.to_string() << std::endl;
 }
 
 void PcapConvert::processPackets(PcapFileReaderDevice &reader, PcapFileWriterDevice &writer, const PcapConvertParams &params)
