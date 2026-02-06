@@ -30,7 +30,7 @@ namespace pcapconvert
         bool isExpiredOrIcmp(pcpp::Packet &packet) const;
         void modifyDnsDestination(pcpp::Packet &packet, pcpp::UdpLayer *udp);
         bool parseArgs(int argc, char *argv[]);
-        void printStatistics(pcpp::PcapFileReaderDevice &reader) const;
+        void printStats(pcpp::PcapFileReaderDevice &reader) const;
         void processPackets();
         bool shouldDropPacket(pcpp::Packet &packet) const;
     };

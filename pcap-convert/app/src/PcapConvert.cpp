@@ -154,7 +154,7 @@ bool PcapConvert::parseArgs(int argc, char *argv[])
     return true;
 }
 
-void PcapConvert::printStatistics(PcapFileReaderDevice &reader) const
+void PcapConvert::printStats(PcapFileReaderDevice &reader) const
 {
     IPcapDevice::PcapStats readerStats;
     reader.getStatistics(readerStats);
@@ -207,7 +207,7 @@ void PcapConvert::processPackets()
         writer.writePacket(rawPacket);
         stats.recordWrittenPacket(rawPacket.getRawDataLen());
     }
-    printStatistics(reader);
+    printStats(reader);
 }
 
 bool PcapConvert::shouldDropPacket(Packet &packet) const
