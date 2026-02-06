@@ -14,13 +14,13 @@ NetworkStats::~NetworkStats()
 
 // Business logic
 
-void NetworkStats::recordWrittenPacket(size_t value)
+void NetworkStats::recordWrittenPacket(uint32_t value)
 {
     ++writtenPackets;
     bytesOut += value;
 }
 
-void NetworkStats::recordDroppedPacket(size_t value)
+void NetworkStats::recordDroppedPacket(uint32_t value)
 {
     ++droppedPackets;
     bytesDropped += value;

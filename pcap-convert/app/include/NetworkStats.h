@@ -1,6 +1,7 @@
 #pragma once
 
-#include <cstddef>
+// Standard includes
+#include <cstdint>
 
 namespace pcapconvert
 {
@@ -9,12 +10,12 @@ namespace pcapconvert
   {
   private:
     // Data
-    size_t bytesDropped = 0;
-    size_t bytesIn = 0;
-    size_t bytesOut = 0;
-    int dnsModifiedPackets = 0;
-    int droppedPackets = 0;
-    int writtenPackets = 0;
+    uint32_t bytesDropped = 0;
+    uint32_t bytesIn = 0;
+    uint32_t bytesOut = 0;
+    uint32_t dnsModifiedPackets = 0;
+    uint32_t droppedPackets = 0;
+    uint32_t writtenPackets = 0;
 
   public:
     // Constructors & destructors
@@ -22,18 +23,18 @@ namespace pcapconvert
     virtual ~NetworkStats();
 
     // Getters & setters
-    size_t getBytesDropped() const { return bytesDropped; }
-    size_t getBytesIn() const { return bytesIn; }
-    size_t getBytesOut() const { return bytesOut; }
-    int getDnsModifiedPackets() const { return dnsModifiedPackets; }
-    int getDroppedPackets() const { return droppedPackets; }
-    int getWrittenPackets() const { return writtenPackets; }
+    uint32_t getBytesDropped() const { return bytesDropped; }
+    uint32_t getBytesIn() const { return bytesIn; }
+    uint32_t getBytesOut() const { return bytesOut; }
+    uint32_t getDnsModifiedPackets() const { return dnsModifiedPackets; }
+    uint32_t getDroppedPackets() const { return droppedPackets; }
+    uint32_t getWrittenPackets() const { return writtenPackets; }
 
     // Business logic
-    void incrementBytesIn(size_t value) { bytesIn += value; };
+    void incrementBytesIn(uint32_t value) { bytesIn += value; };
     void incrementDnsModifiedPackets() { ++dnsModifiedPackets; };
-    void recordDroppedPacket(size_t value);
-    void recordWrittenPacket(size_t value);
+    void recordDroppedPacket(uint32_t value);
+    void recordWrittenPacket(uint32_t value);
   };
 
 } // namespace pcapconvert
