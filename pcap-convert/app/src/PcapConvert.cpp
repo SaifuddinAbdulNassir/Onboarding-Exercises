@@ -60,7 +60,7 @@ void PcapConvert::decrementTtl(Packet &packet)
     }
 }
 
-bool PcapConvert::isExpiredOrIcmp(Packet &packet) const
+bool PcapConvert::isExpiredOrIcmp(const Packet &packet) const
 {
     if (params.getTtlDec() == nullptr)
         return false;
@@ -154,7 +154,7 @@ bool PcapConvert::parseArgs(int argc, char *argv[])
     return true;
 }
 
-void PcapConvert::printStats(PcapFileReaderDevice &reader) const
+void PcapConvert::printStats(const PcapFileReaderDevice &reader) const
 {
     IPcapDevice::PcapStats readerStats;
     reader.getStatistics(readerStats);
@@ -210,7 +210,7 @@ void PcapConvert::processPackets()
     printStats(reader);
 }
 
-bool PcapConvert::shouldDropPacket(Packet &packet) const
+bool PcapConvert::shouldDropPacket(const Packet &packet) const
 {
     // 1. VLAN Filter
     if (params.getVlan() != nullptr)

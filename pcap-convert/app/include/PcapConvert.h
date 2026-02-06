@@ -27,12 +27,12 @@ namespace pcapconvert
         // Business logic
         void applyPacketModifications(pcpp::Packet &packet);
         void decrementTtl(pcpp::Packet &packet);
-        bool isExpiredOrIcmp(pcpp::Packet &packet) const;
+        bool isExpiredOrIcmp(const pcpp::Packet &packet) const;
         void modifyDnsDestination(pcpp::Packet &packet, pcpp::UdpLayer *udp);
         bool parseArgs(int argc, char *argv[]);
-        void printStats(pcpp::PcapFileReaderDevice &reader) const;
+        void printStats(const pcpp::PcapFileReaderDevice &reader) const;
         void processPackets();
-        bool shouldDropPacket(pcpp::Packet &packet) const;
+        bool shouldDropPacket(const pcpp::Packet &packet) const;
     };
 
 } // namespace pcapconvert
