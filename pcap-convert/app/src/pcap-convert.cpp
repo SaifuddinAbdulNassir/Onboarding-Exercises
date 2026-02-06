@@ -23,7 +23,7 @@ PcapConvert::~PcapConvert()
 
 // Business logic
 
-void PcapConvert::applyPacketModifications(Packet &packet, const PcapConvertParams &params, NetworkStats &stats)
+void PcapConvert::applyPacketModifications(Packet &packet, const PcapConvertParams &params, PcapConvertStats &stats)
 {
     decrementTtl(packet, params);
 
@@ -129,7 +129,7 @@ bool PcapConvert::parseArgs(int argc, char *argv[], PcapConvertParams &params)
     return true;
 }
 
-void PcapConvert::printStatistics(const NetworkStats &stats, PcapFileReaderDevice &reader)
+void PcapConvert::printStatistics(const PcapConvertStats &stats, PcapFileReaderDevice &reader)
 {
     IPcapDevice::PcapStats readerStats;
     reader.getStatistics(readerStats);
@@ -147,7 +147,7 @@ void PcapConvert::printStatistics(const NetworkStats &stats, PcapFileReaderDevic
 void PcapConvert::processPackets(PcapFileReaderDevice &reader, PcapFileWriterDevice &writer, const PcapConvertParams &params)
 {
     RawPacket rawPacket;
-    NetworkStats stats;
+    PcapConvertStats stats;
 
     while (reader.getNextPacket(rawPacket))
     {

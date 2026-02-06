@@ -11,8 +11,8 @@
 #include <pcapplusplus/VlanLayer.h>
 
 // Project includes
-#include "NetworkStats.h"
 #include "PcapConvertParams.h"
+#include "PcapConvertStats.h"
 
 namespace pcapconvert
 {
@@ -25,12 +25,12 @@ namespace pcapconvert
         virtual ~PcapConvert();
 
         // Business logic
-        void applyPacketModifications(pcpp::Packet &packet, const PcapConvertParams &params, NetworkStats &stats);
+        void applyPacketModifications(pcpp::Packet &packet, const PcapConvertParams &params, PcapConvertStats &stats);
         void decrementTtl(pcpp::Packet &packet, const PcapConvertParams &params);
         bool isExpiredOrIcmp(pcpp::Packet &packet, const PcapConvertParams &params);
         void modifyDnsDestination(pcpp::Packet &packet, pcpp::UdpLayer *udp, const PcapConvertParams &params);
         bool parseArgs(int argc, char *argv[], PcapConvertParams &params);
-        void printStatistics(const NetworkStats &stats, pcpp::PcapFileReaderDevice &reader);
+        void printStatistics(const PcapConvertStats &stats, pcpp::PcapFileReaderDevice &reader);
         void processPackets(pcpp::PcapFileReaderDevice &reader, pcpp::PcapFileWriterDevice &writer, const PcapConvertParams &params);
         bool shouldDropPacket(pcpp::Packet &packet, const PcapConvertParams &params);
     };

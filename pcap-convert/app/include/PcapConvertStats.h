@@ -6,7 +6,7 @@
 namespace pcapconvert
 {
 
-  class NetworkStats
+  class PcapConvertStats
   {
   private:
     // Data
@@ -19,8 +19,8 @@ namespace pcapconvert
 
   public:
     // Constructors & destructors
-    NetworkStats();
-    virtual ~NetworkStats();
+    PcapConvertStats();
+    virtual ~PcapConvertStats();
 
     // Getters & setters
     uint32_t getBytesDropped() const { return bytesDropped; }
