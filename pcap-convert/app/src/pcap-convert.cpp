@@ -23,9 +23,9 @@ PcapConvert::~PcapConvert()
 
 // Business logic
 
-void PcapConvert::applyPacketModifications(Packet &packet, const PcapConvertParams &params, PcapConvertStats &stats)
+void PcapConvert::applyPacketModifications(Packet &packet)
 {
-    decrementTtl(packet, params);
+    decrementTtl(packet);
 
     if (packet.isPacketOfType(UDP))
     {
@@ -34,13 +34,13 @@ void PcapConvert::applyPacketModifications(Packet &packet, const PcapConvertPara
 
         if (dns && udp)
         {
-            modifyDnsDestination(packet, udp, params);
+            modifyDnsDestination(packet, udp);
             stats.incrementDnsModifiedPackets();
         }
     }
 }
 
-void PcapConvert::decrementTtl(Packet &packet, const PcapConvertParams &params)
+void PcapConvert::decrementTtl(Packet &packet)
 {
     if (params.getTtlDec() <= 0)
         return;
@@ -55,7 +55,7 @@ void PcapConvert::decrementTtl(Packet &packet, const PcapConvertParams &params)
     }
 }
 
-bool PcapConvert::isExpiredOrIcmp(Packet &packet, const PcapConvertParams &params)
+bool PcapConvert::isExpiredOrIcmp(Packet &packet)
 {
     if (params.getTtlDec() == nullptr)
         return false;
@@ -79,7 +79,7 @@ bool PcapConvert::isExpiredOrIcmp(Packet &packet, const PcapConvertParams &param
     return false;
 }
 
-void PcapConvert::modifyDnsDestination(Packet &packet, UdpLayer *udp, const PcapConvertParams &params)
+void PcapConvert::modifyDnsDestination(Packet &packet, UdpLayer *udp)
 {
     if (params.getDnsAddr() != nullptr)
     {
@@ -98,7 +98,7 @@ void PcapConvert::modifyDnsDestination(Packet &packet, UdpLayer *udp, const Pcap
     }
 }
 
-bool PcapConvert::parseArgs(int argc, char *argv[], PcapConvertParams &params)
+bool PcapConvert::parseArgs(int argc, char *argv[])
 {
     cxxopts::Options options("pcap-convert", "PCAP file converter");
 
@@ -144,8 +144,22 @@ void PcapConvert::printStatistics(const PcapConvertStats &stats, PcapFileReaderD
     std::cout << table.to_string() << std::endl;
 }
 
-void PcapConvert::processPackets(PcapFileReaderDevice &reader, PcapFileWriterDevice &writer, const PcapConvertParams &params)
+void PcapConvert::processPackets()
 {
+    PcapFileReaderDevice reader(params.getInputFile());
+    if (!reader.open())
+    {
+        cerr << "Cannot open input file\n";
+        return;
+    }
+
+    PcapFileWriterDevice writer(params.getOutputFile(), reader.getLinkLayerType());
+    if (!writer.open())
+    {
+        cerr << "Cannot open output file\n";
+        return;
+    }
+
     RawPacket rawPacket;
     PcapConvertStats stats;
 
@@ -155,14 +169,14 @@ void PcapConvert::processPackets(PcapFileReaderDevice &reader, PcapFileWriterDev
         Packet packet(&rawPacket);
 
         // Filtering
-        if (shouldDropPacket(packet, params))
+        if (shouldDropPacket(packet))
         {
             stats.recordDroppedPacket(rawPacket.getRawDataLen());
             continue;
         }
 
         // Modification
-        applyPacketModifications(packet, params, stats);
+        applyPacketModifications(packet);
 
         // Finalize and Save
         packet.computeCalculateFields();
@@ -172,7 +186,7 @@ void PcapConvert::processPackets(PcapFileReaderDevice &reader, PcapFileWriterDev
     printStatistics(stats, reader);
 }
 
-bool PcapConvert::shouldDropPacket(Packet &packet, const PcapConvertParams &params)
+bool PcapConvert::shouldDropPacket(Packet &packet)
 {
     // 1. VLAN Filter
     if (params.getVlan() != nullptr)
@@ -198,5 +212,5 @@ bool PcapConvert::shouldDropPacket(Packet &packet, const PcapConvertParams &para
     }
 
     // 4. TTL/Hop Limit Logic
-    return isExpiredOrIcmp(packet, params);
+    return isExpiredOrIcmp(packet);
 }

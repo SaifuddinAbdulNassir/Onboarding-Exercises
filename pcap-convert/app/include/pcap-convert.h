@@ -19,20 +19,25 @@ namespace pcapconvert
 
     class PcapConvert
     {
+    private:
+        // Data
+        PcapConvertParams params;
+        PcapConvertStats stats;
+
     public:
         // Constructors & destructors
         PcapConvert();
         virtual ~PcapConvert();
 
         // Business logic
-        void applyPacketModifications(pcpp::Packet &packet, const PcapConvertParams &params, PcapConvertStats &stats);
-        void decrementTtl(pcpp::Packet &packet, const PcapConvertParams &params);
-        bool isExpiredOrIcmp(pcpp::Packet &packet, const PcapConvertParams &params);
-        void modifyDnsDestination(pcpp::Packet &packet, pcpp::UdpLayer *udp, const PcapConvertParams &params);
-        bool parseArgs(int argc, char *argv[], PcapConvertParams &params);
+        void applyPacketModifications(pcpp::Packet &packet);
+        void decrementTtl(pcpp::Packet &packet);
+        bool isExpiredOrIcmp(pcpp::Packet &packet);
+        void modifyDnsDestination(pcpp::Packet &packet, pcpp::UdpLayer *udp);
+        bool parseArgs(int argc, char *argv[]);
         void printStatistics(const PcapConvertStats &stats, pcpp::PcapFileReaderDevice &reader);
-        void processPackets(pcpp::PcapFileReaderDevice &reader, pcpp::PcapFileWriterDevice &writer, const PcapConvertParams &params);
-        bool shouldDropPacket(pcpp::Packet &packet, const PcapConvertParams &params);
+        void processPackets();
+        bool shouldDropPacket(pcpp::Packet &packet);
     };
 
 } // namespace pcapconvert
