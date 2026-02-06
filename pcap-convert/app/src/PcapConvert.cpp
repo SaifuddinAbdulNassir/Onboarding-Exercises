@@ -6,6 +6,11 @@
 // Library includes
 #include <cxxopts/cxxopts.hpp>
 #include <libfort/fort.hpp>
+#include <pcapplusplus/DnsLayer.h>
+#include <pcapplusplus/EthLayer.h>
+#include <pcapplusplus/IPv4Layer.h>
+#include <pcapplusplus/IPv6Layer.h>
+#include <pcapplusplus/VlanLayer.h>
 
 using namespace pcapconvert;
 using namespace pcpp;
