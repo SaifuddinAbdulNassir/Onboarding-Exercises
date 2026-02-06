@@ -81,11 +81,11 @@ void PcapConvert::modifyDnsDestination(Packet &packet, UdpLayer *udp, const Pcap
     {
         if (auto ip4 = packet.getLayerOfType<IPv4Layer>())
         {
-            ip4->getIPv4Header()->ipDst = std::get<pcpp::IPv4Address>(*params.getDnsAddr()).toInt();
+            ip4->setDstIPv4Address(std::get<pcpp::IPv4Address>(*params.getDnsAddr()));
         }
         else if (auto ip6 = packet.getLayerOfType<IPv6Layer>())
         {
-            memcpy(ip6->getIPv6Header()->ipDst, std::get<pcpp::IPv6Address>(*params.getDnsAddr()).toBytes(), 16);
+            ip6->setDstIPv6Address(std::get<pcpp::IPv6Address>(*params.getDnsAddr()));
         }
     }
     if (params.getDnsPort() != nullptr)
