@@ -16,14 +16,14 @@ namespace pcapconvert
   {
   private:
     // Data
-    std::shared_ptr<pcpp::IPv4Address> dnsV4Address = nullptr;
-    std::shared_ptr<pcpp::IPv6Address> dnsV6Address = nullptr;
-    std::shared_ptr<uint16_t> dnsPort = nullptr;
+    std::shared_ptr<pcpp::IPv4Address> dnsV4Address;
+    std::shared_ptr<pcpp::IPv6Address> dnsV6Address;
+    std::shared_ptr<uint16_t> dnsPort;
     std::string inputFile;
-    std::shared_ptr<pcpp::IPAddress::AddressType> ipVersion = nullptr;
+    std::shared_ptr<pcpp::IPAddress::AddressType> ipVersion;
     std::string outputFile;
-    std::shared_ptr<uint8_t> ttlDec = nullptr;
-    std::shared_ptr<uint16_t> vlan = nullptr;
+    std::shared_ptr<uint8_t> ttlDec;
+    std::shared_ptr<uint16_t> vlan;
 
   public:
     // Constructors & destructors
