@@ -42,7 +42,7 @@ void PcapConvert::applyPacketModifications(Packet &packet)
 
 void PcapConvert::decrementTtl(Packet &packet)
 {
-    if (params.getTtlDec() <= 0)
+    if (params.getTtlDec() == nullptr)
         return;
 
     if (auto ip4 = packet.getLayerOfType<IPv4Layer>())
@@ -112,11 +112,22 @@ bool PcapConvert::parseArgs(int argc, char *argv[])
     }
 
     if (result.count("vlan"))
-        params.setVlan(std::make_unique<uint16_t>(result["vlan"].as<uint16_t>()));
+        params.setVlan(std::make_shared<uint16_t>(result["vlan"].as<uint16_t>()));
     if (result.count("ip-version"))
-        params.setIpVersion(IPAddress::AddressType(result["ip-version"].as<int>()));
+    {
+        int version = result["ip-version"].as<int>();
+        if (version == 4)
+            params.setIpVersion(std::make_shared<pcpp::IPAddress::AddressType>(pcpp::IPAddress::IPv4AddressType));
+        else if (version == 6)
+            params.setIpVersion(std::make_shared<pcpp::IPAddress::AddressType>(pcpp::IPAddress::IPv6AddressType));
+        else
+        {
+            cerr << "Invalid IP version. Use 4 or 6.\n";
+            return false;
+        }
+    }
     if (result.count("ttl"))
-        params.setTtlDec(std::make_unique<uint8_t>(result["ttl"].as<uint8_t>()));
+        params.setTtlDec(std::make_shared<uint8_t>(result["ttl"].as<uint8_t>()));
     if (result.count("dns-addr"))
     {
         if (IPv4Address::isValidIPv4Address(result["dns-addr"].as<std::string>()))
@@ -129,7 +140,7 @@ bool PcapConvert::parseArgs(int argc, char *argv[])
         }
     }
     if (result.count("dns-port"))
-        params.setDnsPort(std::make_unique<uint16_t>(result["dns-port"].as<uint16_t>()));
+        params.setDnsPort(std::make_shared<uint16_t>(result["dns-port"].as<uint16_t>()));
     if (result.count("input"))
         params.setInputFile(result["input"].as<string>());
     if (result.count("output"))
@@ -209,13 +220,13 @@ bool PcapConvert::shouldDropPacket(Packet &packet) const
         return true;
 
     // 3. IP Version Filter
-    if (params.getIpVersion() >= 0)
+    if (params.getIpVersion() != nullptr)
     {
         bool isV4 = packet.isPacketOfType(IPv4);
         bool isV6 = packet.isPacketOfType(IPv6);
-        if (params.getIpVersion() == 4 && !isV4)
+        if (*params.getIpVersion() == 4 && !isV4)
             return true;
-        if (params.getIpVersion() == 6 && !isV6)
+        if (*params.getIpVersion() == 6 && !isV6)
             return true;
     }
 
