@@ -9,12 +9,12 @@ namespace pcapconvert
   {
   private:
     // Data
-    int droppedPackets = 0;
-    int writtenPackets = 0;
+    size_t bytesDropped = 0;
     size_t bytesIn = 0;
     size_t bytesOut = 0;
-    size_t bytesDropped = 0;
     int dnsModifiedPackets = 0;
+    int droppedPackets = 0;
+    int writtenPackets = 0;
 
   public:
     // Constructors & destructors

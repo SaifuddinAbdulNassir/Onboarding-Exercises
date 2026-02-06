@@ -11,8 +11,8 @@
 #include <pcapplusplus/VlanLayer.h>
 
 // Project includes
-#include "PcapConvertParams.h"
 #include "NetworkStats.h"
+#include "PcapConvertParams.h"
 
 namespace pcapconvert
 {

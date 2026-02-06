@@ -2,9 +2,9 @@
 #include <iostream>
 
 // Project includes
-#include "PcapConvertParams.h"
 #include "NetworkStats.h"
 #include "pcap-convert.h"
+#include "PcapConvertParams.h"
 
 using namespace pcapconvert;
 using namespace pcpp;

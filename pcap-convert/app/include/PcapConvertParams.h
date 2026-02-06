@@ -2,8 +2,8 @@
 
 // Standard includes
 #include <iostream>
-#include <string>
 #include <memory>
+#include <string>
 #include <variant>
 
 // Library includes
