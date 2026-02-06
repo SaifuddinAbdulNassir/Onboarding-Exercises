@@ -16,7 +16,8 @@ namespace pcapconvert
   {
   private:
     // Data
-    std::unique_ptr<std::variant<pcpp::IPv4Address, pcpp::IPv6Address>> dnsAddr = nullptr;
+    std::shared_ptr<pcpp::IPv4Address> dnsV4Address = nullptr;
+    std::shared_ptr<pcpp::IPv6Address> dnsV6Address = nullptr;
     std::unique_ptr<uint16_t> dnsPort = nullptr;
     std::string inputFile;
     pcpp::IPAddress::AddressType ipVersion = pcpp::IPAddress::IPv4AddressType;
@@ -30,8 +31,10 @@ namespace pcapconvert
     virtual ~PcapConvertParams();
 
     // Getters & setters
-    std::variant<pcpp::IPv4Address, pcpp::IPv6Address> *getDnsAddr() const { return dnsAddr.get(); }
-    void setDnsAddr(const std::string &addr);
+    std::shared_ptr<pcpp::IPv4Address> getDnsV4Addr() const { return dnsV4Address; }
+    void setDnsV4Addr(const std::shared_ptr<pcpp::IPv4Address> v4Addr) { dnsV4Address = v4Addr; }
+    std::shared_ptr<pcpp::IPv6Address> getDnsV6Addr() const { return dnsV6Address; }
+    void setDnsV6Addr(const std::shared_ptr<pcpp::IPv6Address> v6Addr) { dnsV6Address = v6Addr; }
     uint16_t *getDnsPort() const { return dnsPort.get(); }
     void setDnsPort(std::unique_ptr<uint16_t> port) { dnsPort = std::move(port); }
     const std::string &getInputFile() const { return inputFile; }

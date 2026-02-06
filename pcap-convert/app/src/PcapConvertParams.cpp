@@ -13,15 +13,3 @@ PcapConvertParams::PcapConvertParams()
 PcapConvertParams::~PcapConvertParams()
 {
 }
-
-void PcapConvertParams::setDnsAddr(const std::string &addr)
-{
-    if (IPv4Address::isValidIPv4Address(addr))
-    {
-        dnsAddr = std::make_unique<std::variant<IPv4Address, IPv6Address>>(IPv4Address(addr));
-    }
-    else
-    {
-        dnsAddr = std::make_unique<std::variant<IPv4Address, IPv6Address>>(IPv6Address(addr));
-    }
-}

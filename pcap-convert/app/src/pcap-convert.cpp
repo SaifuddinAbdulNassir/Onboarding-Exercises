@@ -81,17 +81,17 @@ bool PcapConvert::isExpiredOrIcmp(Packet &packet) const
 
 void PcapConvert::modifyDnsDestination(Packet &packet, UdpLayer *udp)
 {
-    if (params.getDnsAddr() != nullptr)
+    auto ip4 = packet.getLayerOfType<IPv4Layer>();
+    auto ip6 = packet.getLayerOfType<IPv6Layer>();
+    if (ip4 && params.getDnsV4Addr() != nullptr)
     {
-        if (auto ip4 = packet.getLayerOfType<IPv4Layer>())
-        {
-            ip4->setDstIPv4Address(std::get<pcpp::IPv4Address>(*params.getDnsAddr()));
-        }
-        else if (auto ip6 = packet.getLayerOfType<IPv6Layer>())
-        {
-            ip6->setDstIPv6Address(std::get<pcpp::IPv6Address>(*params.getDnsAddr()));
-        }
+        ip4->setDstIPv4Address(*params.getDnsV4Addr());
     }
+    else if (ip6 && params.getDnsV6Addr() != nullptr)
+    {
+        ip6->setDstIPv6Address(*params.getDnsV6Addr());
+    }
+
     if (params.getDnsPort() != nullptr)
     {
         udp->getUdpHeader()->portDst = *params.getDnsPort();
@@ -118,7 +118,16 @@ bool PcapConvert::parseArgs(int argc, char *argv[])
     if (result.count("ttl"))
         params.setTtlDec(std::make_unique<uint8_t>(result["ttl"].as<uint8_t>()));
     if (result.count("dns-addr"))
-        params.setDnsAddr(result["dns-addr"].as<std::string>());
+    {
+        if (IPv4Address::isValidIPv4Address(result["dns-addr"].as<std::string>()))
+        {
+            params.setDnsV4Addr(std::make_shared<IPv4Address>(result["dns-addr"].as<std::string>()));
+        }
+        else
+        {
+            params.setDnsV6Addr(std::make_shared<IPv6Address>(result["dns-addr"].as<std::string>()));
+        }
+    }
     if (result.count("dns-port"))
         params.setDnsPort(std::make_unique<uint16_t>(result["dns-port"].as<uint16_t>()));
     if (result.count("input"))
