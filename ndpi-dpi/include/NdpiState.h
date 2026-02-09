@@ -20,8 +20,8 @@ namespace ndpi
 
     // Getters & setters
     bool getRunning() const { return running; }
-    uint64_t getUid() const { return uid; }
     void setRunning(bool val) { running = val; }
+    uint64_t getUid() const { return uid; }
 
     // Business logic
     void incrementUid() { uid++; };

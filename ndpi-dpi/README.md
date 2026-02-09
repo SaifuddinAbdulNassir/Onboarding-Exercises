@@ -18,7 +18,7 @@ cmake --build build
 ## Command to run the project.
 
 ```
- sudo ./build/ndpi_dpi -i eth0 --N 30
+ sudo ./build/ndpi-dpi -i eth0 --N 30
 ```
  
  -i eth0: Specifies the network interfcae (e.g., eth0) provinding the live traffic.

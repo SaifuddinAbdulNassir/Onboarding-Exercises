@@ -1,7 +1,5 @@
 // Project includes
-#include "CaptureCookie.h"
 #include "NdpiProcessor.h"
-#include "NdpiSignalHandler.h"
 
 using namespace ndpi;
 

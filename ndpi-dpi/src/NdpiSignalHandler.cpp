@@ -1,9 +1,6 @@
 #include "NdpiSignalHandler.h"
 
 // Standard includes
-#include <csignal>
-#include <cstdlib>
-#include <cstring>
 #include <iostream>
 #include <poll.h>
 #include <unistd.h>
