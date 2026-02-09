@@ -12,6 +12,8 @@
 #include <pcapplusplus/IPv6Layer.h>
 #include <pcapplusplus/VlanLayer.h>
 
+using namespace cxxopts;
+using namespace fort;
 using namespace pcapconvert;
 using namespace pcpp;
 using namespace std;
@@ -114,9 +116,9 @@ void PcapConvert::modifyDnsDestination(Packet &packet, UdpLayer *udp)
 bool PcapConvert::parseArgs(int argc, char *argv[])
 {
     // Define command line options
-    cxxopts::Options options("pcap-convert", "PCAP file converter");
+    Options options("pcap-convert", "PCAP file converter");
 
-    options.add_options()("v,vlan", "VLAN ID to filter on", cxxopts::value<uint16_t>())("ip-version", "IP version to filter on (4 or 6)", cxxopts::value<int>())("t,ttl", "TTL decrement value", cxxopts::value<uint8_t>())("dns-addr", "DNS destination address to modify to", cxxopts::value<std::string>())("dns-port", "DNS destination port to modify to", cxxopts::value<uint16_t>())("i,input", "Input pcap file path", cxxopts::value<std::string>())("o,output", "Output pcap file path", cxxopts::value<std::string>())("h,help", "Command to run the App: ./build/pcap-convert --vlan <vlan id> --ip-version <4|6> --ttl <decrement> --dns-addr <address> --dns-port <port> -i data/captures/<input pcap file> -o data/captures/<output pcap file>");
+    options.add_options()("v,vlan", "VLAN ID to filter on", value<uint16_t>())("ip-version", "IP version to filter on (4 or 6)", value<int>())("t,ttl", "TTL decrement value", value<uint8_t>())("dns-addr", "DNS destination address to modify to", value<string>())("dns-port", "DNS destination port to modify to", value<uint16_t>())("i,input", "Input pcap file path", value<string>())("o,output", "Output pcap file path", value<string>())("h,help", "Command to run the App: ./build/pcap-convert --vlan <vlan id> --ip-version <4|6> --ttl <decrement> --dns-addr <address> --dns-port <port> -i data/captures/<input pcap file> -o data/captures/<output pcap file>");
 
     // Parse options
     auto result = options.parse(argc, argv);
@@ -134,14 +136,14 @@ bool PcapConvert::parseArgs(int argc, char *argv[])
 
     // Set parameters based on parsed options
     if (result.count("vlan"))
-        params.setVlan(std::make_shared<uint16_t>(result["vlan"].as<uint16_t>()));
+        params.setVlan(make_shared<uint16_t>(result["vlan"].as<uint16_t>()));
     if (result.count("ip-version"))
     {
         int version = result["ip-version"].as<int>();
         if (version == 4)
-            params.setIpVersion(std::make_shared<pcpp::IPAddress::AddressType>(pcpp::IPAddress::IPv4AddressType));
+            params.setIpVersion(make_shared<IPAddress::AddressType>(IPAddress::IPv4AddressType));
         else if (version == 6)
-            params.setIpVersion(std::make_shared<pcpp::IPAddress::AddressType>(pcpp::IPAddress::IPv6AddressType));
+            params.setIpVersion(make_shared<IPAddress::AddressType>(IPAddress::IPv6AddressType));
         else
         {
             cerr << "Invalid IP version. Use 4 or 6.\n";
@@ -149,20 +151,20 @@ bool PcapConvert::parseArgs(int argc, char *argv[])
         }
     }
     if (result.count("ttl"))
-        params.setTtlDec(std::make_shared<uint8_t>(result["ttl"].as<uint8_t>()));
+        params.setTtlDec(make_shared<uint8_t>(result["ttl"].as<uint8_t>()));
     if (result.count("dns-addr"))
     {
-        if (IPv4Address::isValidIPv4Address(result["dns-addr"].as<std::string>()))
+        if (IPv4Address::isValidIPv4Address(result["dns-addr"].as<string>()))
         {
-            params.setDnsV4Addr(std::make_shared<IPv4Address>(result["dns-addr"].as<std::string>()));
+            params.setDnsV4Addr(make_shared<IPv4Address>(result["dns-addr"].as<string>()));
         }
         else
         {
-            params.setDnsV6Addr(std::make_shared<IPv6Address>(result["dns-addr"].as<std::string>()));
+            params.setDnsV6Addr(make_shared<IPv6Address>(result["dns-addr"].as<string>()));
         }
     }
     if (result.count("dns-port"))
-        params.setDnsPort(std::make_shared<uint16_t>(result["dns-port"].as<uint16_t>()));
+        params.setDnsPort(make_shared<uint16_t>(result["dns-port"].as<uint16_t>()));
     if (result.count("input"))
         params.setInputFile(result["input"].as<string>());
     if (result.count("output"))
@@ -178,14 +180,14 @@ void PcapConvert::printStats(const PcapFileReaderDevice &reader) const
     reader.getStatistics(readerStats);
 
     // Print stats in a table format
-    fort::char_table table;
-    table << fort::header << "Packet Processing Statistics" << "Total bytes" << "Total packets" << fort::endr
-          << "Total bytes & packets processed: " << stats.getBytesIn() << readerStats.packetsRecv << fort::endr
-          << "Total bytes & packets dropped:   " << stats.getBytesDropped() << stats.getDroppedPackets() << fort::endr
-          << "Total bytes & packets written:   " << stats.getBytesOut() << stats.getWrittenPackets() << fort::endr
-          << "Total DNS packets modified:      " << " " << stats.getDnsModifiedPackets() << fort::endr;
+    char_table table;
+    table << header << "Packet Processing Statistics" << "Total bytes" << "Total packets" << endr
+          << "Total bytes & packets processed: " << stats.getBytesIn() << readerStats.packetsRecv << endr
+          << "Total bytes & packets dropped:   " << stats.getBytesDropped() << stats.getDroppedPackets() << endr
+          << "Total bytes & packets written:   " << stats.getBytesOut() << stats.getWrittenPackets() << endr
+          << "Total DNS packets modified:      " << " " << stats.getDnsModifiedPackets() << endr;
 
-    std::cout << table.to_string() << std::endl;
+    cout << table.to_string() << endl;
 }
 
 void PcapConvert::processPackets()
