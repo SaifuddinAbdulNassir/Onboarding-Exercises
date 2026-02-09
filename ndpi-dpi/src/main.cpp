@@ -40,7 +40,7 @@ void onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
 {
     auto *cookie = static_cast<CaptureCookie *>(userData);
     auto *ndpiMod = get<0>(*cookie);
-    AppState &appState = *get<1>(*cookie);
+    NdpiState &appState = *get<1>(*cookie);
     ConnectionsMap &connectionMap = *get<2>(*cookie);
 
     Packet packet(rawPacket);
@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
     }
 
     string iface;
-    AppState appState;
+    NdpiState appState;
     ConnectionsMap connectionMap;
     for (int i = 1; i < argc; i++)
     {

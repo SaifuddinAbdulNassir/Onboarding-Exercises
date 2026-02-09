@@ -4,12 +4,12 @@
 #include <tuple>
 
 // Project includes
-#include "AppState.h"
 #include "ConnectionsMap.h"
+#include "NdpiState.h"
 
 namespace ndpi
 {
 
-    typedef std::tuple<ndpi_detection_module_struct *, AppState *, ConnectionsMap *> CaptureCookie;
+    typedef std::tuple<ndpi_detection_module_struct *, NdpiState *, ConnectionsMap *> CaptureCookie;
 
 } // namespace ndpi

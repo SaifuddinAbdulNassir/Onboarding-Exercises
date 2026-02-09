@@ -6,7 +6,7 @@
 namespace ndpi
 {
 
-  class AppState
+  class NdpiState
   {
   private:
     // Data
@@ -16,8 +16,8 @@ namespace ndpi
 
   public:
     // Constructors & destructors
-    AppState();
-    virtual ~AppState();
+    NdpiState();
+    virtual ~NdpiState();
 
     // Getters & setters
     uint32_t getMaxPackets() const { return maxPackets; }
