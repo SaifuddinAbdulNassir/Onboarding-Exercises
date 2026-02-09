@@ -32,6 +32,7 @@ void PcapConvert::applyPacketModifications(Packet &packet)
 {
     decrementTtl(packet);
 
+    // Only modify DNS packets
     if (packet.isPacketOfType(UDP))
     {
         auto dns = packet.getLayerOfType<DnsLayer>();
@@ -47,9 +48,11 @@ void PcapConvert::applyPacketModifications(Packet &packet)
 
 void PcapConvert::decrementTtl(Packet &packet)
 {
+    // If TTL decrement is not set, skip
     if (params.getTtlDec() == nullptr)
         return;
 
+    // Decrement TTL for both IPv4 and IPv6
     if (auto ip4 = packet.getLayerOfType<IPv4Layer>())
     {
         ip4->getIPv4Header()->timeToLive -= *params.getTtlDec();
@@ -62,9 +65,11 @@ void PcapConvert::decrementTtl(Packet &packet)
 
 bool PcapConvert::isExpiredOrIcmp(const Packet &packet) const
 {
+    // If TTL decrement is not set, skip
     if (params.getTtlDec() == nullptr)
         return false;
 
+    // Check IPv4 TTL and ICMP
     auto ip4 = packet.getLayerOfType<IPv4Layer>();
     if (ip4)
     {
@@ -73,6 +78,7 @@ bool PcapConvert::isExpiredOrIcmp(const Packet &packet) const
                 ip4->getIPv4Header()->protocol == PACKETPP_IPPROTO_ICMP);
     }
 
+    // Check IPv6 Hop Limit and ICMPv6
     auto ip6 = packet.getLayerOfType<IPv6Layer>();
     if (ip6)
     {
@@ -86,6 +92,7 @@ bool PcapConvert::isExpiredOrIcmp(const Packet &packet) const
 
 void PcapConvert::modifyDnsDestination(Packet &packet, UdpLayer *udp)
 {
+    // Modify destination IP if specified
     auto ip4 = packet.getLayerOfType<IPv4Layer>();
     auto ip6 = packet.getLayerOfType<IPv6Layer>();
     if (ip4 && params.getDnsV4Addr() != nullptr)
@@ -97,6 +104,7 @@ void PcapConvert::modifyDnsDestination(Packet &packet, UdpLayer *udp)
         ip6->setDstIPv6Address(*params.getDnsV6Addr());
     }
 
+    // Modify destination port if specified
     if (params.getDnsPort() != nullptr)
     {
         udp->getUdpHeader()->portDst = *params.getDnsPort();
@@ -105,10 +113,12 @@ void PcapConvert::modifyDnsDestination(Packet &packet, UdpLayer *udp)
 
 bool PcapConvert::parseArgs(int argc, char *argv[])
 {
+    // Define command line options
     cxxopts::Options options("pcap-convert", "PCAP file converter");
 
     options.add_options()("v,vlan", "VLAN ID to filter on", cxxopts::value<uint16_t>())("ip-version", "IP version to filter on (4 or 6)", cxxopts::value<int>())("t,ttl", "TTL decrement value", cxxopts::value<uint8_t>())("dns-addr", "DNS destination address to modify to", cxxopts::value<std::string>())("dns-port", "DNS destination port to modify to", cxxopts::value<uint16_t>())("i,input", "Input pcap file path", cxxopts::value<std::string>())("o,output", "Output pcap file path", cxxopts::value<std::string>())("h,help", "Command to run the App: ./build/pcap-convert --vlan <vlan id> --ip-version <4|6> --ttl <decrement> --dns-addr <address> --dns-port <port> -i data/captures/<input pcap file> -o data/captures/<output pcap file>");
 
+    // Parse options
     auto result = options.parse(argc, argv);
     if (result.count("help"))
     {
@@ -122,6 +132,7 @@ bool PcapConvert::parseArgs(int argc, char *argv[])
         return false;
     }
 
+    // Set parameters based on parsed options
     if (result.count("vlan"))
         params.setVlan(std::make_shared<uint16_t>(result["vlan"].as<uint16_t>()));
     if (result.count("ip-version"))
@@ -162,9 +173,11 @@ bool PcapConvert::parseArgs(int argc, char *argv[])
 
 void PcapConvert::printStats(const PcapFileReaderDevice &reader) const
 {
+    // Get reader stats
     IPcapDevice::PcapStats readerStats;
     reader.getStatistics(readerStats);
 
+    // Print stats in a table format
     fort::char_table table;
     table << fort::header << "Packet Processing Statistics" << "Total bytes" << "Total packets" << fort::endr
           << "Total bytes & packets processed: " << stats.getBytesIn() << readerStats.packetsRecv << fort::endr
@@ -177,6 +190,7 @@ void PcapConvert::printStats(const PcapFileReaderDevice &reader) const
 
 void PcapConvert::processPackets()
 {
+    // Open reader and writer devices
     PcapFileReaderDevice reader(params.getInputFile());
     if (!reader.open())
     {
