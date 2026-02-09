@@ -110,8 +110,14 @@ bool PcapConvert::parseArgs(int argc, char *argv[])
     options.add_options()("v,vlan", "VLAN ID to filter on", cxxopts::value<uint16_t>())("ip-version", "IP version to filter on (4 or 6)", cxxopts::value<int>())("t,ttl", "TTL decrement value", cxxopts::value<uint8_t>())("dns-addr", "DNS destination address to modify to", cxxopts::value<std::string>())("dns-port", "DNS destination port to modify to", cxxopts::value<uint16_t>())("i,input", "Input pcap file path", cxxopts::value<std::string>())("o,output", "Output pcap file path", cxxopts::value<std::string>())("h,help", "Command to run the App: ./build/pcap-convert --vlan <vlan id> --ip-version <4|6> --ttl <decrement> --dns-addr <address> --dns-port <port> -i data/captures/<input pcap file> -o data/captures/<output pcap file>");
 
     auto result = options.parse(argc, argv);
-    if (result.count("help") || !result.count("input") || !result.count("output"))
+    if (result.count("help"))
     {
+        cout << options.help() << endl;
+        return false;
+    }
+    if (!result.count("input") || !result.count("output"))
+    {
+        cerr << "Input and output file paths are required.\n";
         cout << options.help() << endl;
         return false;
     }

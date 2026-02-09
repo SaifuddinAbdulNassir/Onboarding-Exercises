@@ -13,7 +13,6 @@ int main(int argc, char *argv[])
 
     if (!pcapConverter.parseArgs(argc, argv))
     {
-        cerr << "Invalid arguments\n";
         return 1;
     }
 
