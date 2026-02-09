@@ -1,7 +1,7 @@
 // Project includes
-#include "PcapConvert.h"
-#include "PcapConvertParams.h"
-#include "PcapConvertStats.h"
+#include "pcapconvert/PcapConvert.h"
+#include "pcapconvert/PcapConvertParams.h"
+#include "pcapconvert/PcapConvertStats.h"
 
 using namespace pcapconvert;
 using namespace pcpp;

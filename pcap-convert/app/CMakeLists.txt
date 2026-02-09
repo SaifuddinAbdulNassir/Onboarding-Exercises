@@ -3,7 +3,7 @@ find_package(PcapPlusPlus REQUIRED)
 find_package(libfort REQUIRED)
 find_package(cxxopts REQUIRED)
 
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 add_executable(pcap-convert ${SOURCES})
 

@@ -1,4 +1,4 @@
-#include "PcapConvertParams.h"
+#include "pcapconvert/PcapConvertParams.h"
 
 using namespace pcapconvert;
 using namespace pcpp;
