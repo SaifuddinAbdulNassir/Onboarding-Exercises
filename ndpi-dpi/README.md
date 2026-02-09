@@ -4,25 +4,22 @@
 
 * nDPI
 
-This exercise captures the live traffic and gives Connection Id, Protocol, Category and domain.
+This exercise captures live network traffic and extracts data such as **Connection ID**, **Protocol**, **Category**, and **Domain** using the nDPI engine.
 
 ## Build instruction
 
-To build and this project.
-Go inside the project folder (ie; ndpi-dpi)
-Then follow the commands in the terminal from that folder location
+To build and this project. Navigate to the project root folder ('ndpi-dpi') and run the following commands in your terminal:
 
 ```
 cmake -S . -B build
 cmake --build build
-cd build
 ```
+
 ## Command to run the project.
 
 ```
- sudo ./ndpi_dpi -i eth0 --N 30
+ sudo ./build/ndpi_dpi -i eth0 --N 30
 ```
  
- eth0 is the Network interface which provides live traffic N max number of packets to send inside DPI engine
-
-
+ -i eth0: Specifies the network interfcae (e.g., eth0) provinding the live traffic.
+ --N 30: Sets the maximum number of packets to process inside the DPI engine.
