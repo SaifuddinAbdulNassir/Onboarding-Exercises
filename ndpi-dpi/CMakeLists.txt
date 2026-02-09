@@ -1,43 +1,25 @@
-cmake_minimum_required(VERSION 3.10)
-project(ndpi_dpi)
+cmake_minimum_required(VERSION 3.13)
+project(ndpi-dpi)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-list(APPEND CMAKE_MODULE_PATH "/usr/local/lib/cmake/pcapplusplus")
-
-if(DEFINED DPDK_FOUND AND NOT TARGET DPDK::DPDK)
-    unset(DPDK_FOUND CACHE)
-endif()
+find_package(PcapPlusPlus REQUIRED)
 find_package(DPDK REQUIRED)
 
-find_package(PcapPlusPlus REQUIRED CONFIG)
+file(GLOB_RECURSE SOURCES "src/*.cpp")
 
-include_directories(
-    /usr/local/include
-    /usr/local/include/ndpi
-    /usr/include
-    /usr/include/ndpi
+add_executable(ndpi-dpi ${SOURCES})
+
+target_include_directories(ndpi-dpi PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-link_directories(/usr/local/lib)
-
-set(SOURCES
-    src/AppState.cpp
-    src/ConnectionInfo.cpp
-    src/ConnectionKey.cpp
-    src/ConnectionKeyHash.cpp
-    src/main.cpp
-)
-
-add_executable(ndpi_dpi ${SOURCES})
-
-target_link_libraries(ndpi_dpi
+target_link_libraries(ndpi-dpi
+    Common++
     ndpi
-    PcapPlusPlus::Packet++
-    PcapPlusPlus::Pcap++
-    PcapPlusPlus::Common++
+    Packet++
     pcap
+    Pcap++
     pthread
 )
