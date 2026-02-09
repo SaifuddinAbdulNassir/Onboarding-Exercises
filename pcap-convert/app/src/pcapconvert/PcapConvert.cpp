@@ -249,9 +249,9 @@ bool PcapConvert::shouldDropPacket(const Packet &packet) const
     {
         bool isV4 = packet.isPacketOfType(IPv4);
         bool isV6 = packet.isPacketOfType(IPv6);
-        if (*params.getIpVersion() == 4 && !isV4)
+        if (*params.getIpVersion() == IPAddress::IPv4AddressType && !isV4)
             return true;
-        if (*params.getIpVersion() == 6 && !isV6)
+        if (*params.getIpVersion() == IPAddress::IPv6AddressType && !isV6)
             return true;
     }
 
