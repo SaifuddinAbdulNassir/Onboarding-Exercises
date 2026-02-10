@@ -131,8 +131,7 @@ void NdpiProcessor::onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, v
     }
 
     // Prepare nDPI input info
-    ndpi_flow_input_info inputInfo;
-    memset(&inputInfo, 0, sizeof(inputInfo));
+    ndpi_flow_input_info inputInfo{};
 
     // Determine packet direction (client → server or server → client)
     bool isForward =
