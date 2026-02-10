@@ -15,7 +15,7 @@ namespace ndpi
     private:
         // Data
         std::string interface;
-        uint32_t maxPackets = 100;
+        size_t maxPackets = 100;
 
         // Helper functions
         void canonicalize(uint32_t &srcIp, uint32_t &dstIp, uint16_t &srcPort, uint16_t &dstPort);

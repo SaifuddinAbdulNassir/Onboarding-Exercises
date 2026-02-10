@@ -1,7 +1,7 @@
 #pragma once
 
 // Standard includes
-#include <cstdint>
+#include <cstddef>
 
 namespace ndpi
 {
@@ -11,7 +11,7 @@ namespace ndpi
   private:
     // Data
     bool running = true;
-    uint64_t uid = 0;
+    size_t uid = 0;
 
   public:
     // Constructors & destructors
@@ -21,7 +21,7 @@ namespace ndpi
     // Getters & setters
     bool getRunning() const { return running; }
     void setRunning(bool val) { running = val; }
-    uint64_t getUid() const { return uid; }
+    size_t getUid() const { return uid; }
 
     // Business logic
     void incrementUid() { uid++; };

@@ -176,7 +176,7 @@ bool NdpiProcessor::ParseArgs(int argc, char *argv[])
         // Define command line options
         Options options("ndpi-dpi", "A simple nDPI-based DPI application");
 
-        options.add_options()("i,interface", "Interface to capture on", value<string>())("N,max-packets", "Maximum number of packets to process per flow", value<uint32_t>())("h,help", "sudo ./build/ndpi_dpi -i <Network Interface> -N <max packets per flow>");
+        options.add_options()("i,interface", "Interface to capture on", value<string>())("N,max-packets", "Maximum number of packets to process per flow", value<size_t>())("h,help", "sudo ./build/ndpi_dpi -i <Network Interface> -N <max packets per flow>");
 
         // Parse command line arguments
         auto result = options.parse(argc, argv);
@@ -198,7 +198,7 @@ bool NdpiProcessor::ParseArgs(int argc, char *argv[])
         if (result.count("interface"))
             interface = result["interface"].as<string>();
         if (result.count("max-packets"))
-            maxPackets = result["max-packets"].as<uint32_t>();
+            maxPackets = result["max-packets"].as<size_t>();
     }
     catch (const OptionException &e)
     {

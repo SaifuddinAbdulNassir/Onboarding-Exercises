@@ -18,9 +18,9 @@ namespace ndpi
     std::string domain = "";
     bool done = false;
     ndpi_flow_struct *flow = nullptr;
-    uint32_t packetCount = 0;
+    size_t packetCount = 0;
     std::string protocol = "";
-    uint64_t uid = 0;
+    size_t uid = 0;
 
   public:
     // Constructors & destructors
@@ -36,12 +36,12 @@ namespace ndpi
     void setDone(bool val) { done = val; }
     ndpi_flow_struct *getFlow() const { return flow; }
     void setFlow(ndpi_flow_struct *val) { val ? flow = val : flow = nullptr; }
-    uint32_t getPacketCount() const { return packetCount; }
-    void setPacketCount(uint32_t val) { packetCount = val; }
+    size_t getPacketCount() const { return packetCount; }
+    void setPacketCount(size_t val) { packetCount = val; }
     const std::string &getProtocol() const { return protocol; }
     void setProtocol(const std::string &val) { protocol = val; }
-    uint64_t getUid() const { return uid; }
-    void setUid(uint64_t val) { uid = val; }
+    size_t getUid() const { return uid; }
+    void setUid(size_t val) { uid = val; }
   };
 
 } // namespace ndpi
