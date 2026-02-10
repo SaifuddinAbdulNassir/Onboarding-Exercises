@@ -6,7 +6,7 @@
 namespace ndpi
 {
 
-  class ConnectionKey
+  class NdpiConnectionKey
   {
   private:
     // Data
@@ -18,8 +18,8 @@ namespace ndpi
 
   public:
     // Constructors & destructors
-    ConnectionKey(uint32_t dstIp, uint16_t dstPort, uint8_t l4Proto, uint32_t srcIp, uint16_t srcPort);
-    virtual ~ConnectionKey();
+    NdpiConnectionKey(uint32_t dstIp, uint16_t dstPort, uint8_t l4Proto, uint32_t srcIp, uint16_t srcPort);
+    virtual ~NdpiConnectionKey();
 
     // Getters & setters
     uint32_t getDstIp() const { return dstIp; }
@@ -34,7 +34,7 @@ namespace ndpi
     void setSrcPort(uint16_t val) { srcPort = val; }
 
     // Relational operators
-    bool operator==(const ConnectionKey &other) const;
+    bool operator==(const NdpiConnectionKey &other) const;
   };
 
 } // namespace ndpi

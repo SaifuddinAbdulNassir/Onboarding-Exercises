@@ -1,21 +1,21 @@
-#include "ConnectionKey.h"
+#include "ndpi/NdpiConnectionKey.h"
 
 using namespace ndpi;
 
 // Constructors & destructors
 
-ConnectionKey::ConnectionKey(uint32_t dstIp, uint16_t dstPort, uint8_t l4Proto, uint32_t srcIp, uint16_t srcPort)
+NdpiConnectionKey::NdpiConnectionKey(uint32_t dstIp, uint16_t dstPort, uint8_t l4Proto, uint32_t srcIp, uint16_t srcPort)
     : dstIp(dstIp), dstPort(dstPort), l4Proto(l4Proto), srcIp(srcIp), srcPort(srcPort)
 {
 }
 
-ConnectionKey::~ConnectionKey()
+NdpiConnectionKey::~NdpiConnectionKey()
 {
 }
 
 // Relational operators
 
-bool ConnectionKey::operator==(const ConnectionKey &other) const
+bool NdpiConnectionKey::operator==(const NdpiConnectionKey &other) const
 {
     return srcIp == other.srcIp &&
            dstIp == other.dstIp &&

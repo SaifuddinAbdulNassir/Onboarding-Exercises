@@ -5,7 +5,7 @@
 #include <sys/signalfd.h>
 
 // Project includes
-#include "NdpiState.h"
+#include "ndpi/NdpiState.h"
 
 namespace ndpi
 {

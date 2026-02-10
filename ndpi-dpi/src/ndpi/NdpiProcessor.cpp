@@ -1,4 +1,4 @@
-#include "NdpiProcessor.h"
+#include "ndpi/NdpiProcessor.h"
 
 // Library includes
 #include <cxxopts/cxxopts.hpp>
@@ -9,10 +9,10 @@
 #include <pcapplusplus/UdpLayer.h>
 
 // Project includes
-#include "CaptureCookie.h"
-#include "ConnectionInfo.h"
-#include "ConnectionKey.h"
-#include "NdpiSignalHandler.h"
+#include "ndpi/NdpiCaptureCookie.h"
+#include "ndpi/NdpiConnectionInfo.h"
+#include "ndpi/NdpiConnectionKey.h"
+#include "ndpi/NdpiSignalHandler.h"
 
 using namespace cxxopts;
 using namespace fort;
@@ -44,10 +44,10 @@ void NdpiProcessor::canonicalize(uint32_t &srcIp, uint32_t &dstIp, uint16_t &src
 void NdpiProcessor::onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)
 {
     // Unpack cookie
-    auto cookie = static_cast<CaptureCookie *>(userData);
+    auto cookie = static_cast<NdpiCaptureCookie *>(userData);
     auto ndpiMod = get<0>(*cookie);
     NdpiState &appState = *get<1>(*cookie);
-    ConnectionsMap &connectionMap = *get<2>(*cookie);
+    NdpiConnectionsMap &connectionMap = *get<2>(*cookie);
 
     // Parse packet
     Packet packet(rawPacket);
@@ -91,16 +91,16 @@ void NdpiProcessor::onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, v
     canonicalize(srcIp, dstIp, srcPort, dstPort);
 
     // Create connection key
-    auto key = ConnectionKey(dstIp, dstPort, l4Proto, srcIp, srcPort);
+    auto key = NdpiConnectionKey(dstIp, dstPort, l4Proto, srcIp, srcPort);
 
     // Lookup or create connection info
     auto it = connectionMap.find(key);
     if (it == connectionMap.end())
     {
         // First time seeing this flow, create new ConnectionInfo
-        auto insertResult = connectionMap.try_emplace(key, ConnectionInfo{});
+        auto insertResult = connectionMap.try_emplace(key, NdpiConnectionInfo{});
         it = insertResult.first;
-        ConnectionInfo &connectionInfo = it->second;
+        NdpiConnectionInfo &connectionInfo = it->second;
         connectionInfo.setUid(appState.getUid());
         appState.incrementUid();
         connectionInfo.setFlow((ndpi_flow_struct *)calloc(1, ndpi_detection_get_sizeof_ndpi_flow_struct()));
@@ -113,7 +113,7 @@ void NdpiProcessor::onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, v
     }
 
     // Existing flow, update ConnectionInfo
-    ConnectionInfo &connectionInfo = it->second;
+    NdpiConnectionInfo &connectionInfo = it->second;
 
     // If we've already identified the protocol or exceeded max packets, skip further processing
     if (connectionInfo.getDone())
@@ -209,7 +209,7 @@ bool NdpiProcessor::ParseArgs(int argc, char *argv[])
     return true;
 }
 
-void NdpiProcessor::printResults(const ConnectionsMap &connectionMap)
+void NdpiProcessor::printResults(const NdpiConnectionsMap &connectionMap)
 {
     // Print results using libfort
     utf8_table table;
@@ -227,7 +227,7 @@ void NdpiProcessor::printResults(const ConnectionsMap &connectionMap)
 void NdpiProcessor::processLivePackets()
 {
     NdpiState ndpiState;
-    ConnectionsMap connectionMap;
+    NdpiConnectionsMap connectionMap;
 
     // Handle Ctrl+C signal
     NdpiSignalHandler signalHandler;
@@ -243,7 +243,7 @@ void NdpiProcessor::processLivePackets()
     }
 
     // Cookie to pass to packet handler
-    CaptureCookie cookie{ndpiMod, &ndpiState, &connectionMap};
+    NdpiCaptureCookie cookie{ndpiMod, &ndpiState, &connectionMap};
 
     // Start capturing packets
     dev->startCapture([this](RawPacket *rawPacket, PcapLiveDevice *dev, void *userData)

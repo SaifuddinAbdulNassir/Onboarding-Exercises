@@ -10,7 +10,7 @@
 namespace ndpi
 {
 
-  class ConnectionInfo
+  class NdpiConnectionInfo
   {
   private:
     // Data
@@ -24,8 +24,8 @@ namespace ndpi
 
   public:
     // Constructors & destructors
-    ConnectionInfo();
-    virtual ~ConnectionInfo();
+    NdpiConnectionInfo();
+    virtual ~NdpiConnectionInfo();
 
     // Getters & setters
     const std::string &getCategory() const { return category; }

@@ -1,5 +1,5 @@
 // Project includes
-#include "NdpiProcessor.h"
+#include "ndpi/NdpiProcessor.h"
 
 using namespace ndpi;
 

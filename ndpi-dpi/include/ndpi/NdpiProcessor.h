@@ -5,7 +5,7 @@
 #include <pcapplusplus/PcapLiveDevice.h>
 
 // Project includes
-#include "ConnectionsMap.h"
+#include "ndpi/NdpiConnectionsMap.h"
 
 namespace ndpi
 {
@@ -28,7 +28,7 @@ namespace ndpi
         // Business logic
         void onPacketArrives(pcpp::RawPacket *rawPacket, pcpp::PcapLiveDevice *dev, void *userData);
         bool ParseArgs(int argc, char *argv[]);
-        void printResults(const ConnectionsMap &connectionMap);
+        void printResults(const NdpiConnectionsMap &connectionMap);
         void processLivePackets();
     };
 

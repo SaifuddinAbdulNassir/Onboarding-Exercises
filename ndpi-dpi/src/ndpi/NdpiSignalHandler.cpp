@@ -1,4 +1,4 @@
-#include "NdpiSignalHandler.h"
+#include "ndpi/NdpiSignalHandler.h"
 
 // Standard includes
 #include <iostream>

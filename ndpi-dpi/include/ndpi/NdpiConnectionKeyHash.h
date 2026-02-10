@@ -4,16 +4,16 @@
 #include <cstddef>
 
 // Project includes
-#include "ConnectionKey.h"
+#include "ndpi/NdpiConnectionKey.h"
 
 namespace ndpi
 {
 
-  class ConnectionKeyHash
+  class NdpiConnectionKeyHash
   {
   public:
     // Hash function
-    size_t operator()(const ConnectionKey &key) const;
+    size_t operator()(const NdpiConnectionKey &key) const;
   };
 
 } // namespace ndpi
