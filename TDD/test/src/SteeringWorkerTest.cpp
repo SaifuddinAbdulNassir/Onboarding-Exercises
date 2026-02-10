@@ -1,5 +1,4 @@
 // Library includes
-#include <arpa/inet.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -69,7 +68,7 @@ TEST(SteeringWorkerTest, steersValidTcpPacket)
     auto dstPort = tcp->getTcpHeader()->portDst;
 
     ASSERT_NE(tcp, nullptr);
-    EXPECT_EQ(dstPort, htons(target.getPort()));
+    EXPECT_EQ(dstPort, target.getPort());
 }
 
 TEST(SteeringWorkerTest, steersValidUdpPacket)
@@ -85,7 +84,7 @@ TEST(SteeringWorkerTest, steersValidUdpPacket)
     auto dstPort = udp->getUdpHeader()->portDst;
 
     ASSERT_NE(udp, nullptr);
-    EXPECT_EQ(dstPort, htons(target.getPort()));
+    EXPECT_EQ(dstPort, target.getPort());
 }
 
 TEST(SteeringWorkerTest, throwsInvalidArgumentExceptionForInvalidPacket)
