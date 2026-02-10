@@ -12,10 +12,10 @@ RUN apk add --no-cache \
     libpcap-dev \
     openssl-dev
 
-# Make it easier for CMake to find things installed in /usr/local
+# Add the work directory to Cmake prefix path
 ENV CMAKE_PREFIX_PATH=/usr/local
 
-# PcapPlusPlus
+# Build/install PcapPlusPlus
 ARG PCPPP_REF=v24.09
 RUN git clone --depth 1 --branch "${PCPPP_REF}" https://github.com/seladb/PcapPlusPlus.git /tmp/PcapPlusPlus && \
     cmake -S /tmp/PcapPlusPlus -B /tmp/PcapPlusPlus/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local && \
@@ -23,7 +23,7 @@ RUN git clone --depth 1 --branch "${PCPPP_REF}" https://github.com/seladb/PcapPl
     cmake --install /tmp/PcapPlusPlus/build && \
     rm -rf /tmp/PcapPlusPlus
        
-# cxxopts (header-only; install headers into /usr/local/include) ----
+# Build/install cxxopts
 ARG CXXOPTS_REF=v3.2.0
 RUN git clone --depth 1 --branch "${CXXOPTS_REF}" https://github.com/jarro2783/cxxopts.git /tmp/cxxopts && \
     cmake -S /tmp/cxxopts -B /tmp/cxxopts/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local && \
@@ -33,7 +33,7 @@ RUN git clone --depth 1 --branch "${CXXOPTS_REF}" https://github.com/jarro2783/c
     install -m 0644 /tmp/cxxopts/include/cxxopts.hpp /usr/local/include/cxxopts/cxxopts.hpp && \
     rm -rf /tmp/cxxopts
 
-# libfort (header-only; install headers into /usr/local/include) ----
+# Build/install libfort
 ARG LIBFORT_REF=v0.4.2
 RUN git clone --depth 1 --branch "${LIBFORT_REF}" https://github.com/seleznevae/libfort.git /tmp/libfort && \
     cmake -S /tmp/libfort -B /tmp/libfort/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local && \
