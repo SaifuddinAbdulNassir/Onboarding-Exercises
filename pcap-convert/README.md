@@ -22,23 +22,28 @@ This repository includes a Docker-based dev environment so you can build and run
 
 From the repository root (`pcap-convert`):
 
-1) Build and start the dev container:
+1) Create a local env file (do not commit it):
+```bash
+cp docker/.env-example docker/.env
+```
+
+2) Build and start the dev container:
 ```bash
 docker compose --env-file docker/.env -f docker/docker-compose.yml up -d --build
 ```
 
-2) Open a shell inside the container:
+3) Open a shell inside the container:
 ```bash
 docker compose --env-file docker/.env -f docker/docker-compose.yml exec dev sh
 ```
 
-3) Build the project inside the container:
+4) Build the project inside the container:
 ```bash
 cmake -S . -B build
 cmake --build build
 ```
 
-4) Run the project inside the container:
+5) Run the project inside the container:
 ```bash
 ./build/app/pcap-convert --vlan 5 --ip-version 4 --ttl 2 --dns-addr 10.0.0.1 --dns-port 5353 -i data/captures/x11-sample.pcap -o data/captures/x11-sample-filtered.pcap
 ```
