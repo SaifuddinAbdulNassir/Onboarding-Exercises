@@ -8,7 +8,7 @@
 #include "exception/InvalidProtocolException.h"
 #include "SteeringRuntimeMock.h"
 #include "SteeringWorker.h"
-#include "TestUtils.h"
+#include "util/TestUtils.h"
 
 using ::testing::Return;
 using ::testing::Throw;

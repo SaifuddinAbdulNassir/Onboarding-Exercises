@@ -5,7 +5,7 @@
 #include "exception/DuplicatedTargetException.h"
 #include "exception/InvalidProtocolException.h"
 #include "SteeringRuntime.h"
-#include "TestUtils.h"
+#include "util/TestUtils.h"
 
 using namespace pcpp;
 using namespace TDD;

@@ -2,8 +2,8 @@
 #include <gtest/gtest.h>
 
 // Project includes
-#include "ProtocolUtil.h"
-#include "TestUtils.h"
+#include "util/ProtocolUtil.h"
+#include "util/TestUtils.h"
 
 using namespace TDD;
 

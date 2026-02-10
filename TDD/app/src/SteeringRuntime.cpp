@@ -3,7 +3,7 @@
 // Project includes
 #include "exception/DuplicatedTargetException.h"
 #include "exception/InvalidProtocolException.h"
-#include "ProtocolUtil.h"
+#include "util/ProtocolUtil.h"
 
 using namespace pcpp;
 using namespace std;

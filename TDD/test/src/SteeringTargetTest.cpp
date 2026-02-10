@@ -4,7 +4,7 @@
 // Project includes
 #include "exception/InvalidArgumentException.h"
 #include "SteeringTarget.h"
-#include "TestUtils.h"
+#include "util/TestUtils.h"
 
 using namespace pcpp;
 using namespace TDD;

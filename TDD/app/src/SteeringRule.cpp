@@ -6,7 +6,7 @@
 #include <pcapplusplus/UdpLayer.h>
 
 // Project includes
-#include "ProtocolUtil.h"
+#include "util/ProtocolUtil.h"
 
 using namespace pcpp;
 using namespace std;

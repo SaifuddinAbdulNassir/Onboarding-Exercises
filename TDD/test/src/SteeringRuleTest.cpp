@@ -3,7 +3,7 @@
 
 // Project includes
 #include "SteeringRule.h"
-#include "TestUtils.h"
+#include "util/TestUtils.h"
 
 using namespace pcpp;
 using namespace std;
