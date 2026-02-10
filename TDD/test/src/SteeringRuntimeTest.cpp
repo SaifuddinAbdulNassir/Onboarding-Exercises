@@ -2,6 +2,8 @@
 #include <gtest/gtest.h>
 
 // Project includes
+#include "exception/DuplicatedTargetException.h"
+#include "exception/InvalidProtocolException.h"
 #include "SteeringRuntime.h"
 #include "TestUtils.h"
 

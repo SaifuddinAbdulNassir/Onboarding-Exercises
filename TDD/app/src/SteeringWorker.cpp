@@ -1,13 +1,13 @@
 #include "SteeringWorker.h"
 
 // Library includes
-#include <arpa/inet.h>
 #include <pcapplusplus/IPv4Layer.h>
 #include <pcapplusplus/TcpLayer.h>
 #include <pcapplusplus/UdpLayer.h>
 
 // Project includes
 #include "exception/DropPacketException.h"
+#include "exception/InvalidProtocolException.h"
 
 using namespace pcpp;
 using namespace TDD;
@@ -50,9 +50,9 @@ void SteeringWorker::steer(Packet &packet, SteeringTarget &target)
         throw InvalidArgumentException();
 
     if (auto *tcp = packet.getLayerOfType<TcpLayer>())
-        tcp->getTcpHeader()->portDst = htons(target.getPort());
+        tcp->getTcpHeader()->portDst = target.getPort();
     else if (auto *udp = packet.getLayerOfType<UdpLayer>())
-        udp->getUdpHeader()->portDst = htons(target.getPort());
+        udp->getUdpHeader()->portDst = target.getPort();
     else
         throw InvalidProtocolException();
 

@@ -5,6 +5,7 @@
 
 // Project includes
 #include "exception/DropPacketException.h"
+#include "exception/InvalidProtocolException.h"
 #include "SteeringRuntimeMock.h"
 #include "SteeringWorker.h"
 #include "TestUtils.h"

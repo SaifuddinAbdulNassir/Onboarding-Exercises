@@ -8,7 +8,6 @@
 
 // Project includes
 #include "enums/Protocol.h"
-#include "ProtocolUtil.h"
 #include "SteeringTarget.h"
 
 namespace TDD

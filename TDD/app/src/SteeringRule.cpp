@@ -5,6 +5,9 @@
 #include <pcapplusplus/TcpLayer.h>
 #include <pcapplusplus/UdpLayer.h>
 
+// Project includes
+#include "ProtocolUtil.h"
+
 using namespace pcpp;
 using namespace std;
 using namespace TDD;

@@ -1,5 +1,10 @@
 #include "SteeringRuntime.h"
 
+// Project includes
+#include "exception/DuplicatedTargetException.h"
+#include "exception/InvalidProtocolException.h"
+#include "ProtocolUtil.h"
+
 using namespace pcpp;
 using namespace std;
 using namespace TDD;

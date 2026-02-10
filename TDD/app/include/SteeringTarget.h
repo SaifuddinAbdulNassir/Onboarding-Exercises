@@ -22,8 +22,8 @@ namespace TDD
 
     // Getters & setters
     const pcpp::IPv4Address &getAddress() const { return address; }
-    uint16_t getPort() const { return port; }
     void setAddress(pcpp::IPv4Address address);
+    uint16_t getPort() const { return port; }
     void setPort(uint16_t port);
 
     // Relational operators
