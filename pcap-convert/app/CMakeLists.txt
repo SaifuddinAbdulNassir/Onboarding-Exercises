@@ -13,10 +13,11 @@ target_include_directories(pcap-convert
 )
 
 target_link_libraries(pcap-convert
-    Common++
+PRIVATE
     cxxopts::cxxopts
     libfort::fort
-    Packet++
     pcap
-    Pcap++
+    PcapPlusPlus::Common++
+    PcapPlusPlus::Packet++
+    PcapPlusPlus::Pcap++
 )
