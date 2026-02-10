@@ -8,7 +8,7 @@ This exercise captures live network traffic and extracts data such as **Connecti
 
 ## Build instruction
 
-To build and this project. Navigate to the project root folder ('ndpi-dpi') and run the following commands in your terminal:
+To build this project. Navigate to the project root folder ('ndpi-dpi') and run the following commands in your terminal:
 
 ```
 cmake -S . -B build
