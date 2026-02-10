@@ -43,7 +43,6 @@ RUN git clone --depth 1 --branch "${LIBFORT_REF}" https://github.com/seleznevae/
     for f in fort.hpp fort.h; do for d in include lib; do src="/tmp/libfort/$d/$f"; [ -f "$src" ] && install -m 0644 "$src" "/usr/local/include/libfort/$f" && break; done; done && \
     rm -rf /tmp/libfort
 
-
 WORKDIR /workspace/app
 
 CMD ["sh", "-lc", "sleep infinity"]
