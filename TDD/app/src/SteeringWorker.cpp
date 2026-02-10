@@ -29,10 +29,12 @@ bool SteeringWorker::process(Packet &packet)
 {
     try
     {
+        // Search for a matching rule
         auto rule = runtime.ruleSearch(packet);
         if (!rule)
             return false;
 
+        // Steer the packet according to the rule's target
         auto target = rule->getTarget();
         steer(packet, target);
         return true;
@@ -49,6 +51,7 @@ void SteeringWorker::steer(Packet &packet, SteeringTarget &target)
     if (!ip)
         throw InvalidArgumentException();
 
+    // Steer port
     if (auto *tcp = packet.getLayerOfType<TcpLayer>())
         tcp->getTcpHeader()->portDst = target.getPort();
     else if (auto *udp = packet.getLayerOfType<UdpLayer>())
@@ -56,8 +59,9 @@ void SteeringWorker::steer(Packet &packet, SteeringTarget &target)
     else
         throw InvalidProtocolException();
 
-    packet.computeCalculateFields();
-
+    // Steer address
     if (target.getAddress() != IPv4Address::Zero)
         ip->setDstIPv4Address(target.getAddress());
+
+    packet.computeCalculateFields();
 }

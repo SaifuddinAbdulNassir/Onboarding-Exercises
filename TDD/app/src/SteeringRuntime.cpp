@@ -43,12 +43,14 @@ bool SteeringRuntime::addRule(Protocol protocol, uint16_t port,
 {
     validateProtocol(protocol);
 
+    // Check for duplicated target
     for (const auto &[_, rule] : rules)
     {
         if (rule->getProtocol() == protocol && rule->getTarget() == target)
             throw DuplicatedTargetException();
     }
 
+    // Add the rule
     auto rule = make_shared<SteeringRule>(protocol, port, address, target);
     auto id = rule->getId();
 
@@ -74,6 +76,7 @@ bool SteeringRuntime::removeRule(Protocol protocol, uint16_t port,
 {
     validateProtocol(protocol);
 
+    // Remove the rule
     SteeringRule tmp(protocol, port, address,
                      SteeringTarget(IPv4Address("1.1.1.1"), 1));
     auto id = tmp.getId();
@@ -97,6 +100,7 @@ SteeringRuntime::ruleSearch(Packet &packet)
     auto proto = ProtocolUtil::detect(packet);
     validateProtocol(proto);
 
+    // Search for a matching rule
     for (const auto &[_, rule] : rules)
     {
         if (rule->matches(packet))
