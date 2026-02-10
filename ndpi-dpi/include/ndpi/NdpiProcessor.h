@@ -28,7 +28,7 @@ namespace ndpi
         // Business logic
         void onPacketArrives(pcpp::RawPacket *rawPacket, pcpp::PcapLiveDevice *dev, void *userData);
         bool ParseArgs(int argc, char *argv[]);
-        void printResults(const NdpiConnectionsMap &connectionMap);
+        void printResults(const NdpiConnectionsMap &connectionMap) const;
         void processLivePackets();
     };
 

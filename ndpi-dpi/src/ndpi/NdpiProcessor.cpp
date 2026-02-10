@@ -209,7 +209,7 @@ bool NdpiProcessor::ParseArgs(int argc, char *argv[])
     return true;
 }
 
-void NdpiProcessor::printResults(const NdpiConnectionsMap &connectionMap)
+void NdpiProcessor::printResults(const NdpiConnectionsMap &connectionMap) const
 {
     // Print results using libfort
     utf8_table table;
