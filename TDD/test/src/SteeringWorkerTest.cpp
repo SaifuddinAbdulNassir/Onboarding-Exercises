@@ -42,7 +42,7 @@ TEST(SteeringWorkerTest, rejectsInvalidRule)
     EXPECT_FALSE(worker.process(packet));
 }
 
-TEST(SteeringWorkerTest, handlesRuleProcessingExceptions)
+TEST(SteeringWorkerTest, throwsDropPacketExceptionOnIcmpPacket)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
@@ -87,7 +87,7 @@ TEST(SteeringWorkerTest, steersValidUdpPacket)
     EXPECT_EQ(dstPort, target.getPort());
 }
 
-TEST(SteeringWorkerTest, throwsInvalidArgumentExceptionForInvalidPacket)
+TEST(SteeringWorkerTest, throwsInvalidArgumentExceptionForTcp6Packet)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
@@ -99,7 +99,7 @@ TEST(SteeringWorkerTest, throwsInvalidArgumentExceptionForInvalidPacket)
     EXPECT_THROW(worker.steer(packet, target), InvalidArgumentException);
 }
 
-TEST(SteeringWorkerTest, throwsInvalidProtocolException)
+TEST(SteeringWorkerTest, throwsInvalidProtocolExceptionOnIcmpPacket)
 {
     SteeringRuntime runtime;
     SteeringWorker worker(runtime);
@@ -125,7 +125,7 @@ TEST(SteeringWorkerTest, processesWithMockedRuntimeWithValidRule)
     EXPECT_TRUE(worker.process(packet));
 }
 
-TEST(SteeringWorkerTest, processesWithMockedRuntimeWithNullRule)
+TEST(SteeringWorkerTest, doesNotProcessesWithMockedRuntimeWithNullRule)
 {
     SteeringRuntimeMock runtimeMock;
     SteeringWorker worker(runtimeMock);
