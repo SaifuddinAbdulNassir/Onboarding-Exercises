@@ -19,8 +19,8 @@ target_include_directories(steering-app
 )
 
 target_link_libraries(steering-app
-    Common++
-    Packet++
-    Pcap++
+    PcapPlusPlus::Common++
+    PcapPlusPlus::Packet++
+    PcapPlusPlus::Pcap++
     TBB::tbb
 )

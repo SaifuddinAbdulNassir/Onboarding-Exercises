@@ -1,4 +1,5 @@
 #Find packages
+find_package(PcapPlusPlus REQUIRED)
 find_package(TBB REQUIRED)
 
 #Find source files
@@ -21,12 +22,12 @@ target_include_directories(steering-tests
 # Link everything
 target_link_libraries(steering-tests
     steering-app
-    Common++
     gmock
     gtest
     gtest_main
-    Packet++
-    Pcap++
+    PcapPlusPlus::Common++
+    PcapPlusPlus::Packet++
+    PcapPlusPlus::Pcap++
     TBB::tbb
 )
 
