@@ -3,6 +3,7 @@
 // Standard includes
 #include <iostream>
 #include <poll.h>
+#include <signal.h>
 #include <unistd.h>
 
 using namespace ndpi;
@@ -11,6 +12,7 @@ using namespace std;
 // Constructors & destructors
 
 NdpiSignalHandler::NdpiSignalHandler()
+    : ctx(nullptr), ndpiMod(nullptr), sigFd(-1)
 {
     sigemptyset(&mask);
     sigaddset(&mask, SIGINT);
@@ -18,9 +20,14 @@ NdpiSignalHandler::NdpiSignalHandler()
 
 NdpiSignalHandler::~NdpiSignalHandler()
 {
-    close(sigFd);
-    ndpi_global_deinit(ctx);
-    ndpi_exit_detection_module(ndpiMod);
+    if (sigFd != -1)
+        close(sigFd);
+
+    if (ndpiMod)
+        ndpi_exit_detection_module(ndpiMod);
+
+    if (ctx)
+        ndpi_global_deinit(ctx);
 }
 
 // Business logic

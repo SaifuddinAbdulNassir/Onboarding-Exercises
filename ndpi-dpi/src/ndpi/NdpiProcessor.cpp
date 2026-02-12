@@ -1,5 +1,8 @@
 #include "ndpi/NdpiProcessor.h"
 
+// Standard includes
+#include <iostream>
+
 // Library includes
 #include <cxxopts/cxxopts.hpp>
 #include <libfort/fort.hpp>
@@ -200,7 +203,7 @@ bool NdpiProcessor::ParseArgs(int argc, char *argv[])
         if (result.count("max-packets"))
             maxPackets = result["max-packets"].as<size_t>();
     }
-    catch (const OptionException &e)
+    catch (const exceptions::exception &e)
     {
         cerr << "Error parsing options: " << e.what() << endl;
         return false;
@@ -234,7 +237,7 @@ void NdpiProcessor::processLivePackets()
     auto ndpiMod = signalHandler.handleSignal();
 
     // Open live device for packet capture
-    auto *dev = PcapLiveDeviceList::getInstance().getDeviceByName(interface);
+    auto dev = PcapLiveDeviceList::getInstance().getPcapLiveDeviceByName(interface);
 
     if (!dev || !dev->open())
     {
