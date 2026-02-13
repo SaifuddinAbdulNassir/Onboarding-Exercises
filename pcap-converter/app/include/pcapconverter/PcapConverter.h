@@ -18,7 +18,10 @@ namespace pcapconverter
     private:
         // Data
         PcapConverterParams params;
-        PcapConverterStats stats;
+        PcapConverterStats dnsModifiedPacketsStats;
+        PcapConverterStats droppedPacketsStats;
+        PcapConverterStats incomingPacketsStats;
+        PcapConverterStats writtenPacketsStats;
 
     public:
         // Constructors & destructors
