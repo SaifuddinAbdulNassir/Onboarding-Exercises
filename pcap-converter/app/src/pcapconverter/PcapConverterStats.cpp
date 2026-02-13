@@ -17,13 +17,13 @@ PcapConverterStats::~PcapConverterStats()
 void PcapConverterStats::recordDroppedPacket(size_t value)
 {
     // Update stats for dropped packet
-    ++droppedPackets;
-    bytesDropped += value;
+    ++packetsDroppedCount;
+    bytesDroppedCount += value;
 }
 
 void PcapConverterStats::recordWrittenPacket(size_t value)
 {
     // Update stats for written packet
-    ++writtenPackets;
-    bytesOut += value;
+    ++packetWrittenCount;
+    bytesOutCount += value;
 }

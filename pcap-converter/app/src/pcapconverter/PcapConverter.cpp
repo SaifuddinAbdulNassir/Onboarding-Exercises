@@ -46,7 +46,7 @@ void PcapConverter::applyPacketModifications(Packet &packet)
         if (dns && udp)
         {
             modifyDnsDestination(packet, udp);
-            stats.incrementDnsModifiedPackets();
+            stats.incrementPacketsDnsModifiedCount();
         }
     }
 }
@@ -185,10 +185,10 @@ void PcapConverter::printStats(const PcapFileReaderDevice &reader) const
     // Print stats in a table format
     char_table table;
     table << header << "Packet Processing Statistics" << "Total bytes" << "Total packets" << endr
-          << "Total bytes & packets processed: " << stats.getBytesIn() << readerStats.packetsRecv << endr
-          << "Total bytes & packets dropped:   " << stats.getBytesDropped() << stats.getDroppedPackets() << endr
-          << "Total bytes & packets written:   " << stats.getBytesOut() << stats.getWrittenPackets() << endr
-          << "Total DNS packets modified:      " << " " << stats.getDnsModifiedPackets() << endr;
+          << "Total bytes & packets processed: " << stats.getBytesInCount() << readerStats.packetsRecv << endr
+          << "Total bytes & packets dropped:   " << stats.getBytesDroppedCount() << stats.getPacketsDroppedCount() << endr
+          << "Total bytes & packets written:   " << stats.getBytesOutCount() << stats.getPacketWrittenCount() << endr
+          << "Total DNS packets modified:      " << " " << stats.getPacketsDnsModifiedCount() << endr;
 
     cout << table.to_string() << endl;
 }
@@ -214,7 +214,7 @@ void PcapConverter::processPackets()
 
     while (reader.getNextPacket(rawPacket))
     {
-        stats.incrementBytesIn(rawPacket.getRawDataLen());
+        stats.incrementBytesInCount(rawPacket.getRawDataLen());
         Packet packet(&rawPacket);
 
         // Filtering
