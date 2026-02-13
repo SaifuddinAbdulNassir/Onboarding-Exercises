@@ -38,4 +38,4 @@ namespace pcapconverter
     void recordWrittenPacket(uint64_t value);
   };
 
-} // namespace pcapconvert
+} // namespace pcapconverter

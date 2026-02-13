@@ -49,4 +49,4 @@ namespace pcapconverter
     void setVlan(const std::shared_ptr<uint16_t> id) { vlan = id; }
   };
 
-} // namespace pcapconvert
+} // namespace pcapconverter

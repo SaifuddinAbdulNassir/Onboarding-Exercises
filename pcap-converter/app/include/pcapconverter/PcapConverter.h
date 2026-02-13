@@ -36,4 +36,4 @@ namespace pcapconverter
         bool shouldDropPacket(const pcpp::Packet &packet) const;
     };
 
-} // namespace pcapconvert
+} // namespace pcapconverter
