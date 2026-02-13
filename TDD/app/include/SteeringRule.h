@@ -4,11 +4,16 @@
 #include <string>
 
 // Library includes
-#include <pcapplusplus/Packet.h>
+#include <pcapplusplus/IpAddress.h>
 
 // Project includes
 #include "enums/Protocol.h"
 #include "SteeringTarget.h"
+
+namespace pcpp
+{
+  class Packet;
+}
 
 namespace TDD
 {

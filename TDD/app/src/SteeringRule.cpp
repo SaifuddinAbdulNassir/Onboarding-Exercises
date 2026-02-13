@@ -2,6 +2,7 @@
 
 // Library includes
 #include <pcapplusplus/IPv4Layer.h>
+#include <pcapplusplus/Packet.h>
 #include <pcapplusplus/TcpLayer.h>
 #include <pcapplusplus/UdpLayer.h>
 
