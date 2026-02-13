@@ -54,7 +54,7 @@ void PcapConverter::applyPacketModifications(Packet &packet)
 void PcapConverter::decrementTtl(Packet &packet)
 {
     // If TTL decrement is not set, skip
-    if (params.getTtlDec())
+    if (!params.getTtlDec())
         return;
 
     // Decrement TTL for both IPv4 and IPv6
@@ -71,7 +71,7 @@ void PcapConverter::decrementTtl(Packet &packet)
 bool PcapConverter::isExpiredOrIcmp(const Packet &packet) const
 {
     // If TTL decrement is not set, skip
-    if (params.getTtlDec())
+    if (!params.getTtlDec())
         return false;
 
     // Check IPv4 TTL and ICMP
