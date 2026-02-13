@@ -1,17 +1,18 @@
 #pragma once
 
-// Library includes
-#include <pcapplusplus/Packet.h>
-#include <pcapplusplus/PcapFileDevice.h>
-#include <pcapplusplus/UdpLayer.h>
-
 // Project includes
 #include "PcapConvertParams.h"
 #include "PcapConvertStats.h"
 
+namespace pcpp
+{
+    class Packet;
+    class PcapFileReaderDevice;
+    class UdpLayer;
+}
+
 namespace pcapconvert
 {
-
     class PcapConvert
     {
     private:

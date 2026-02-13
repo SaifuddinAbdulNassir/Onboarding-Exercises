@@ -10,6 +10,9 @@
 #include <pcapplusplus/EthLayer.h>
 #include <pcapplusplus/IPv4Layer.h>
 #include <pcapplusplus/IPv6Layer.h>
+#include <pcapplusplus/Packet.h>
+#include <pcapplusplus/PcapFileDevice.h>
+#include <pcapplusplus/UdpLayer.h>
 #include <pcapplusplus/VlanLayer.h>
 
 using namespace cxxopts;
