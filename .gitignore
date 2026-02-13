@@ -24,4 +24,4 @@ cmake_install.cmake
 .DS_Store
 
 # Docker files
-TDD/docker/.env
+.env

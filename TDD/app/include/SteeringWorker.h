@@ -9,6 +9,7 @@ namespace TDD
   class SteeringWorker
   {
   private:
+    // Data
     SteeringRuntime &runtime;
 
   public:

@@ -16,10 +16,15 @@ namespace TDD
   class SteeringRule
   {
   private:
+    // Data
     pcpp::IPv4Address address;
     uint16_t port;
     Protocol protocol;
     SteeringTarget target;
+
+    // Helper functions
+    bool matchesAddress(pcpp::Packet &packet, const pcpp::IPv4Address &address) const;
+    bool matchesPort(pcpp::Packet &packet, uint16_t port) const;
 
   public:
     // Constructors & destructors

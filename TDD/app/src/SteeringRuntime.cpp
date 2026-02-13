@@ -21,12 +21,6 @@ SteeringRuntime::~SteeringRuntime()
 
 // Business logic
 
-static void validateProtocol(Protocol protocol)
-{
-    if (protocol._value != Protocol::TCP4 && protocol._value != Protocol::UDP4)
-        throw InvalidProtocolException();
-}
-
 bool SteeringRuntime::addRule(Protocol protocol, SteeringTarget target)
 {
     return addRule(protocol, 0, IPv4Address::Zero, target);
@@ -61,6 +55,27 @@ bool SteeringRuntime::addRule(Protocol protocol, uint16_t port,
     return true;
 }
 
+size_t SteeringRuntime::ruleCount() const
+{
+    return rules.size();
+}
+
+shared_ptr<const SteeringRule>
+SteeringRuntime::ruleSearch(Packet &packet)
+{
+    auto proto = ProtocolUtil::detect(packet);
+    validateProtocol(proto);
+
+    // Search for a matching rule
+    for (const auto &[_, rule] : rules)
+    {
+        if (rule->matches(packet))
+            return rule;
+    }
+
+    return nullptr;
+}
+
 bool SteeringRuntime::removeRule(Protocol protocol)
 {
     return removeRule(protocol, 0, IPv4Address::Zero);
@@ -89,23 +104,8 @@ void SteeringRuntime::reset()
     rules.clear();
 }
 
-size_t SteeringRuntime::ruleCount() const
+void SteeringRuntime::validateProtocol(Protocol protocol)
 {
-    return rules.size();
-}
-
-shared_ptr<const SteeringRule>
-SteeringRuntime::ruleSearch(Packet &packet)
-{
-    auto proto = ProtocolUtil::detect(packet);
-    validateProtocol(proto);
-
-    // Search for a matching rule
-    for (const auto &[_, rule] : rules)
-    {
-        if (rule->matches(packet))
-            return rule;
-    }
-
-    return nullptr;
+    if (protocol._value != Protocol::TCP4 && protocol._value != Protocol::UDP4)
+        throw InvalidProtocolException();
 }

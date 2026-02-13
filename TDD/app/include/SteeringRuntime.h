@@ -15,6 +15,7 @@ namespace TDD
   class SteeringRuntime
   {
   protected:
+    // Data
     tbb::concurrent_unordered_map<std::string, std::shared_ptr<SteeringRule>> rules;
 
   public:
@@ -34,6 +35,7 @@ namespace TDD
     void reset();
     size_t ruleCount() const;
     virtual std::shared_ptr<const SteeringRule> ruleSearch(pcpp::Packet &packet);
+    static void validateProtocol(Protocol protocol);
   };
 
 } // namespace TDD
