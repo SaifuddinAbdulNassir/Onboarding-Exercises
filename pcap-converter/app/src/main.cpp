@@ -1,15 +1,15 @@
 // Project includes
-#include "pcapconvert/PcapConvert.h"
-#include "pcapconvert/PcapConvertParams.h"
-#include "pcapconvert/PcapConvertStats.h"
+#include "pcapconverter/PcapConverter.h"
+#include "pcapconverter/PcapConverterParams.h"
+#include "pcapconverter/PcapConverterStats.h"
 
-using namespace pcapconvert;
+using namespace pcapconverter;
 using namespace pcpp;
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-    PcapConvert pcapConverter;
+    PcapConverter pcapConverter;
 
     // Parse command line arguments
     if (!pcapConverter.parseArgs(argc, argv))

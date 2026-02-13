@@ -1,8 +1,8 @@
 #pragma once
 
 // Project includes
-#include "PcapConvertParams.h"
-#include "PcapConvertStats.h"
+#include "PcapConverterParams.h"
+#include "PcapConverterStats.h"
 
 namespace pcpp
 {
@@ -11,19 +11,19 @@ namespace pcpp
     class UdpLayer;
 }
 
-namespace pcapconvert
+namespace pcapconverter
 {
-    class PcapConvert
+    class PcapConverter
     {
     private:
         // Data
-        PcapConvertParams params;
-        PcapConvertStats stats;
+        PcapConverterParams params;
+        PcapConverterStats stats;
 
     public:
         // Constructors & destructors
-        PcapConvert();
-        virtual ~PcapConvert();
+        PcapConverter();
+        virtual ~PcapConverter();
 
         // Business logic
         void applyPacketModifications(pcpp::Packet &packet);

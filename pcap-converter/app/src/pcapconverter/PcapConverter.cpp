@@ -1,4 +1,4 @@
-#include "pcapconvert/PcapConvert.h"
+#include "pcapconverter/PcapConverter.h"
 
 // Standard includes
 #include <iostream>
@@ -17,23 +17,23 @@
 
 using namespace cxxopts;
 using namespace fort;
-using namespace pcapconvert;
+using namespace pcapconverter;
 using namespace pcpp;
 using namespace std;
 
 // Constructors & destructors
 
-PcapConvert::PcapConvert()
+PcapConverter::PcapConverter()
 {
 }
 
-PcapConvert::~PcapConvert()
+PcapConverter::~PcapConverter()
 {
 }
 
 // Business logic
 
-void PcapConvert::applyPacketModifications(Packet &packet)
+void PcapConverter::applyPacketModifications(Packet &packet)
 {
     decrementTtl(packet);
 
@@ -51,7 +51,7 @@ void PcapConvert::applyPacketModifications(Packet &packet)
     }
 }
 
-void PcapConvert::decrementTtl(Packet &packet)
+void PcapConverter::decrementTtl(Packet &packet)
 {
     // If TTL decrement is not set, skip
     if (params.getTtlDec() == nullptr)
@@ -68,7 +68,7 @@ void PcapConvert::decrementTtl(Packet &packet)
     }
 }
 
-bool PcapConvert::isExpiredOrIcmp(const Packet &packet) const
+bool PcapConverter::isExpiredOrIcmp(const Packet &packet) const
 {
     // If TTL decrement is not set, skip
     if (params.getTtlDec() == nullptr)
@@ -95,7 +95,7 @@ bool PcapConvert::isExpiredOrIcmp(const Packet &packet) const
     return false;
 }
 
-void PcapConvert::modifyDnsDestination(Packet &packet, UdpLayer *udp)
+void PcapConverter::modifyDnsDestination(Packet &packet, UdpLayer *udp)
 {
     // Modify destination IP if specified
     auto ip4 = packet.getLayerOfType<IPv4Layer>();
@@ -116,7 +116,7 @@ void PcapConvert::modifyDnsDestination(Packet &packet, UdpLayer *udp)
     }
 }
 
-bool PcapConvert::parseArgs(int argc, char *argv[])
+bool PcapConverter::parseArgs(int argc, char *argv[])
 {
     // Define command line options
     Options options("pcap-convert", "PCAP file converter");
@@ -176,7 +176,7 @@ bool PcapConvert::parseArgs(int argc, char *argv[])
     return true;
 }
 
-void PcapConvert::printStats(const PcapFileReaderDevice &reader) const
+void PcapConverter::printStats(const PcapFileReaderDevice &reader) const
 {
     // Get reader stats
     IPcapDevice::PcapStats readerStats;
@@ -193,7 +193,7 @@ void PcapConvert::printStats(const PcapFileReaderDevice &reader) const
     cout << table.to_string() << endl;
 }
 
-void PcapConvert::processPackets()
+void PcapConverter::processPackets()
 {
     // Open reader and writer devices
     PcapFileReaderDevice reader(params.getInputFile());
@@ -235,7 +235,7 @@ void PcapConvert::processPackets()
     printStats(reader);
 }
 
-bool PcapConvert::shouldDropPacket(const Packet &packet) const
+bool PcapConverter::shouldDropPacket(const Packet &packet) const
 {
     // 1. VLAN Filter
     if (params.getVlan() != nullptr)

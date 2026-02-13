@@ -4,10 +4,10 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace pcapconvert
+namespace pcapconverter
 {
 
-  class PcapConvertStats
+  class PcapConverterStats
   {
   private:
     // Data
@@ -20,8 +20,8 @@ namespace pcapconvert
 
   public:
     // Constructors & destructors
-    PcapConvertStats();
-    virtual ~PcapConvertStats();
+    PcapConverterStats();
+    virtual ~PcapConverterStats();
 
     // Getters & setters
     uint64_t getBytesDropped() const { return bytesDropped; }

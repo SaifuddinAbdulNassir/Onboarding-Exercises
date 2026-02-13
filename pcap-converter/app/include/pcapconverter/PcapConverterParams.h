@@ -9,10 +9,10 @@
 // Library includes
 #include <pcapplusplus/IpAddress.h>
 
-namespace pcapconvert
+namespace pcapconverter
 {
 
-  class PcapConvertParams
+  class PcapConverterParams
   {
   private:
     // Data
@@ -27,8 +27,8 @@ namespace pcapconvert
 
   public:
     // Constructors & destructors
-    PcapConvertParams();
-    virtual ~PcapConvertParams();
+    PcapConverterParams();
+    virtual ~PcapConverterParams();
 
     // Getters & setters
     std::shared_ptr<const pcpp::IPv4Address> getDnsV4Addr() const { return dnsV4Address; }
