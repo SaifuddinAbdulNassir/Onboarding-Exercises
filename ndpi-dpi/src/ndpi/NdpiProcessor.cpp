@@ -7,6 +7,8 @@
 #include <cxxopts/cxxopts.hpp>
 #include <libfort/fort.hpp>
 #include <pcapplusplus/IPv4Layer.h>
+#include <pcapplusplus/Packet.h>
+#include <pcapplusplus/PcapLiveDevice.h>
 #include <pcapplusplus/PcapLiveDeviceList.h>
 #include <pcapplusplus/TcpLayer.h>
 #include <pcapplusplus/UdpLayer.h>

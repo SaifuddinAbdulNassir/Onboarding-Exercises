@@ -1,11 +1,13 @@
 #pragma once
 
-// Library includes
-#include <pcapplusplus/Packet.h>
-#include <pcapplusplus/PcapLiveDevice.h>
-
 // Project includes
 #include "ndpi/NdpiConnectionsMap.h"
+
+namespace pcpp
+{
+    class RawPacket;
+    class PcapLiveDevice;
+}
 
 namespace ndpi
 {
