@@ -100,17 +100,21 @@ void PcapConverter::modifyDnsDestination(Packet &packet, UdpLayer *udp)
     // Modify destination IP if specified
     auto ip4 = packet.getLayerOfType<IPv4Layer>();
     auto ip6 = packet.getLayerOfType<IPv6Layer>();
-    if (ip4 && params.getDnsV4Addr() != nullptr)
+    auto dnsAddress = params.getDnsAddress();
+    if (dnsAddress)
     {
-        ip4->setDstIPv4Address(*params.getDnsV4Addr());
-    }
-    else if (ip6 && params.getDnsV6Addr() != nullptr)
-    {
-        ip6->setDstIPv6Address(*params.getDnsV6Addr());
+        if (ip4 && dnsAddress->isIPv4())
+        {
+            ip4->setDstIPv4Address(dnsAddress->getIPv4());
+        }
+        else if (ip6 && dnsAddress->isIPv6())
+        {
+            ip6->setDstIPv6Address(dnsAddress->getIPv6());
+        }
     }
 
     // Modify destination port if specified
-    if (params.getDnsPort() != nullptr)
+    if (params.getDnsPort())
     {
         udp->getUdpHeader()->portDst = *params.getDnsPort();
     }
@@ -157,14 +161,7 @@ bool PcapConverter::parseArgs(int argc, char *argv[])
         params.setTtlDec(make_shared<uint8_t>(result["ttl"].as<uint8_t>()));
     if (result.count("dns-addr"))
     {
-        if (IPv4Address::isValidIPv4Address(result["dns-addr"].as<string>()))
-        {
-            params.setDnsV4Addr(make_shared<IPv4Address>(result["dns-addr"].as<string>()));
-        }
-        else
-        {
-            params.setDnsV6Addr(make_shared<IPv6Address>(result["dns-addr"].as<string>()));
-        }
+        params.setDnsAddress(make_shared<IPAddress>(result["dns-addr"].as<string>()));
     }
     if (result.count("dns-port"))
         params.setDnsPort(make_shared<uint16_t>(result["dns-port"].as<uint16_t>()));
