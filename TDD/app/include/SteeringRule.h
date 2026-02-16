@@ -12,6 +12,7 @@
 
 namespace pcpp
 {
+  // Forward declarations
   class Packet;
 }
 
