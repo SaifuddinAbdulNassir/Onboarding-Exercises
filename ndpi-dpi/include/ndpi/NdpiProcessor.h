@@ -5,6 +5,7 @@
 
 namespace pcpp
 {
+    // Forward declarations
     class RawPacket;
     class PcapLiveDevice;
 }

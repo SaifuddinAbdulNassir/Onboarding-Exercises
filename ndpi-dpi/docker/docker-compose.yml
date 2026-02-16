@@ -11,4 +11,3 @@ services:
     env_file:
       - .env
     command: sleep infinity
-    
