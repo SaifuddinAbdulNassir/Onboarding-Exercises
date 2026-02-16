@@ -6,6 +6,7 @@
 
 namespace pcpp
 {
+    // Forward declarations
     class Packet;
     class PcapFileReaderDevice;
     class UdpLayer;
