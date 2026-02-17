@@ -173,7 +173,7 @@ bool PcapConverter::parseArgs(int argc, char *argv[])
     return true;
 }
 
-void PcapConverter::printStats(const PcapFileReaderDevice &reader) const
+void PcapConverter::printStats() const
 {
     // Print stats in a table format
     char_table table;
@@ -225,7 +225,7 @@ void PcapConverter::processPackets()
         writer.writePacket(rawPacket);
         writtenPacketsStats.recordPacketStats(rawPacket.getRawDataLen());
     }
-    printStats(reader);
+    printStats();
 }
 
 bool PcapConverter::shouldDropPacket(const Packet &packet) const

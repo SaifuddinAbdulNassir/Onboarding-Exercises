@@ -29,7 +29,7 @@ namespace pc
         void decrementTtl(pcpp::Packet &packet);
         bool isExpiredOrIcmp(const pcpp::Packet &packet) const;
         void modifyDnsDestination(pcpp::Packet &packet, pcpp::UdpLayer *udp);
-        void printStats(const pcpp::PcapFileReaderDevice &reader) const;
+        void printStats() const;
         bool shouldDropPacket(const pcpp::Packet &packet) const;
 
     public:
