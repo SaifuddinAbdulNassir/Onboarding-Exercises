@@ -144,7 +144,7 @@ void NdpiProcessor::onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, v
          srcPort == key.getSrcPort());
 
     // 0 = client → server, 1 = server → client
-    inputInfo.in_pkt_dir = (isForward) ? 0 : 1;
+    inputInfo.in_pkt_dir = isForward ? 0 : 1;
 
     // Mark if this is the first packet of the flow (seen_flow_beginning)
     inputInfo.seen_flow_beginning = (connectionInfo.getPacketCount() == 1);
