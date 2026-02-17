@@ -29,4 +29,4 @@ namespace ndpi
         void waitForSignal(NdpiState &ndpiState);
     };
 
-}
+} // namespace ndpi
