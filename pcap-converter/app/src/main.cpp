@@ -1,11 +1,7 @@
 // Project includes
 #include "pcapconverter/PcapConverter.h"
-#include "pcapconverter/PcapConverterParams.h"
-#include "pcapconverter/PcapConverterStats.h"
 
 using namespace pcapconverter;
-using namespace pcpp;
-using namespace std;
 
 int main(int argc, char *argv[])
 {
