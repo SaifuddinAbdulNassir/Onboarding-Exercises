@@ -1,8 +1,8 @@
 #pragma once
 
 // Project includes
-#include "PcapProcessorParams.h"
-#include "PcapProcessorStats.h"
+#include "pc/PcapProcessorParams.h"
+#include "pc/PcapProcessorStats.h"
 
 namespace pcpp
 {
@@ -19,17 +19,14 @@ namespace pc
     private:
         // Data
         PcapProcessorParams params;
-        PcapProcessorStats dnsModifiedPacketsStats;
-        PcapProcessorStats droppedPacketsStats;
-        PcapProcessorStats incomingPacketsStats;
-        PcapProcessorStats writtenPacketsStats;
+        PcapProcessorStats stats;
 
         // Helpers
         void applyPacketModifications(pcpp::Packet &packet);
         void decrementTtl(pcpp::Packet &packet);
         bool isExpiredOrIcmp(const pcpp::Packet &packet) const;
         void modifyDnsDestination(pcpp::Packet &packet, pcpp::UdpLayer *udp);
-        void printStats() const;
+        void printStats();
         bool shouldDropPacket(const pcpp::Packet &packet) const;
 
     public:

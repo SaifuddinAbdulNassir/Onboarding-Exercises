@@ -46,7 +46,7 @@ void PcapProcessor::applyPacketModifications(Packet &packet)
         if (dns && udp)
         {
             modifyDnsDestination(packet, udp);
-            dnsModifiedPacketsStats.incrementPacketAndByteCounts(packet.getRawPacket()->getRawDataLen());
+            stats.getDnsModifiedPacketsStats().incrementPacketAndByteCounts(packet.getRawPacket()->getRawDataLen());
         }
     }
 }
@@ -173,15 +173,15 @@ bool PcapProcessor::parseArgs(int argc, char *argv[])
     return true;
 }
 
-void PcapProcessor::printStats() const
+void PcapProcessor::printStats()
 {
     // Print stats in a table format
     char_table table;
     table << header << "Packet Processing Statistics" << "Total bytes" << "Total packets" << endr
-          << "Total bytes & packets processed: " << incomingPacketsStats.getByteCount() << incomingPacketsStats.getPacketCount() << endr
-          << "Total bytes & packets dropped:   " << droppedPacketsStats.getByteCount() << droppedPacketsStats.getPacketCount() << endr
-          << "Total bytes & packets written:   " << writtenPacketsStats.getByteCount() << writtenPacketsStats.getPacketCount() << endr
-          << "Total DNS packets modified:      " << dnsModifiedPacketsStats.getByteCount() << dnsModifiedPacketsStats.getPacketCount() << endr;
+          << "Total bytes & packets processed: " << stats.getIncomingPacketsStats().getByteCount() << stats.getIncomingPacketsStats().getPacketCount() << endr
+          << "Total bytes & packets dropped:   " << stats.getDroppedPacketsStats().getByteCount() << stats.getDroppedPacketsStats().getPacketCount() << endr
+          << "Total bytes & packets written:   " << stats.getWrittenPacketsStats().getByteCount() << stats.getWrittenPacketsStats().getPacketCount() << endr
+          << "Total DNS packets modified:      " << stats.getDnsModifiedPacketsStats().getByteCount() << stats.getDnsModifiedPacketsStats().getPacketCount() << endr;
 
     cout << table.to_string() << endl;
 }
@@ -207,13 +207,13 @@ void PcapProcessor::processPackets()
 
     while (reader.getNextPacket(rawPacket))
     {
-        incomingPacketsStats.incrementPacketAndByteCounts(rawPacket.getRawDataLen());
+        stats.getIncomingPacketsStats().incrementPacketAndByteCounts(rawPacket.getRawDataLen());
         Packet packet(&rawPacket);
 
         // Filtering
         if (shouldDropPacket(packet))
         {
-            droppedPacketsStats.incrementPacketAndByteCounts(rawPacket.getRawDataLen());
+            stats.getDroppedPacketsStats().incrementPacketAndByteCounts(rawPacket.getRawDataLen());
             continue;
         }
 
@@ -223,7 +223,7 @@ void PcapProcessor::processPackets()
         // Finalize and Save
         packet.computeCalculateFields();
         writer.writePacket(rawPacket);
-        writtenPacketsStats.incrementPacketAndByteCounts(rawPacket.getRawDataLen());
+        stats.getWrittenPacketsStats().incrementPacketAndByteCounts(rawPacket.getRawDataLen());
     }
     printStats();
 }

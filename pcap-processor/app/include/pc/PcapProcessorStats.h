@@ -1,8 +1,7 @@
 #pragma once
 
-// Standard includes
-#include <cstddef>
-#include <cstdint>
+// Project includes
+#include "pc/PacketStats.h"
 
 namespace pc
 {
@@ -11,20 +10,20 @@ namespace pc
   {
   private:
     // Data
-    uint64_t byteCount = 0;
-    size_t packetCount = 0;
+    PacketStats dnsModifiedPackets;
+    PacketStats droppedPackets;
+    PacketStats incomingPackets;
+    PacketStats writtenPackets;
 
   public:
     // Constructors & destructors
     PcapProcessorStats();
     virtual ~PcapProcessorStats();
-
-    // Getters & setters
-    uint64_t getByteCount() const { return byteCount; }
-    size_t getPacketCount() const { return packetCount; }
-
-    // Business logic
-    void incrementPacketAndByteCounts(uint64_t bytes);
+    // Getters and setters
+    PacketStats &getDnsModifiedPacketsStats() { return dnsModifiedPackets; }
+    PacketStats &getDroppedPacketsStats() { return droppedPackets; }
+    PacketStats &getIncomingPacketsStats() { return incomingPackets; }
+    PacketStats &getWrittenPacketsStats() { return writtenPackets; }
   };
 
 } // namespace pc
