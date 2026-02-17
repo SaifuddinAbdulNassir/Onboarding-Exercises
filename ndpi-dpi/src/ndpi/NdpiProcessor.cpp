@@ -51,8 +51,8 @@ void NdpiProcessor::onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, v
     // Unpack cookie
     auto cookie = static_cast<NdpiCaptureCookie *>(userData);
     auto ndpiMod = get<0>(*cookie);
-    NdpiState &appState = *get<1>(*cookie);
-    NdpiConnectionsMap &connectionMap = *get<2>(*cookie);
+    auto &appState = *get<1>(*cookie);
+    auto &connectionMap = *get<2>(*cookie);
 
     // Parse packet
     Packet packet(rawPacket);
@@ -105,7 +105,7 @@ void NdpiProcessor::onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, v
         // First time seeing this flow, create new ConnectionInfo
         auto insertResult = connectionMap.try_emplace(key, NdpiConnectionInfo{});
         it = insertResult.first;
-        NdpiConnectionInfo &connectionInfo = it->second;
+        auto &connectionInfo = it->second;
         connectionInfo.setUid(appState.getUid());
         appState.incrementUid();
         connectionInfo.setFlow((ndpi_flow_struct *)calloc(1, ndpi_detection_get_sizeof_ndpi_flow_struct()));
@@ -118,7 +118,7 @@ void NdpiProcessor::onPacketArrives(RawPacket *rawPacket, PcapLiveDevice *dev, v
     }
 
     // Existing flow, update ConnectionInfo
-    NdpiConnectionInfo &connectionInfo = it->second;
+    auto &connectionInfo = it->second;
 
     // If we've already identified the protocol or exceeded max packets, skip further processing
     if (connectionInfo.getDone())
