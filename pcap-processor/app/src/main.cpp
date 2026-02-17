@@ -1,20 +1,25 @@
 // Project includes
 #include "pc/PcapProcessor.h"
 
+// Standard includes
+#include <iostream>
+
 using namespace pc;
+using namespace std;
 
 int main(int argc, char *argv[])
 {
-    PcapProcessor pcapProcessor;
-
-    // Parse command line arguments
-    if (!pcapProcessor.parseArgs(argc, argv))
+    try
     {
-        return 1;
-    }
+        PcapProcessor pcapProcessor(argc, argv);
 
-    // Process packets
-    pcapProcessor.processPackets();
+        // Process packets
+        pcapProcessor.processPackets();
+    }
+    catch (const exception &e)
+    {
+        cerr << e.what() << '\n';
+    }
 
     return 0;
 }

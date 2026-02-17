@@ -31,11 +31,10 @@ namespace pc
 
     public:
         // Constructors & destructors
-        PcapProcessor();
+        PcapProcessor(int argc, char *argv[]);
         virtual ~PcapProcessor();
 
         // Business logic
-        bool parseArgs(int argc, char *argv[]);
         void processPackets();
     };
 
