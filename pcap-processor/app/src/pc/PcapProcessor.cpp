@@ -1,4 +1,4 @@
-#include "pc/PcapConverter.h"
+#include "pc/PcapProcessor.h"
 
 // Standard includes
 #include <iostream>
@@ -23,17 +23,17 @@ using namespace std;
 
 // Constructors & destructors
 
-PcapConverter::PcapConverter()
+PcapProcessor::PcapProcessor()
 {
 }
 
-PcapConverter::~PcapConverter()
+PcapProcessor::~PcapProcessor()
 {
 }
 
 // Business logic
 
-void PcapConverter::applyPacketModifications(Packet &packet)
+void PcapProcessor::applyPacketModifications(Packet &packet)
 {
     decrementTtl(packet);
 
@@ -51,7 +51,7 @@ void PcapConverter::applyPacketModifications(Packet &packet)
     }
 }
 
-void PcapConverter::decrementTtl(Packet &packet)
+void PcapProcessor::decrementTtl(Packet &packet)
 {
     // If TTL decrement is not set, skip
     if (!params.getTtlDec())
@@ -68,7 +68,7 @@ void PcapConverter::decrementTtl(Packet &packet)
     }
 }
 
-bool PcapConverter::isExpiredOrIcmp(const Packet &packet) const
+bool PcapProcessor::isExpiredOrIcmp(const Packet &packet) const
 {
     // If TTL decrement is not set, skip
     if (!params.getTtlDec())
@@ -95,7 +95,7 @@ bool PcapConverter::isExpiredOrIcmp(const Packet &packet) const
     return false;
 }
 
-void PcapConverter::modifyDnsDestination(Packet &packet, UdpLayer *udp)
+void PcapProcessor::modifyDnsDestination(Packet &packet, UdpLayer *udp)
 {
     // Modify destination IP if specified
     auto ip4 = packet.getLayerOfType<IPv4Layer>();
@@ -120,7 +120,7 @@ void PcapConverter::modifyDnsDestination(Packet &packet, UdpLayer *udp)
     }
 }
 
-bool PcapConverter::parseArgs(int argc, char *argv[])
+bool PcapProcessor::parseArgs(int argc, char *argv[])
 {
     // Define command line options
     Options options("pcap-convert", "PCAP file converter");
@@ -173,7 +173,7 @@ bool PcapConverter::parseArgs(int argc, char *argv[])
     return true;
 }
 
-void PcapConverter::printStats() const
+void PcapProcessor::printStats() const
 {
     // Print stats in a table format
     char_table table;
@@ -186,7 +186,7 @@ void PcapConverter::printStats() const
     cout << table.to_string() << endl;
 }
 
-void PcapConverter::processPackets()
+void PcapProcessor::processPackets()
 {
     // Open reader and writer devices
     PcapFileReaderDevice reader(params.getInputFile());
@@ -228,7 +228,7 @@ void PcapConverter::processPackets()
     printStats();
 }
 
-bool PcapConverter::shouldDropPacket(const Packet &packet) const
+bool PcapProcessor::shouldDropPacket(const Packet &packet) const
 {
     // 1. VLAN Filter
     if (params.getVlan() != nullptr)

@@ -6,17 +6,17 @@ find_package(PcapPlusPlus REQUIRED)
 # Find source files
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.cpp")
 
-# Add pcap-converter
-add_executable(pcap-converter ${SOURCES})
+# Add pcap-processor
+add_executable(pcap-processor ${SOURCES})
 
 # Add include directories
-target_include_directories(pcap-converter
+target_include_directories(pcap-processor
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 # Link to libraries
-target_link_libraries(pcap-converter
+target_link_libraries(pcap-processor
   PRIVATE
     cxxopts::cxxopts
     libfort::fort

@@ -1,8 +1,8 @@
 #pragma once
 
 // Project includes
-#include "PcapConverterParams.h"
-#include "PcapConverterStats.h"
+#include "PcapProcessorParams.h"
+#include "PcapProcessorStats.h"
 
 namespace pcpp
 {
@@ -14,15 +14,15 @@ namespace pcpp
 
 namespace pc
 {
-    class PcapConverter
+    class PcapProcessor
     {
     private:
         // Data
-        PcapConverterParams params;
-        PcapConverterStats dnsModifiedPacketsStats;
-        PcapConverterStats droppedPacketsStats;
-        PcapConverterStats incomingPacketsStats;
-        PcapConverterStats writtenPacketsStats;
+        PcapProcessorParams params;
+        PcapProcessorStats dnsModifiedPacketsStats;
+        PcapProcessorStats droppedPacketsStats;
+        PcapProcessorStats incomingPacketsStats;
+        PcapProcessorStats writtenPacketsStats;
 
         // Helpers
         void applyPacketModifications(pcpp::Packet &packet);
@@ -34,8 +34,8 @@ namespace pc
 
     public:
         // Constructors & destructors
-        PcapConverter();
-        virtual ~PcapConverter();
+        PcapProcessor();
+        virtual ~PcapProcessor();
 
         // Business logic
         bool parseArgs(int argc, char *argv[]);

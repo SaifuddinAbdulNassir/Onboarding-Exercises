@@ -1,20 +1,20 @@
 // Project includes
-#include "pc/PcapConverter.h"
+#include "pc/PcapProcessor.h"
 
 using namespace pc;
 
 int main(int argc, char *argv[])
 {
-    PcapConverter pcapConverter;
+    PcapProcessor pcapProcessor;
 
     // Parse command line arguments
-    if (!pcapConverter.parseArgs(argc, argv))
+    if (!pcapProcessor.parseArgs(argc, argv))
     {
         return 1;
     }
 
     // Process packets
-    pcapConverter.processPackets();
+    pcapProcessor.processPackets();
 
     return 0;
 }

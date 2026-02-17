@@ -7,7 +7,7 @@
 namespace pc
 {
 
-  class PcapConverterStats
+  class PcapProcessorStats
   {
   private:
     // Data
@@ -16,8 +16,8 @@ namespace pc
 
   public:
     // Constructors & destructors
-    PcapConverterStats();
-    virtual ~PcapConverterStats();
+    PcapProcessorStats();
+    virtual ~PcapProcessorStats();
 
     // Getters & setters
     uint64_t getByteCount() const { return byteCount; }

@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 # Project name
-project(pcap-converter)
+project(pcap-processor)
 
 # set C++ version
 set(CMAKE_CXX_STANDARD 20)

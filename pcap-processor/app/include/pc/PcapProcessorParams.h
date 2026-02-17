@@ -6,7 +6,7 @@
 namespace pc
 {
 
-  class PcapConverterParams
+  class PcapProcessorParams
   {
   private:
     // Data
@@ -20,8 +20,8 @@ namespace pc
 
   public:
     // Constructors & destructors
-    PcapConverterParams();
-    virtual ~PcapConverterParams();
+    PcapProcessorParams();
+    virtual ~PcapProcessorParams();
 
     // Getters & setters
     std::shared_ptr<const pcpp::IPAddress> getDnsAddress() const { return dnsAddress; }
