@@ -24,7 +24,7 @@ namespace pc
     size_t getPacketCount() const { return packetCount; }
 
     // Business logic
-    void recordPacketStats(uint64_t value);
+    void incrementPacketAndByteCounts(uint64_t bytes);
   };
 
 } // namespace pc

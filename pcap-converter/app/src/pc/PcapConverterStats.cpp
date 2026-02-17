@@ -14,7 +14,7 @@ PcapConverterStats::~PcapConverterStats()
 
 // Business logic
 
-void PcapConverterStats::recordPacketStats(uint64_t value)
+void PcapConverterStats::incrementPacketAndByteCounts(uint64_t value)
 {
     // Update stats for dropped packet
     ++packetCount;

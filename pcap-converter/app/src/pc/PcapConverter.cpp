@@ -46,7 +46,7 @@ void PcapConverter::applyPacketModifications(Packet &packet)
         if (dns && udp)
         {
             modifyDnsDestination(packet, udp);
-            dnsModifiedPacketsStats.recordPacketStats(packet.getRawPacket()->getRawDataLen());
+            dnsModifiedPacketsStats.incrementPacketAndByteCounts(packet.getRawPacket()->getRawDataLen());
         }
     }
 }
@@ -207,13 +207,13 @@ void PcapConverter::processPackets()
 
     while (reader.getNextPacket(rawPacket))
     {
-        incomingPacketsStats.recordPacketStats(rawPacket.getRawDataLen());
+        incomingPacketsStats.incrementPacketAndByteCounts(rawPacket.getRawDataLen());
         Packet packet(&rawPacket);
 
         // Filtering
         if (shouldDropPacket(packet))
         {
-            droppedPacketsStats.recordPacketStats(rawPacket.getRawDataLen());
+            droppedPacketsStats.incrementPacketAndByteCounts(rawPacket.getRawDataLen());
             continue;
         }
 
@@ -223,7 +223,7 @@ void PcapConverter::processPackets()
         // Finalize and Save
         packet.computeCalculateFields();
         writer.writePacket(rawPacket);
-        writtenPacketsStats.recordPacketStats(rawPacket.getRawDataLen());
+        writtenPacketsStats.incrementPacketAndByteCounts(rawPacket.getRawDataLen());
     }
     printStats();
 }
