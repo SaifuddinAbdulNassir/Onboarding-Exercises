@@ -1,7 +1,7 @@
 // Project includes
-#include "pcapconverter/PcapConverter.h"
+#include "pc/PcapConverter.h"
 
-using namespace pcapconverter;
+using namespace pc;
 
 int main(int argc, char *argv[])
 {

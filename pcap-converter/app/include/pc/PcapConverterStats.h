@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace pcapconverter
+namespace pc
 {
 
   class PcapConverterStats
@@ -27,4 +27,4 @@ namespace pcapconverter
     void recordPacketStats(uint64_t value);
   };
 
-} // namespace pcapconverter
+} // namespace pc

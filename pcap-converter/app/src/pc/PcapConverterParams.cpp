@@ -1,8 +1,6 @@
-#include "pcapconverter/PcapConverterParams.h"
+#include "pc/PcapConverterParams.h"
 
-using namespace pcapconverter;
-using namespace pcpp;
-using namespace std;
+using namespace pc;
 
 // Constructors & destructors
 

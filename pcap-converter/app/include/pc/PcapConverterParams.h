@@ -9,7 +9,7 @@
 // Library includes
 #include <pcapplusplus/IpAddress.h>
 
-namespace pcapconverter
+namespace pc
 {
 
   class PcapConverterParams
@@ -46,4 +46,4 @@ namespace pcapconverter
     void setVlan(const std::shared_ptr<uint16_t> id) { vlan = id; }
   };
 
-} // namespace pcapconverter
+} // namespace pc

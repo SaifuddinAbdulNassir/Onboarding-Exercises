@@ -1,6 +1,6 @@
-#include "pcapconverter/PcapConverterStats.h"
+#include "pc/PcapConverterStats.h"
 
-using namespace pcapconverter;
+using namespace pc;
 
 // Constructors & destructors
 

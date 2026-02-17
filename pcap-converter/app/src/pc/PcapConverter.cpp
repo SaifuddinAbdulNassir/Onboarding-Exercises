@@ -1,4 +1,4 @@
-#include "pcapconverter/PcapConverter.h"
+#include "pc/PcapConverter.h"
 
 // Standard includes
 #include <iostream>
@@ -17,7 +17,7 @@
 
 using namespace cxxopts;
 using namespace fort;
-using namespace pcapconverter;
+using namespace pc;
 using namespace pcpp;
 using namespace std;
 

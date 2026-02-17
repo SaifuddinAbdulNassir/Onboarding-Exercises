@@ -12,7 +12,7 @@ namespace pcpp
     class UdpLayer;
 }
 
-namespace pcapconverter
+namespace pc
 {
     class PcapConverter
     {
@@ -40,4 +40,4 @@ namespace pcapconverter
         bool shouldDropPacket(const pcpp::Packet &packet) const;
     };
 
-} // namespace pcapconverter
+} // namespace pc
