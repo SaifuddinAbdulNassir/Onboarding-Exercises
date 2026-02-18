@@ -1,7 +1,7 @@
 #pragma once
 
 // Project includes
-#include "ndpi/NdpiConnectionsMap.h"
+#include "np/NdpiConnectionsMap.h"
 
 namespace pcpp
 {
@@ -10,7 +10,7 @@ namespace pcpp
     class PcapLiveDevice;
 }
 
-namespace ndpi
+namespace np
 {
 
     class NdpiProcessor
@@ -35,4 +35,4 @@ namespace ndpi
         void processLivePackets();
     };
 
-} // namespace ndpi
+} // namespace np

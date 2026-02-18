@@ -1,4 +1,4 @@
-#include "ndpi/NdpiProcessor.h"
+#include "np/NdpiProcessor.h"
 
 // Standard includes
 #include <iostream>
@@ -14,14 +14,14 @@
 #include <pcapplusplus/UdpLayer.h>
 
 // Project includes
-#include "ndpi/NdpiCaptureCookie.h"
-#include "ndpi/NdpiConnectionInfo.h"
-#include "ndpi/NdpiConnectionKey.h"
-#include "ndpi/NdpiSignalHandler.h"
+#include "np/NdpiCaptureCookie.h"
+#include "np/NdpiConnectionInfo.h"
+#include "np/NdpiConnectionKey.h"
+#include "np/NdpiSignalHandler.h"
 
 using namespace cxxopts;
 using namespace fort;
-using namespace ndpi;
+using namespace np;
 using namespace pcpp;
 using namespace std;
 

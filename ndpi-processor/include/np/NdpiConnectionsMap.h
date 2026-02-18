@@ -4,13 +4,13 @@
 #include <unordered_map>
 
 // Project includes
-#include "ndpi/NdpiConnectionInfo.h"
-#include "ndpi/NdpiConnectionKey.h"
-#include "ndpi/NdpiConnectionKeyHash.h"
+#include "np/NdpiConnectionInfo.h"
+#include "np/NdpiConnectionKey.h"
+#include "np/NdpiConnectionKeyHash.h"
 
-namespace ndpi
+namespace np
 {
 
   typedef std::unordered_map<NdpiConnectionKey, NdpiConnectionInfo, NdpiConnectionKeyHash> NdpiConnectionsMap;
 
-} // namespace ndpi
+} // namespace np

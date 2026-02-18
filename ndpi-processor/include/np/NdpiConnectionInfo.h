@@ -7,7 +7,7 @@
 // Library includes
 #include <ndpi/ndpi_api.h>
 
-namespace ndpi
+namespace np
 {
 
   class NdpiConnectionInfo
@@ -44,4 +44,4 @@ namespace ndpi
     void setUid(size_t val) { uid = val; }
   };
 
-} // namespace ndpi
+} // namespace np

@@ -1,4 +1,4 @@
-#include "ndpi/NdpiSignalHandler.h"
+#include "np/NdpiSignalHandler.h"
 
 // Standard includes
 #include <iostream>
@@ -6,7 +6,7 @@
 #include <signal.h>
 #include <unistd.h>
 
-using namespace ndpi;
+using namespace np;
 using namespace std;
 
 // Constructors & destructors

@@ -1,9 +1,9 @@
-#include "ndpi/NdpiConnectionKeyHash.h"
+#include "np/NdpiConnectionKeyHash.h"
 
 // Standard includes
 #include <functional>
 
-using namespace ndpi;
+using namespace np;
 using namespace std;
 
 // Hash function

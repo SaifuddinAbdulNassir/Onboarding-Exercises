@@ -1,6 +1,6 @@
-#include "ndpi/NdpiState.h"
+#include "np/NdpiState.h"
 
-using namespace ndpi;
+using namespace np;
 
 // Constructors & destructors
 

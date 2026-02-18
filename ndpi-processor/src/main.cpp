@@ -1,7 +1,7 @@
 // Project includes
-#include "ndpi/NdpiProcessor.h"
+#include "np/NdpiProcessor.h"
 
-using namespace ndpi;
+using namespace np;
 
 int main(int argc, char *argv[])
 {

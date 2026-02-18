@@ -3,7 +3,7 @@
 // Standard includes
 #include <cstdint>
 
-namespace ndpi
+namespace np
 {
 
   class NdpiConnectionKey
@@ -31,4 +31,4 @@ namespace ndpi
     bool operator==(const NdpiConnectionKey &other) const;
   };
 
-} // namespace ndpi
+} // namespace np

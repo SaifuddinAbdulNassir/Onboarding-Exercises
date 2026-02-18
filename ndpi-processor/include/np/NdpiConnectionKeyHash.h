@@ -4,9 +4,9 @@
 #include <cstddef>
 
 // Project includes
-#include "ndpi/NdpiConnectionKey.h"
+#include "np/NdpiConnectionKey.h"
 
-namespace ndpi
+namespace np
 {
 
   class NdpiConnectionKeyHash
@@ -16,4 +16,4 @@ namespace ndpi
     size_t operator()(const NdpiConnectionKey &key) const;
   };
 
-} // namespace ndpi
+} // namespace np

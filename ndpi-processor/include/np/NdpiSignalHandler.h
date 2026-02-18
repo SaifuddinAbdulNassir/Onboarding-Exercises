@@ -5,9 +5,9 @@
 #include <sys/signalfd.h>
 
 // Project includes
-#include "ndpi/NdpiState.h"
+#include "np/NdpiState.h"
 
-namespace ndpi
+namespace np
 {
 
     class NdpiSignalHandler
@@ -29,4 +29,4 @@ namespace ndpi
         void waitForSignal(NdpiState &ndpiState);
     };
 
-} // namespace ndpi
+} // namespace np

@@ -3,7 +3,7 @@
 // Standard includes
 #include <cstddef>
 
-namespace ndpi
+namespace np
 {
 
   class NdpiState
@@ -27,4 +27,4 @@ namespace ndpi
     void incrementUid() { uid++; };
   };
 
-} // namespace ndpi
+} // namespace np

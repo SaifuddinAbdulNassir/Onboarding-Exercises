@@ -41,7 +41,7 @@ cmake --build build
 
 5) Run the project inside the container:
 ```bash
- ./build/ndpi-dpi -i enp0s3 -N 30
+ ./build/ndpi-processor -i enp0s3 -N 30
 ```
 
 `-i enp0s3`: Specifies the network interfcae (e.g., enp0s3) provinding the live traffic.
@@ -65,7 +65,7 @@ cmake --build build
 ## Command to run the project.
 
 ```
- sudo ./build/ndpi-dpi -i enp0s3 --N 30
+ sudo ./build/ndpi-processor -i enp0s3 --N 30
 ```
  
  -i enp0s3: Specifies the network interfcae (e.g., enp0s3) provinding the live traffic.

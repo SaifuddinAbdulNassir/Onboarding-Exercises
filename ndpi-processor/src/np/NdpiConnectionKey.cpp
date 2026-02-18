@@ -1,6 +1,6 @@
-#include "ndpi/NdpiConnectionKey.h"
+#include "np/NdpiConnectionKey.h"
 
-using namespace ndpi;
+using namespace np;
 
 // Constructors & destructors
 
