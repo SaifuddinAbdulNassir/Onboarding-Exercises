@@ -23,7 +23,7 @@ PcapProcessorParams::~PcapProcessorParams()
 
 // Business logic
 
-bool PcapProcessorParams::parseArgs(int argc, char *argv[])
+PcapProcessorParams PcapProcessorParams::create(int argc, char *argv[])
 {
     // Define command line options
     Options options("pcap-convert", "PCAP file converter");
@@ -35,43 +35,42 @@ bool PcapProcessorParams::parseArgs(int argc, char *argv[])
     if (result.count("help"))
     {
         cout << options.help() << endl;
-        return false;
+        exit(0);
     }
     if (!result.count("input") || !result.count("output"))
     {
-        cerr << "Input and output file paths are required.\n";
-        cout << options.help() << endl;
-        return false;
+        throw invalid_argument("Input and output file paths are required.\n" + options.help());
     }
+
+    PcapProcessorParams params;
 
     // Set parameters based on parsed options
     if (result.count("vlan"))
-        vlan = make_shared<uint16_t>(result["vlan"].as<uint16_t>());
+        params.setVlan(make_shared<uint16_t>(result["vlan"].as<uint16_t>()));
     if (result.count("ip-version"))
     {
         int version = result["ip-version"].as<int>();
         if (version == 4)
-            ipVersion = make_shared<IPAddress::AddressType>(IPAddress::IPv4AddressType);
+            params.setIpVersion(make_shared<IPAddress::AddressType>(IPAddress::IPv4AddressType));
         else if (version == 6)
-            ipVersion = make_shared<IPAddress::AddressType>(IPAddress::IPv6AddressType);
+            params.setIpVersion(make_shared<IPAddress::AddressType>(IPAddress::IPv6AddressType));
         else
         {
-            cerr << "Invalid IP version. Use 4 or 6.\n";
-            return false;
+            throw invalid_argument("Invalid IP version. Use 4 or 6.\n" + options.help());
         }
     }
     if (result.count("ttl"))
-        ttlDec = make_shared<uint8_t>(result["ttl"].as<uint8_t>());
+        params.setTtlDec(make_shared<uint8_t>(result["ttl"].as<uint8_t>()));
     if (result.count("dns-addr"))
     {
-        dnsAddress = make_shared<IPAddress>(result["dns-addr"].as<string>());
+        params.setDnsAddress(make_shared<IPAddress>(result["dns-addr"].as<string>()));
     }
     if (result.count("dns-port"))
-        dnsPort = make_shared<uint16_t>(result["dns-port"].as<uint16_t>());
+        params.setDnsPort(make_shared<uint16_t>(result["dns-port"].as<uint16_t>()));
     if (result.count("input"))
-        inputFile = result["input"].as<string>();
+        params.setInputFile(result["input"].as<string>());
     if (result.count("output"))
-        outputFile = result["output"].as<string>();
+        params.setOutputFile(result["output"].as<string>());
 
-    return true;
+    return params;
 }

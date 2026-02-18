@@ -11,7 +11,8 @@ int main(int argc, char *argv[])
 {
     try
     {
-        PcapProcessor pcapProcessor(argc, argv);
+
+        auto pcapProcessor = PcapProcessor::create(argc, argv);
 
         // Process packets
         pcapProcessor.processPackets();

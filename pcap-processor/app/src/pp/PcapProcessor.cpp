@@ -21,17 +21,15 @@ using namespace std;
 
 // Constructors & destructors
 
-PcapProcessor::PcapProcessor(int argc, char *argv[])
+PcapProcessor::PcapProcessor()
 {
-    if (!params.parseArgs(argc, argv))
-        throw invalid_argument("Failed to parse command line arguments");
 }
 
 PcapProcessor::~PcapProcessor()
 {
 }
 
-// Business logic
+// Helpers
 
 void PcapProcessor::applyPacketModifications(Packet &packet)
 {
@@ -133,6 +131,44 @@ void PcapProcessor::printStats()
     cout << table.to_string() << endl;
 }
 
+bool PcapProcessor::shouldDropPacket(const Packet &packet) const
+{
+    // 1. VLAN Filter
+    if (params.getVlan() != nullptr)
+    {
+        auto vlan = packet.getLayerOfType<VlanLayer>();
+        if (!vlan || vlan->getVlanID() != *params.getVlan())
+            return true;
+    }
+
+    // 2. Ethernet Filter
+    if (!packet.isPacketOfType(Ethernet))
+        return true;
+
+    // 3. IP Version Filter
+    if (params.getIpVersion() != nullptr)
+    {
+        bool isV4 = packet.isPacketOfType(IPv4);
+        bool isV6 = packet.isPacketOfType(IPv6);
+        if (*params.getIpVersion() == IPAddress::IPv4AddressType && !isV4)
+            return true;
+        if (*params.getIpVersion() == IPAddress::IPv6AddressType && !isV6)
+            return true;
+    }
+
+    // 4. TTL/Hop Limit Logic
+    return isExpiredOrIcmp(packet);
+}
+
+// Business logic
+
+PcapProcessor PcapProcessor::create(int argc, char *argv[])
+{
+    PcapProcessor processor;
+    processor.params = PcapProcessorParams::create(argc, argv);
+    return processor;
+}
+
 void PcapProcessor::processPackets()
 {
     // Open reader and writer devices
@@ -173,33 +209,4 @@ void PcapProcessor::processPackets()
         stats.incrementWritten(rawPacket.getRawDataLen());
     }
     printStats();
-}
-
-bool PcapProcessor::shouldDropPacket(const Packet &packet) const
-{
-    // 1. VLAN Filter
-    if (params.getVlan() != nullptr)
-    {
-        auto vlan = packet.getLayerOfType<VlanLayer>();
-        if (!vlan || vlan->getVlanID() != *params.getVlan())
-            return true;
-    }
-
-    // 2. Ethernet Filter
-    if (!packet.isPacketOfType(Ethernet))
-        return true;
-
-    // 3. IP Version Filter
-    if (params.getIpVersion() != nullptr)
-    {
-        bool isV4 = packet.isPacketOfType(IPv4);
-        bool isV6 = packet.isPacketOfType(IPv6);
-        if (*params.getIpVersion() == IPAddress::IPv4AddressType && !isV4)
-            return true;
-        if (*params.getIpVersion() == IPAddress::IPv6AddressType && !isV6)
-            return true;
-    }
-
-    // 4. TTL/Hop Limit Logic
-    return isExpiredOrIcmp(packet);
 }
