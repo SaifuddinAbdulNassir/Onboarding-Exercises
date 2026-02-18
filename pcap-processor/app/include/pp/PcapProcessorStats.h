@@ -19,11 +19,22 @@ namespace pp
     // Constructors & destructors
     PcapProcessorStats();
     virtual ~PcapProcessorStats();
+
     // Getters and setters
-    PacketStats &getDnsModifiedPacketsStats() { return dnsModifiedPackets; }
-    PacketStats &getDroppedPacketsStats() { return droppedPackets; }
-    PacketStats &getIncomingPacketsStats() { return incomingPackets; }
-    PacketStats &getWrittenPacketsStats() { return writtenPackets; }
+    size_t getDnsModifiedByteCount() const { return dnsModifiedPackets.getByteCount(); }
+    uint64_t getDnsModifiedPacketCount() const { return dnsModifiedPackets.getPacketCount(); }
+    size_t getDroppedByteCount() const { return droppedPackets.getByteCount(); }
+    uint64_t getDroppedPacketCount() const { return droppedPackets.getPacketCount(); }
+    size_t getIncomingByteCount() const { return incomingPackets.getByteCount(); }
+    uint64_t getIncomingPacketCount() const { return incomingPackets.getPacketCount(); }
+    size_t getWrittenByteCount() const { return writtenPackets.getByteCount(); }
+    uint64_t getWrittenPacketCount() const { return writtenPackets.getPacketCount(); }
+
+    // Business logic
+    void incrementDnsModified(uint64_t bytes) { dnsModifiedPackets.increment(bytes); }
+    void incrementDropped(uint64_t bytes) { droppedPackets.increment(bytes); }
+    void incrementIncoming(uint64_t bytes) { incomingPackets.increment(bytes); }
+    void incrementWritten(uint64_t bytes) { writtenPackets.increment(bytes); }
   };
 
 } // namespace pp

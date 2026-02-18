@@ -20,11 +20,11 @@ namespace pp
         ~PacketStats();
 
         // Getters and setters
-        uint64_t getByteCount() { return byteCount; }
-        size_t getPacketCount() { return packetCount; }
+        uint64_t getByteCount() const { return byteCount; }
+        size_t getPacketCount() const { return packetCount; }
 
         // Business logic
-        void incrementPacketAndByteCounts(uint64_t bytes);
+        void increment(uint64_t bytes);
     };
 
 } // namespace pp
