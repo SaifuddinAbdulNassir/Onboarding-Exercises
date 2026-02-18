@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace pc
+namespace pp
 {
 
     class PacketStats
@@ -27,4 +27,4 @@ namespace pc
         void incrementPacketAndByteCounts(uint64_t bytes);
     };
 
-} // namespace pc
+} // namespace pp

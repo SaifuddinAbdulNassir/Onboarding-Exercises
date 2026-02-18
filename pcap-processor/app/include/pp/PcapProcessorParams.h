@@ -3,7 +3,7 @@
 // Library includes
 #include <pcapplusplus/IpAddress.h>
 
-namespace pc
+namespace pp
 {
 
   class PcapProcessorParams
@@ -35,4 +35,4 @@ namespace pc
     bool parseArgs(int argc, char *argv[]);
   };
 
-} // namespace pc
+} // namespace pp

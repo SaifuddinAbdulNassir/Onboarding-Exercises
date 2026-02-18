@@ -1,8 +1,8 @@
 #pragma once
 
 // Project includes
-#include "pc/PcapProcessorParams.h"
-#include "pc/PcapProcessorStats.h"
+#include "pp/PcapProcessorParams.h"
+#include "pp/PcapProcessorStats.h"
 
 namespace pcpp
 {
@@ -12,7 +12,7 @@ namespace pcpp
     class UdpLayer;
 }
 
-namespace pc
+namespace pp
 {
     class PcapProcessor
     {
@@ -38,4 +38,4 @@ namespace pc
         void processPackets();
     };
 
-} // namespace pc
+} // namespace pp

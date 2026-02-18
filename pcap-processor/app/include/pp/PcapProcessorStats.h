@@ -1,9 +1,9 @@
 #pragma once
 
 // Project includes
-#include "pc/PacketStats.h"
+#include "pp/PacketStats.h"
 
-namespace pc
+namespace pp
 {
 
   class PcapProcessorStats
@@ -26,4 +26,4 @@ namespace pc
     PacketStats &getWrittenPacketsStats() { return writtenPackets; }
   };
 
-} // namespace pc
+} // namespace pp

@@ -1,4 +1,4 @@
-#include "pc/PcapProcessorParams.h"
+#include "pp/PcapProcessorParams.h"
 
 // Standard includes
 #include <iostream>
@@ -7,7 +7,7 @@
 #include <cxxopts/cxxopts.hpp>
 
 using namespace cxxopts;
-using namespace pc;
+using namespace pp;
 using namespace pcpp;
 using namespace std;
 

@@ -1,4 +1,4 @@
-#include "pc/PcapProcessor.h"
+#include "pp/PcapProcessor.h"
 
 // Standard includes
 #include <iostream>
@@ -15,7 +15,7 @@
 #include <pcapplusplus/VlanLayer.h>
 
 using namespace fort;
-using namespace pc;
+using namespace pp;
 using namespace pcpp;
 using namespace std;
 

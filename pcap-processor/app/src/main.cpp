@@ -1,10 +1,10 @@
 // Project includes
-#include "pc/PcapProcessor.h"
+#include "pp/PcapProcessor.h"
 
 // Standard includes
 #include <iostream>
 
-using namespace pc;
+using namespace pp;
 using namespace std;
 
 int main(int argc, char *argv[])
