@@ -1,7 +1,7 @@
 #pragma once
 
 // Project includes
-#include "pp/PacketStats.h"
+#include "pp/core/PacketStats.h"
 
 namespace pp
 {
